@@ -1,16 +1,23 @@
-# React + Vite
+# Ping
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Ping is a lightweight, proactive uptime monitoring tool designed to track website availability and send instant alerts when services drop.
 
-Currently, two official plugins are available:
+## Core Features
+- **60+ Second Checks:** High-frequency polling to detect downtime instantly.
+- **Instant Email Alerts:** Notifies you the exact moment your application goes down.
+- **Performance Graphing:** Tracks latency trends and performance dips over time.
+- **Public Status Pages:** Let your users view your historical uptime transparently.
+- **TCP Monitoring:** Monitor raw ports, databases, and custom network protocols beyond standard HTTP.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## The Stack
+- **Frontend:** React with CSS Modules
+- **Design:** Custom dark-theme framework using Syne and DM Mono typography
+- **Backend (Next Steps):** Planning to use Node.js, Redis for task queues, and a database to store user nodes.
 
-## React Compiler
+## How to Run it Locally
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+1. Clone this repo to your machine
+2. Open your terminal in the project folder and run:
+   npm install
+3. Once the dependencies finish installing, start the server with:
+   npm run dev
