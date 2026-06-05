@@ -1,0 +1,97 @@
+.mockupContainer {
+  max-width: 1000px;
+  width: 100%;
+  margin: 0 auto 6rem auto;
+  padding: 0 2rem;
+  box-sizing: border-box;
+}
+.window {
+  background-color: #12121e;
+  border: 1px solid #1f1f33;
+  border-radius: 12px;
+  overflow: hidden;
+}
+.windowHeader {
+  display: flex;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #1f1f33;
+  background-color: #12121e;
+}
+.dotWrapper {
+  display: flex;
+  gap: 0.5rem;
+}
+.windowDot {
+  width: 12px;
+  height: 12px;
+  background-color: #1f1f33;
+  border-radius: 50%;
+}
+.urlBar {
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  color: #9ca3af;
+  background-color: #0a0a0f;
+  padding: 0.25rem 1.5rem;
+  border-radius: 6px;
+  margin-left: 2rem;
+  border: 1px solid #1f1f33;
+}
+.windowBody {
+  padding: 1.5rem;
+}
+.monitorRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.25rem 0;
+  border-bottom: 1px solid #1f1f33;
+}
+.monitorRow:last-child {
+  border-bottom: none;
+}
+.monitorMeta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  min-width: 180px;
+}
+.monitorName {
+  font-family: 'DM Mono', monospace;
+  font-size: 14px;
+  font-weight: 500;
+  color: #f3f4f6;
+}
+.monitorInterval {
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  color: #9ca3af;
+}
+.uptimeGrid {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+.statusBar {
+  width: 4px;
+  height: 24px;
+  border-radius: 2px;
+}
+.operational {
+  background-color: #10b981; /* Emerald Green */
+}
+.outage {
+  background-color: #ef4444; /* Red */
+}
+.badge {
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  color: #10b981;
+  background-color: rgba(16, 185, 129, 0.1);
+  padding: 0.25rem 0.75rem;
+  border-radius: 4px;
+  border: 1px solid rgba(16, 185, 129, 0.2);
+  text-align: right;
+  min-width: 100px;
+}

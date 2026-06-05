@@ -1,0 +1,75 @@
+.Container{
+    background-color: #0a0a0f;
+    border-bottom: 1px solid #1f1f33;
+    padding-left: 1.5rem ;
+    position: sticky;
+    width: 100%;
+    font-family: 'DM Mono', monospace;
+    top: 0;
+    z-index: 100;
+    max-width: 1280px;
+    
+}
+.navInner{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.25rem 2rem;
+    max-width: 1280px;
+}
+.ping>h1{
+    color:#f3f4f6 ;
+}
+.log-sign{
+    display: flex;
+    gap: 1rem;
+}
+.log{
+    color: #9ca3af;
+}
+.sign>button{
+    background-color:#6366f1;
+    border: none;
+    color: #f3f4f6;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    transition: background-color 0.2s ease-in;
+    cursor: pointer;
+    font-family: 'DM Mono', monospace;
+    font-size: 14px;
+}
+.sign>button:hover{
+    background-color: #4f46e5;
+}
+.log>button{
+    border: 1px solid #3f3f46;
+    padding: 0.5rem 1rem;
+    background: transparent;
+    color: #9ca3af;
+    font-family: 'DM mono',monospace;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.25s ease-in-out;
+    border-radius: 20px;
+}
+.log>button:hover{
+    color: #ffffff; 
+    background-color: rgba(99, 102, 241, 0.1);
+}
+.properties{
+    display: flex;
+    gap: 30px;
+}
+.properties div button{
+    border: none;
+    background: transparent;
+    padding: 0;
+    color: #9ca3af;
+    cursor: pointer;
+    transition: color 0.2s ease-in;
+    font-family: inherit;
+    font-size: 15px;
+}
+.properties div button:hover {
+  color: #ffffff;
+}
