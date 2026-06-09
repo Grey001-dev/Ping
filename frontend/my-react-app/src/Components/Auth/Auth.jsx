@@ -46,6 +46,7 @@ export default function Auth(){
                     onChange={(e)=>setUsername(e.target.value)}
                     value={Username}
                     className={styles.textInput}
+                    
                     />)}
                     <input type="text" 
                     required
