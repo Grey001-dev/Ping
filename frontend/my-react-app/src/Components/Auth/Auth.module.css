@@ -191,3 +191,28 @@
     border-radius: 2px;
     transition: background-color 0.3s ease;
 }
+.errorAlert{
+    background-color: rgba(239,68,68,0.06);
+    border: 1px solid rgba(239,68,68,0.25);
+    color: #fca5a5;
+    font-family: 'DM Mono',monospace;
+    font-size: 11px;
+    padding: 0.7rem 0.9rem;
+    border-radius: 6px;
+    margin-bottom: 1.5rem;
+    width: 100%;
+    box-sizing: border-box;
+    letter-spacing: -0.01em;
+}
+.successAlert{
+    background-color: rgba(16,185,129,0.06);
+    border: 1px solid rgba(16,185,129,0.25);
+    color:#a7f3d0;
+    font-family:'DM Mono',monospace ;
+    font-size: 11px;
+    padding: 0.7rem 0.9rem;
+    border-radius: 6px;
+    margin-bottom: 1.5rem;
+    width: 100%;
+    box-sizing: border-box;
+}

@@ -1,12 +1,16 @@
-import { name } from "ejs";
+
 import db from "../config/db.js";
-import bcrypt from 'bcryptjs';
+import bcrypt from 'bcryptjs'
+import jwt from 'jsonwebtoken'
 
 export const handleauth=async(req,res)=>{
-    const {isSignup,username,email,password,}=req.body;
+    const {isSignUp,name,email,password,}=req.body;
+    if(!email || !password){
+        return res.status(400).json({message:"Email and Password required"})
+    }
     try{
-        if(isSignup){
-            const userExist= await db.query('SELECT * FROM users WHERE email = $1,'[email])
+        if(isSignUp){
+            const userExist= await db.query('SELECT * FROM users WHERE email = $1',[email])
             if(userExist.rows.length>0){
                 return res.status(400).json({message :'Email is already registered'})
             }
@@ -14,22 +18,29 @@ export const handleauth=async(req,res)=>{
             const hashedPassword=await bcrypt.hash(password,salt);
 
             const newUser=await db.query('INSERT INTO users (name,email,password) VALUES ($1,$2,$3) RETURNING id,name,email',[name || null,email,hashedPassword]);
-            return res.status(201).json({message: 'Account created successfully!',user:newUser.rows[0]})
+            const token=jwt.sign({id:newUser.rows[0].id},
+                                    process.env.JWT_SECRET,
+                                    {expiresIn:'24h'}
+                                )
+            return res.status(201).json({message: 'Account created successfully!',token,user:newUser.rows[0]})
         }
 
         else{
            const userExist=await db.query('SELECT * FROM users WHERE email=$1',[email])
            if(userExist.rows.length==0){
-                res.status(400).json({message: 'Email does not exist'})
+               return res.status(400).json({message: 'Email does not exist'})
            }
+           const dbUser=userExist.rows[0]
            const hashedPassword=userExist.rows[0].password 
            const correctPassword=await bcrypt.compare(password,hashedPassword)
            if(!correctPassword){
-            res.status(400).json({message: 'Invalid credentials.'})
+            return res.status(400).json({message: 'Invalid credentials.'})
            }
+           const token=jwt.sign({id:userExist.rows[0].id},process.env.JWT_SECRET,{expiresIn:'24h'})
            return res.status(200).json({
             message: 'Logged in successfully!',
-            user: { id: user.id, name: user.name, email: user.email }
+            token,
+            user: { id: dbUser.id, name: dbUser.name, email: dbUser.email }
         });
         }
 

@@ -4,8 +4,9 @@ import Footer from './Components/Landing/Footer/Footer.jsx'
 import MainLanding from './Components/Landing/MainLanding/MainLanding.jsx'
 import Properties from './Components/Landing/Properties/Properties.jsx'
 import Auth from './Components/Auth/Auth.jsx'
+import App from './App.jsx'
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <Auth/>
+    <App/>
   </StrictMode>,
 )

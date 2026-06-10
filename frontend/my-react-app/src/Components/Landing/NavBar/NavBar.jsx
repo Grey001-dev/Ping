@@ -1,5 +1,7 @@
 import styles from './NavBar.module.css'
+import { useNavigate } from 'react-router-dom'
 function NavBar({ onScrollToFeatures, onScrollToPricing }){
+    const navigate=useNavigate()
     return(
         <div className={styles.Container} >
             <div className={styles.navInner}>
@@ -16,12 +18,12 @@ function NavBar({ onScrollToFeatures, onScrollToPricing }){
                 </div>
                 <div className={styles['log-sign']}>
                     <div className={styles.log}>
-                        <button>
+                        <button onClick={()=>navigate('/auth')}>
                             Login
                         </button>
                     </div>
-                    <div className={styles.sign}>
-                        <button>
+                    <div className={styles.sign} >
+                        <button onClick={()=>navigate('/auth')}>
                             Sign Up
                         </button>
                     </div>
