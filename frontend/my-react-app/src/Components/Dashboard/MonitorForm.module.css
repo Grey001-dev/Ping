@@ -1,0 +1,122 @@
+.formWrapper{
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    box-sizing: border-box;
+}
+.fontTitle{
+    font-family: 'Syne',sans-serif;
+    font-size: 24px;
+    font-weight: 700;
+    color: #ffffff;
+    margin-top: 0;
+    margin-bottom: 2rem;
+}
+.gridContainer{
+    display: grid;
+    grid-template-columns: 1fr 370px;
+    gap: 2rem;
+    align-items: start;
+}
+.leftColumn{
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+.rightColumn{
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+.panel{
+    background-color: #131517;
+    border: 1px solid #22262a;
+    border-radius: 8px;
+    padding: 1.75rem;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+}
+.panelHeading{
+    font-family: 'Syne',sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    color: #ffffff;
+    margin-top: 0;
+    margin-bottom: 1.25rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid #22262a;
+}
+
+@media(max-width :768px){
+    .gridContainer{
+        grid-template-columns: 1fr;
+    }
+}
+.inputs{
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 1.25rem;
+}
+.label{
+    font-family: 'DM Mono',monospace;
+    font-size: 12px;
+    color: #a0a5ad;
+}
+.inputField{
+    width: 100%;
+    box-sizing: border-box;
+    background-color: #0b0c0d;
+    border: 1px solid #22262a;
+    border-radius: 8px;
+    padding: 0.7rem 0.9rem;
+    color: #f1f5f9;
+    font-family: 'DM Mono',monospace;
+    font-size: 13px;
+    outline: none;
+}
+.inputHint{
+    font-family: 'DM Mono',monospace;
+    font-size: 13px;
+    color: #656d76;
+}
+.utilityBtn{
+    background-color: #1c1e21;
+    border: 1px solid #22262a;
+    color: #f1f5f9;
+    font-family: 'DM Mono',monospace;
+    font-size: 13px;
+    padding: 0.65rem 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+.utilityBtn:hover{
+    background-color: #2c3136;
+}
+.actionRow{
+    margin-top:0.5rem;
+    display: flex;
+    justify-content: flex-end;
+}
+.saveBtn{
+    width: 100%;
+    background-color: #10b981;
+    border: none;
+    color: #ffffff;
+    font-weight: 700;
+    font-family: 'Syne',sans-serif;
+    padding: 0.75rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.2s ease;
+}
+.saveBtn:hover{
+    background-color: #059669;
+}
+.statusText{
+    font-size: 14px;
+    font-family: 'DM Mono',monospace;
+    color: #a0a5ad;
+}
+
