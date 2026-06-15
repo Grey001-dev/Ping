@@ -31,7 +31,7 @@ export default function StatusPanel({monitor}){
                 <div className={styles.statusCard}>
                     <p className={styles.statusLabel}>Current Latency</p>
                     <p className={styles.statusValue}>
-                        {monitor.currentLatency ? `${monitor.currentLatency}`:'--'}
+                        {monitor.currentLatency ? `${monitor.currentLatency}ms`:'--'}
                     </p>
                 </div>
                 <div className={styles.statusCard}>
@@ -59,7 +59,7 @@ export default function StatusPanel({monitor}){
 
                 <div className={styles.statusCard}>
                     <p className={styles.statusLabel}>Checks down</p>
-                    <p className={`${styles.statusValue } ${DownCount>0 ?styles.valueUp :styles.valueDown}`}>
+                    <p className={`${styles.statusValue } ${DownCount>0 ?styles.valueDown :''}`}>
                         {DownCount}
                     </p>
                 </div>

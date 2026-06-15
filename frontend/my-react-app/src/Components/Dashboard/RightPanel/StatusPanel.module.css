@@ -42,7 +42,7 @@
 }
 .statusWhole{
   display: grid;
-  grid-template-columns: repeat(auto-fit,minimax(140px,1fr));
+  grid-template-columns: repeat(auto-fit,minmax(140px,1fr));
   gap: 12px;
 }
 .statusCard{
@@ -75,7 +75,7 @@
   color: #e36262;
 }
 
-.statusBarSection{
+.statusBarsSection{
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -97,19 +97,21 @@
   background-color: #111118;
   border: 1px solid #1e1e2e;
   border-radius: 8px;
+  width: fit-content;
+
 }
 
-.statusBarLine{
+.statusBarLines{
   display: flex;
   align-items: center;
-  flex: 1;
 }
 
 .statusBar{
-  width: 100%;
+  width: 6px;
   height: 28px;
-  border-radius: 6px;
+  border-radius: 3px;
   transition: background-color 0.3s ease;
+  flex-shrink: 0;
 }
 
 .barEmpty{
@@ -142,8 +144,5 @@
   }
   .friendlyName{
     font-size: 18px;
-  }
-  .statusBar{
-    height: 20px;
   }
 }

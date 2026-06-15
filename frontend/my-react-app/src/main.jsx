@@ -11,6 +11,6 @@ import MonitorDashboard from './Components/Dashboard/RenderDashBoard.jsx'
 import StatusPanel from './Components/Dashboard/RightPanel/StatusPanel.jsx'
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <StatusPanel/>
+    <MonitorDashboard/>
   </StrictMode>,
 )

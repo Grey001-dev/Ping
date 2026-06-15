@@ -136,20 +136,20 @@ background-color: #2d3139;
   overflow: hidden;
 }
 
-.sidebarTop {
+.topPanel{
   padding: 1.25rem;
   border-bottom: 1px solid #1e1e2e;
 }
 
-.sidebarTitle {
-  font-family: 'Syne', sans-serif;
+.panelTitle{
+  font-family: 'Syne',sans-serif;
   font-size: 18px;
   font-weight: 700;
   color: #f1f5f9;
   margin: 0 0 0.75rem;
 }
 
-.badgeRow {
+.badges{
   display: flex;
   gap: 6px;
 }
@@ -202,16 +202,16 @@ background-color: #2d3139;
   background-color: #111118;
 }
 
-.monitorItemActive {
+.Active{
   background-color: #111118;
   border-left-color: #16c657;
 }
 
-.monitorItemDown.monitorItemActive {
+.Down.Active{
   border-left-color: #e36262;
 }
 
-.itemRow {
+.Rows{
   display: flex;
   align-items: center;
   gap: 8px;
@@ -228,12 +228,12 @@ background-color: #2d3139;
 .dotUp { background-color: #16c657; }
 .dotDown { background-color: #e36262; }
 
-.itemName {
+.monitorName{
   font-size: 13px;
   font-weight: 500;
   color: #f1f5f9;
   flex: 1;
-  font-family: 'Syne', sans-serif;
+  font-family: 'Syne',sans-serif;
 }
 
 .itemPct {
@@ -260,7 +260,7 @@ background-color: #2d3139;
 .miniBarDown { background-color: #e74c3c; }
 .miniBarEmpty { background-color: #2d3139; }
 
-.sidebarFooter {
+.footer{
   padding: 1rem;
   border-top: 1px solid #1e1e2e;
 }

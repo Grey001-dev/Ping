@@ -57,7 +57,7 @@ const DUMMY_MONITORS=[
 export default function MonitorDashboard(){
     const [monitors,setMonitors]=useState(DUMMY_MONITORS)
     const [selectedId,setSelectedId]=useState(null);
-    cont [view,setView]=useState(null)
+    const [view,setView]=useState('empty')
     const selectedMonitor=monitors.find(m=>m.id===selectedId) ?? null;
 
     function handleSelect(id){
@@ -71,7 +71,7 @@ export default function MonitorDashboard(){
     }
 
     function handleMonitorCreated(newmonitor){
-      setMonitors(prev=>[...prev,newmonitor]),
+      setMonitors(prev=>[...prev,newmonitor])
       setSelectedId(newmonitor.id)
       setView('status')
     }
@@ -81,11 +81,15 @@ export default function MonitorDashboard(){
         monitors={monitors}
         selectedId={selectedId}
         onSelect={handleSelect}
-        onAddClick={handleAddClick}
+        onAddClick={handleAddNewClick}
         />
+
+
         <main className={styles.mainPanel}>
             {/* Basically those views are used to know what to render and all 
+
             If status then we display our status panel else if add we display our add,
+
             if empty we show the user our empty state 
             */}
             {view=='status' && selectedMonitor&& 
@@ -96,11 +100,12 @@ export default function MonitorDashboard(){
               <MonitorForm onMonitorCreated={handleMonitorCreated}/>
             }
             {
-              view=='empty' &&
+              view==='empty' &&
               <EmptyState/>
             }
             
         </main>
+        
     </div>
     )
 }
