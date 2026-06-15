@@ -1,0 +1,149 @@
+.statusPanel{
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  max-width: 800px;
+}
+.statusPanelHeader{
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+.friendlyName{
+  font-family: 'Syne',sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: #f1f5f9;
+  margin: 0;
+}
+.panelUrl{
+  font-size: 12px;
+  color: rgba(255,255,255,0.25);
+  margin: 4px 0 0;
+  font-family: 'Dm Mono',monospace;
+}
+.pillUp{
+  padding: 4px 14px;
+  border-radius: 100px;
+  font-size: 12px;
+  font-family: 'DM Mono',monospace;
+  background: rgba(22,198,87,0.08);
+  border: 1px solid #16c657;
+  color: #1bcb57;
+}
+.pillDown{
+  padding: 4px 14px ;
+  border-radius: 100px;
+  font-size: 12px;
+  font-family: 'DM Mono',monospace;
+  background: rgba(227,98,98,0.08);
+  border:1px solid #e36262;
+  color: #e36262;
+}
+.statusWhole{
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minimax(140px,1fr));
+  gap: 12px;
+}
+.statusCard{
+  background-color: #111118;
+  border: 1px solid #1e1e2e;
+  border-radius: 10px;
+  padding: 14px;
+}
+
+.statusLabel{
+  font-size: 11px;
+  color: rgba(255,255,255,0.35);
+  margin: 0 0 6px;
+  font-family: 'DM Mono',monospace;
+}
+
+.statusValue{
+  font-size: 20px;
+  font-weight: 500;
+  color: #f1f5f9;
+  margin: 0;
+  font-family: 'DM Mono',monospace;
+}
+
+.valueUp{
+  color: #16c657;
+}
+
+.valueDown{
+  color: #e36262;
+}
+
+.statusBarSection{
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sectionLabel{
+  font-size: 11px;
+  color: rgba(255,255,255,0.25);
+  margin: 0;
+  font-family: 'DM Mono',monospace;
+  letter-spacing: 0.05em;
+}
+
+.smallerPanel{
+  display: flex;
+  gap: 2px;
+  align-items: center;
+  padding: 12px;
+  background-color: #111118;
+  border: 1px solid #1e1e2e;
+  border-radius: 8px;
+}
+
+.statusBarLine{
+  display: flex;
+  align-items: center;
+  flex: 1;
+}
+
+.statusBar{
+  width: 100%;
+  height: 28px;
+  border-radius: 6px;
+  transition: background-color 0.3s ease;
+}
+
+.barEmpty{
+  background-color: #2d3139;
+}
+.barUp{
+  background-color: #2ecc71;
+  /* Added this for the glowing effect */
+  box-shadow: 0 0 8px rgba(46,204,113,0.4);
+}
+.barDown{
+  background-color: #e74c3c;
+  box-shadow: 0 0 8px rgba(231,76,60,0.4);
+}
+
+.timeLineLabels{
+  display: flex;
+  justify-content: space-between;
+  font-size: 10px;
+  color: rgba(255,255,255,0.2);
+  font-family: 'DM Mono',monospace;
+  padding: 0 4px;
+}
+@media (max-width:600px){
+  .statusWhole{
+    grid-template-columns: repeat(2,1fr);
+  }
+  .statusPanel{
+    gap: 1.25rem;
+  }
+  .friendlyName{
+    font-size: 18px;
+  }
+  .statusBar{
+    height: 20px;
+  }
+}

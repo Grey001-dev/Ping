@@ -11,10 +11,25 @@ export default function MonitorForm({onMonitorCreated}){
     const [bodyEncoding,setBodyEncoding]=useState('JSON')
     const [requestBody,setRequestBody]=useState('')
 
+    const handleSubmit=(e)=>{
+        if(!friendlyName.trim() || !url.trim()) return
+        
+        const newMonitor={
+            id:Date.now(),
+            name:friendlyName,
+            url:url,
+            status:'up',
+            currentLatency:0,
+            avgLatency:0,
+            history:[]
+        };
+        onMonitorCreated(newMonitor)
+    }
+
     return(
         <div className={styles.formWrapper}>
             <h1 className={styles.formTitle}>Add new Monitor</h1>
-            <form action="" className={styles.gridContainer}>
+            <form action="" onSubmit={handleSubmit} className={styles.gridContainer}>
                 
                 {/* 1. LEFT COLUMN */}
                 <div className={styles.leftColumn}>
@@ -38,10 +53,20 @@ export default function MonitorForm({onMonitorCreated}){
                             <label className={styles.label}>Friendly Name</label>
                             <input 
                                 type="text" 
-                                placeholder='DSM' 
+                                placeholder='My Website' 
                                 className={styles.inputField} 
                                 value={friendlyName} 
                                 onChange={(e)=>setFriendlyName(e.target.value)} 
+                            />
+                        </div>
+                        
+                        <div className={styles.inputs}>
+                            <label className={styles.label}>URL</label>
+                            <input type="text" 
+                            placeholder='https://example.com'
+                            className={styles.inputField}
+                            value={url}
+                            onChange={(e)=>setUrl(e.target.value)}
                             />
                         </div>
 
@@ -105,7 +130,7 @@ export default function MonitorForm({onMonitorCreated}){
                         </button>
                     </div>
                     <div className={styles.actionRow}>
-                        <button type='submit' className={styles.saveBtn}>
+                        <button type='submit' className={styles.saveBtn} >
                             Save Monitor
                         </button>
                     </div>
