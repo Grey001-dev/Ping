@@ -2,8 +2,9 @@ import express from 'express';
 import cors from 'cors'
 import authroutes from './routes/authroutes.js'
 import dotenv from 'dotenv'
-const app=express();
+import db from './config/db.js';
 dotenv.config()
+const app=express();
 
 app.use(cors())
 app.use(express.json())
@@ -18,6 +19,12 @@ app.get("/",(req,res)=>{
         message:"Api is running"
     })
 })
+try{
+    const result=await db.query('SELECT NOW()')
+    console.log('Database Connected:',result.rows[0])
+}catch(err){
+    console.error('Database error:',err.message)
+}
 
 
 app.listen(process.env.PORT || 5000,()=>{

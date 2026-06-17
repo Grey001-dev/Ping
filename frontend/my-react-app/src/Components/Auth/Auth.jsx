@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styles from './Auth.module.css'
 import { useNavigate } from 'react-router-dom';
 export default function Auth(){
@@ -20,6 +20,13 @@ export default function Auth(){
     if (/[^A-Za-z0-9]/.test(str)) points++;
     return points;
   };
+  useEffect(()=>{
+    let token=localStorage.getItem('token')
+    const timer=setTimeout(()=>{
+        if(token) navigate('/dashboard')
+    },1500)
+    return ()=>clearTimeout(timer)
+},[navigate]);
   const handleSubmit=async(e)=>{
     e.preventDefault();
     setErrMessage('');
@@ -59,7 +66,7 @@ export default function Auth(){
     }catch(err){
         setErrMessage(err.message)
     }
-
+    navigate("/dashboard");
   }
   
 
@@ -82,7 +89,7 @@ export default function Auth(){
                   <button className={styles.oauthBtn }>Continue with GitHub</button>
                   <button className={styles.oauthBtn}>Continue with Google</button>
                 </div>
-
+                
                 <div className={styles.divider}>
                     <span>or</span>
                 </div>

@@ -9,8 +9,9 @@ import MonitorForm from './Components/Dashboard/RightPanel/MonitorForm.jsx'
 import MonitorStats from './Components/Dashboard/MonitorStats/MonitorStats.jsx'
 import MonitorDashboard from './Components/Dashboard/RenderDashBoard.jsx'
 import StatusPanel from './Components/Dashboard/RightPanel/StatusPanel.jsx'
+
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <MonitorDashboard/>
+    <App/>
   </StrictMode>,
 )
