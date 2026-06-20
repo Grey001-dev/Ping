@@ -1,4 +1,5 @@
-import db from "../config/db";
+import db from "../config/db.js";
+import { startMonitor,stopMonitor } from "../workers/pingWorkers.js";
 // Get request to getMonitors so i can render on my status panel and sidebar
 export const getMonitors= async (req,res)=>{
     const userId=req.user.id;
@@ -55,7 +56,7 @@ export const getMonitors= async (req,res)=>{
 };
 // Post request to create monitors
 export const createMonitors=async(req,res)=>{
-    const user=req.user.id;
+    const userId=req.user.id;
     const {name,url,type,interval,retries,method}=req.body;
 
     if(!name || !url){
@@ -78,8 +79,28 @@ export const createMonitors=async(req,res)=>{
             avgLatency:0,
             history:[]
         });
+        startMonitor(monitor)
+        
     }catch(err){
-        res.status.json({message:'Error Creating monitor',error:err.message})
+        res.status(401).json({message:'Error Creating monitor',error:err.message})
     }
 
+};
+
+export const deleteMonitor=async (req,res) =>{
+    const userId=req.user.id;
+    const {id}=req.params;
+    try {
+        const monitor=await db.query(
+            'SELECT * FROM monitors WHERE id=$1 AND user_id=$2',[id,userId]
+        );
+        if(monitor.rows.length==0){
+            return res.status(400).json({message:"Monitor not found"})}
+        stopMonitor(monitor)
+        await db.query("DELETE FROM monitors WHERE id=$1",[id])
+
+        res.status(200).json({message:'Monitor deleted successfully'});
+    } catch (err) {
+        res.status(500).json({message:'Error deleting monitor',error:err.message})
+    }
 }
