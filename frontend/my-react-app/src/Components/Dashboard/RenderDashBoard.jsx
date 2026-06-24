@@ -1,64 +1,54 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import MonitorStats from "./MonitorStats/MonitorStats.jsx";
 import StatusPanel from "./RightPanel/StatusPanel.jsx";
 import MonitorForm from "./RightPanel/MonitorForm.jsx";
 import styles from './RenderDashboard.module.css';
 
-const DUMMY_MONITORS=[
-    {
-        id:1,
-        name:'Grey App',
-        url:'https://greyapp.io',
-        status:'up',
-        uptime:'99.8%',
-        currentLatency:32,
-        avgLatency:41,
-        history: [
-            {status:'up',latency:32,timestamp:'2026-06-12T02:00:00Z'},
-            {status:'up',latency:28,timestamp : '2026-06-12T02:05:00Z'},
-            {status:'up',latency:35,timestamp:'2026-06-12T02:10:00Z'},
-            {status:'down',latency:0,timestamp:'2026-06-12T02:30:00Z'},
-            {status:'up',latency:42, timestamp: '2026-06-12T02:50:00Z' },
 
-        ]
-    },
-     {
-    id: 2,
-    name: 'Main API',
-    url: 'https://api.example.com',
-    status: 'up',
-    uptime: '97.2%',
-    currentLatency: 15,
-    avgLatency: 22,
-    history: [
-      { status: 'up', latency: 15, timestamp: '2026-06-12T02:00:00Z' },
-      { status: 'up', latency: 18, timestamp: '2026-06-12T02:05:00Z' },
-      { status: 'down', latency: 0, timestamp: '2026-06-12T02:10:00Z' },
-      { status: 'down', latency: 0, timestamp: '2026-06-12T02:30:00Z' },
-      { status: 'up', latency: 22, timestamp: '2026-06-12T02:50:00Z' },
-    ],
-  },
-  {
-    id: 3,
-    name: 'Pi-hole',
-    url: 'http://192.168.1.1/admin',
-    status: 'down',
-    uptime: '84.1%',
-    currentLatency: 0,
-    avgLatency: 4,
-    history: [
-      { status: 'up', latency: 4, timestamp: '2026-06-12T02:00:00Z' },
-      { status: 'down', latency: 0, timestamp: '2026-06-12T02:10:00Z' },
-      { status: 'down', latency: 0, timestamp: '2026-06-12T02:20:00Z' },
-      { status: 'down', latency: 0, timestamp: '2026-06-12T02:30:00Z' },
-    ],
-  },
-]
 export default function MonitorDashboard(){
-    const [monitors,setMonitors]=useState(DUMMY_MONITORS)
-    const [selectedId,setSelectedId]=useState(null);
-    const [view,setView]=useState('empty')
-    const selectedMonitor=monitors.find(m=>m.id===selectedId) ?? null;
+  const [monitors,setMonitors]=useState([])
+  const [selectedId,setSelectedId]=useState(null);
+  const [view,setView]=useState('empty')
+  const [loading,setLoading]=useState(true);
+  const selectedMonitor=monitors.find(m=>m.id===selectedId) ?? null;
+
+  const token= localStorage.getItem('token');
+  // fetch monitors on load
+  useEffect(()=>{
+    fetchMonitors();
+  },[]);
+
+
+  useEffect(()=>{
+    const interval=setInterval(()=>{
+      fetchMonitors();
+    },60000);
+
+    return ()=> clearInterval(interval);
+  },[]);
+
+  async function fetchMonitors(){
+    try {
+      const res=await fetch('http://localhost:5000/api/monitors',{
+        headers:{
+          'Authorization':`Bearer ${token}`
+        }
+      });
+      const data=await res.json()
+      console.log(data)
+      if (Array.isArray(data)){
+        setMonitors(data);
+      }else{
+        setMonitors([]);
+        console.log("Backend did not return an array:",data.message)
+      }
+
+    } catch (error) {
+      console.log(`Error caught while fetching monitors:`,error)
+    } finally {
+      setLoading(false)
+    }
+  }
 
     function handleSelect(id){
     setSelectedId(id);
@@ -70,10 +60,44 @@ export default function MonitorDashboard(){
       setView('add')
     }
 
-    function handleMonitorCreated(newmonitor){
-      setMonitors(prev=>[...prev,newmonitor])
-      setSelectedId(newmonitor.id)
-      setView('status')
+   async function handleMonitorCreated(newmonitor){
+      try {
+        const res=await fetch('http://localhost:5000/api/monitors',{
+          method:'POST',
+          headers:{
+            'Content-Type':'application/json',
+            'Authorization':`Bearer ${token}`
+          },
+
+          body:JSON.stringify(newmonitor)
+        })
+        const saved=await res.json()
+        if(Array.isArray(saved)){
+          setMonitors(prev=>[...prev,saved])
+        }else{
+          console.log("Backend coundn't return array:",data.message)
+        }
+        
+        setSelectedId(saved.id)
+        setView('status')
+      } catch (err) {
+        console.error('Error creating monitor:',err)
+      }
+      
+
+    }
+    async function handleMonitorDeleted(id){
+      try {
+        await fetch(`http://localhost:5000/api/monitors/${id}`,{
+          method:'DELETE',
+          headers:{'Authorization':`Bearer ${token}`}
+        })
+        setMonitors(prev=>prev.filter(m=>m.id !==id))
+        setSelectedId(null);
+        setView('empty');
+      } catch (error) {
+        console.log("Error deleting monitor:",error)
+      }
     }
     return(
     <div className={styles.dashboardRoot}>
@@ -83,7 +107,7 @@ export default function MonitorDashboard(){
         onSelect={handleSelect}
         onAddClick={handleAddNewClick}
         />
-
+        
 
         <main className={styles.mainPanel}>
             {/* Basically those views are used to know what to render and all 
@@ -93,7 +117,7 @@ export default function MonitorDashboard(){
             if empty we show the user our empty state 
             */}
             {view=='status' && selectedMonitor&& 
-            <StatusPanel monitor={selectedMonitor}/>
+            <StatusPanel monitor={selectedMonitor} onDelete={handleMonitorDeleted}/>
             }
             {
               view=='add' && 
@@ -102,19 +126,17 @@ export default function MonitorDashboard(){
             {
               view==='empty' &&
               <EmptyState/>
-            }
-            
-        </main>
-        
+            }           
+        </main>    
     </div>
     )
 }
+
 
 function EmptyState() {
   return(
     <div className={styles.emptyState}>
       <p>Select a monitor to view its status</p>
-
     </div>
   )
 }

@@ -1,7 +1,8 @@
 import styles from './StatusPanel.module.css'
 
-const max_bars=25;
-export default function StatusPanel({monitor}){
+
+export default function StatusPanel({monitor,onDelete}){
+    const max_bars=25;
     const isDown=monitor.status=='down';
 
     const paddingNeeded=Math.max(0,max_bars-monitor.history.length);
@@ -26,6 +27,10 @@ export default function StatusPanel({monitor}){
                     {isDown ? 'DOWN':"ONLINE"}
                 </span>
             </div>
+            <button
+            className={styles.deleteBtn}
+            onClick={()=>onDelete(monitor.id)}
+            >Delete</button>
 
             <div className={styles.statusWhole}>
                 <div className={styles.statusCard}>

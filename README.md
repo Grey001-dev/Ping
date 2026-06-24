@@ -11,8 +11,7 @@ Ping is a lightweight, proactive uptime monitoring tool designed to track websit
 
 ## The Stack
 - **Frontend:** React with CSS Modules
-- **Design:** Custom dark-theme framework using Syne and DM Mono typography
-- **Backend (Next Steps):** Planning to use Node.js, Redis for task queues, and a database to store user nodes.
+- **Backend :** Planning to use Node.js, Redis for task queues, and a database to store user nodes.
 
 ## How to Run it Locally
 

@@ -20,7 +20,7 @@ export const handleauth=async(req,res)=>{
             const newUser=await db.query('INSERT INTO users (name,email,password) VALUES ($1,$2,$3) RETURNING id,name,email',[name || null,email,hashedPassword]);
             const token=jwt.sign({id:newUser.rows[0].id},
                                     process.env.JWT_SECRET,
-                                    {expiresIn:'24h'}
+                                    {expiresIn:'14d'}
                                 )
             return res.status(201).json({message: 'Account created successfully!',token,user:newUser.rows[0]})
         }
@@ -36,7 +36,7 @@ export const handleauth=async(req,res)=>{
            if(!correctPassword){
             return res.status(400).json({message: 'Invalid credentials.'})
            }
-           const token=jwt.sign({id:userExist.rows[0].id},process.env.JWT_SECRET,{expiresIn:'24h'})
+           const token=jwt.sign({id:userExist.rows[0].id},process.env.JWT_SECRET,{expiresIn:'14d'})
            return res.status(200).json({
             message: 'Logged in successfully!',
             token,

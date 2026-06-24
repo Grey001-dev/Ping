@@ -62,6 +62,7 @@ export const createMonitors=async(req,res)=>{
     if(!name || !url){
         return res.status(400).json({message:'Name and URL are required'});
     }
+    
     try{
         const newMonitors=await db.query(
             `INSERT INTO monitors (name,url,type,interval,retries,method,user_id)
@@ -96,7 +97,7 @@ export const deleteMonitor=async (req,res) =>{
         );
         if(monitor.rows.length==0){
             return res.status(400).json({message:"Monitor not found"})}
-        stopMonitor(monitor)
+        stopMonitor(monitor.rows[0].id)
         await db.query("DELETE FROM monitors WHERE id=$1",[id])
 
         res.status(200).json({message:'Monitor deleted successfully'});

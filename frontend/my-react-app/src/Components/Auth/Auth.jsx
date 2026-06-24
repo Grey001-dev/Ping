@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import styles from './Auth.module.css'
 import { useNavigate } from 'react-router-dom';
-export default function Auth(){
+export default function Auth({setToken}){
     const [isSignUp,setIsSignUp]=useState(false);
     const [password,setPassword]=useState('');
     const [name,setName]=useState('')
@@ -52,7 +52,7 @@ export default function Auth(){
         }
         setSuccessMessage(data.message);
         localStorage.setItem('token',data.token);
-
+        localStorage.getItem('token') && setToken(localStorage.getItem('token'))
         //clearing data after successfully logging in
         console.log('User Data:',data.user)
         setEmail('');
