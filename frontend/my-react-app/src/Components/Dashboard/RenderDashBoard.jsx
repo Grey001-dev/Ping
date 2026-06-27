@@ -3,7 +3,8 @@ import MonitorStats from "./MonitorStats/MonitorStats.jsx";
 import StatusPanel from "./RightPanel/StatusPanel.jsx";
 import MonitorForm from "./RightPanel/MonitorForm.jsx";
 import styles from './RenderDashboard.module.css';
-
+import { monitorService } from "../API/monitorService.js";
+import {io} from "socket.io-client"
 
 export default function MonitorDashboard(){
   const [monitors,setMonitors]=useState([])
@@ -18,6 +19,37 @@ export default function MonitorDashboard(){
     fetchMonitors();
   },[]);
 
+  useEffect(()=>{
+    const socket=io("http://localhost:5000");
+
+  // After listening for the broadcast from my backend
+    socket.on('monitor-updated',(updatedData)=>{
+      console.log("Real-time update recieved from backend: ",updatedData)
+
+      setMonitors((prevMonitors)=>
+      prevMonitors.map((m)=>{
+        if (m.id !== updatedData.id) return m;
+
+        const newHistory=[...m.history,{
+          status:updatedData.status,
+          latency:updatedData.latency,
+          timestamp:new Date().toISOString()
+        }].slice(-25);
+        return{
+          ...m,
+          status:updatedData.status,
+          currentLatency:updatedData.latency,
+          error:updatedData.error,
+          history:newHistory
+        }
+      }
+      )
+      );
+    });
+    return()=>{
+      socket.disconnect()
+    };
+  },[])
 
   useEffect(()=>{
     const interval=setInterval(()=>{
@@ -29,12 +61,7 @@ export default function MonitorDashboard(){
 
   async function fetchMonitors(){
     try {
-      const res=await fetch('http://localhost:5000/api/monitors',{
-        headers:{
-          'Authorization':`Bearer ${token}`
-        }
-      });
-      const data=await res.json()
+      const data=await monitorService.getAll()
       console.log(data)
       if (Array.isArray(data)){
         setMonitors(data);
@@ -62,24 +89,12 @@ export default function MonitorDashboard(){
 
    async function handleMonitorCreated(newmonitor){
       try {
-        const res=await fetch('http://localhost:5000/api/monitors',{
-          method:'POST',
-          headers:{
-            'Content-Type':'application/json',
-            'Authorization':`Bearer ${token}`
-          },
-
-          body:JSON.stringify(newmonitor)
-        })
-        const saved=await res.json()
-        if(Array.isArray(saved)){
-          setMonitors(prev=>[...prev,saved])
-        }else{
-          console.log("Backend coundn't return array:",data.message)
+        const data=await monitorService.create(newmonitor)
+        if(data && data.id){
+          setMonitors(prev=>[...prev,data]);
+          setSelectedId(data.id);
+          setView('status');
         }
-        
-        setSelectedId(saved.id)
-        setView('status')
       } catch (err) {
         console.error('Error creating monitor:',err)
       }
@@ -88,10 +103,7 @@ export default function MonitorDashboard(){
     }
     async function handleMonitorDeleted(id){
       try {
-        await fetch(`http://localhost:5000/api/monitors/${id}`,{
-          method:'DELETE',
-          headers:{'Authorization':`Bearer ${token}`}
-        })
+        const data=await monitorService.delete(id)
         setMonitors(prev=>prev.filter(m=>m.id !==id))
         setSelectedId(null);
         setView('empty');

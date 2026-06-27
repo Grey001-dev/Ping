@@ -1,6 +1,6 @@
 import db from '../config/db.js';
 import axios from 'axios';
-
+import {io} from '../index.js';
 const activeWorkers={};
 // This performs the network request and returns a promise containing the response time and up/down status
 async function pingUrl(url){
@@ -10,15 +10,29 @@ async function pingUrl(url){
             timeout:10000,
             headers:{
                 'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+            },
+            // ALL redirects and protected are accepted 
+            validateStatus:function(status){
+                return status<500;
             }
         });
         const latency=Date.now()-startTime;
         return{
-            // anything below 500 means the server is alive as we might get blocked
-            status:res.status<500 ?'up':'down',latency
+            status:'up',
+            latency,
+            error:null
         }
     }catch(err){
-        return {status:'down',latency:0}
+        let errorType='UNKNOWN_DOWN';
+        if(err.code==='ENOTFOUND'){
+            errorType='URL_DOES_NOT_EXIST';
+        }else if(err.code==='ECONNABORTED' || err.message.includes('timeout')){
+            errorType='TIMEOUT';
+        }else if(err.response && err.response.status>=500){
+            errorType=`SERVER_CRASHED_${err.response.status}`
+        }
+        return {status:'down',latency:0,error:errorType};
+
     }
 }
 
@@ -47,11 +61,19 @@ async function runMonitorLoop(monitor){
 
     try {
         const result=await pingUrl(monitor.url)
-        await savePingResult(monitor.id,result.status,result.latency)
+        await savePingResult(monitor.id,result.status,result.latency);
+        io.emit('monitor-updated',{
+            id:monitor.id,
+            status:result.status,
+            latency:result.latency,
+            error:result.error
+        })
+        console.log(`Broadcasted update form ${monitor.name}:${result.status}`)
     } catch (error) {
         console.log(`Error pinging ${monitor.name}:`,error.message)
     }
     if(!activeWorkers[monitor.id]) return;
+
 
     const timer=setTimeout(()=>{
         runMonitorLoop(monitor)
@@ -80,8 +102,8 @@ export function stopMonitor(monitorId){
            return
         }
         clearTimeout(activeWorkers[monitorId]);
+        delete activeWorkers[monitorId];
     }
-    // Delete the monitor from the list
     console.log(`Stopped monitor ${monitorId}`);
 }
 

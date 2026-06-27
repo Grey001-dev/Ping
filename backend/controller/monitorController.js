@@ -1,5 +1,8 @@
 import db from "../config/db.js";
 import { startMonitor,stopMonitor } from "../workers/pingWorkers.js";
+
+
+
 // Get request to getMonitors so i can render on my status panel and sidebar
 export const getMonitors= async (req,res)=>{
     const userId=req.user.id;
@@ -45,11 +48,14 @@ export const getMonitors= async (req,res)=>{
             uptime:`${uptimePct}`,
             currentLatency,
             avgLatency,
+            upCount:upCount,
+            downCount:downCount,
             history:historyRows
         }
     })
     );
-    res.status(200).json(monitorsHistory);
+    res.status(201).json(monitorsHistory);
+    
     }catch(err){
         res.status(500).json({message:'Errors fetching monitors',error:err.message})
     }
@@ -80,7 +86,8 @@ export const createMonitors=async(req,res)=>{
             avgLatency:0,
             history:[]
         });
-        startMonitor(monitor)
+        startMonitor(monitor);
+        
         
     }catch(err){
         res.status(401).json({message:'Error Creating monitor',error:err.message})
@@ -89,15 +96,16 @@ export const createMonitors=async(req,res)=>{
 };
 
 export const deleteMonitor=async (req,res) =>{
-    const userId=req.user.id;
     const {id}=req.params;
+    const userId=req.user.id;
     try {
         const monitor=await db.query(
             'SELECT * FROM monitors WHERE id=$1 AND user_id=$2',[id,userId]
         );
         if(monitor.rows.length==0){
             return res.status(400).json({message:"Monitor not found"})}
-        stopMonitor(monitor.rows[0].id)
+        stopMonitor(id)
+        await db.query("DELETE FROM ping_history WHERE monitor_id=$1",[id])
         await db.query("DELETE FROM monitors WHERE id=$1",[id])
 
         res.status(200).json({message:'Monitor deleted successfully'});
@@ -105,3 +113,5 @@ export const deleteMonitor=async (req,res) =>{
         res.status(500).json({message:'Error deleting monitor',error:err.message})
     }
 }
+
+
