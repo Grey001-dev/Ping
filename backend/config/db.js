@@ -19,3 +19,4 @@ db.on('connect',()=>{
     console.log('Postgres database pool connected succesfully')
 })
 export default db
+

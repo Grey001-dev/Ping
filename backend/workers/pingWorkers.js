@@ -2,10 +2,15 @@ import db from '../config/db.js';
 import axios from 'axios';
 import {io} from '../index.js';
 const activeWorkers={};
+const failureCounts={}
 // This performs the network request and returns a promise containing the response time and up/down status
 async function pingUrl(url){
     const startTime=Date.now();
+
     try{
+        if(!url.startsWith('http://') && !url.startsWith('https://')){
+            url='https://'+ url.trim()
+        }
         const res=await axios.get(url,{
             timeout:10000,
             headers:{
@@ -20,11 +25,12 @@ async function pingUrl(url){
         return{
             status:'up',
             latency,
-            error:null
+            error:null,
+            statusCode:res.status
         }
     }catch(err){
         let errorType='UNKNOWN_DOWN';
-        if(err.code==='ENOTFOUND'){
+        if(err.code==='ENOTFOUND' || err.code ==='EAI_AGAIN'){
             errorType='URL_DOES_NOT_EXIST';
         }else if(err.code==='ECONNABORTED' || err.message.includes('timeout')){
             errorType='TIMEOUT';
@@ -35,6 +41,7 @@ async function pingUrl(url){
 
     }
 }
+
 
 
 // add these ping responses tp out database 
@@ -58,27 +65,64 @@ async function savePingResult(monitorid,status,latency){
 async function runMonitorLoop(monitor){
     // If i click delete on my frontend
     if(!activeWorkers[monitor.id]) return;
-
+    const retries=monitor.retries;
     try {
+        console.log(`[STAGE 1] About to ping: ${monitor.url}`)
         const result=await pingUrl(monitor.url)
-        await savePingResult(monitor.id,result.status,result.latency);
-        io.emit('monitor-updated',{
-            id:monitor.id,
-            status:result.status,
-            latency:result.latency,
-            error:result.error
-        })
-        console.log(`Broadcasted update form ${monitor.name}:${result.status}`)
+        console.log(`[STAGE 2] Ping finished with status: ${result.status}...for ${monitor.url}`)
+        if(result.status==='up' ){
+            failureCounts[monitor.id]=0
+            
+            await savePingResult(monitor.id,result.status,result.latency);
+            console.log(`[STAGE 3] DB save complete .Emitting socket for ${monitor.url}`)
+            io.emit('monitor-updated',{
+                id:monitor.id,
+                status:result.status,
+                latency:result.latency,
+                error:result.error
+            })
+            console.log(`Broadcasted update form ${monitor.name}:${result.status}`)
+        }
+        else{
+            io.emit('monitor-updated',{
+                    id:monitor.id,
+                    status:result.status,
+                    latency:result.latency,
+                    error:result.error
+                })
+            failureCounts[monitor.id]=(failureCounts[monitor.id] || 0) + 1;
+            if(failureCounts[monitor.id]>=retries){
+                console.log("Website is officially down")
+
+                // sendEmail()
+
+                await savePingResult(monitor.id,result.status,result.latency);
+                if(!monitor.is_down){
+                    await db.query("UPDATE monitors SET is_down=true WHERE id=$1",[monitor.id]);
+                    monitor.is_down=true;
+                }
+                console.log(`Broadcasted update form ${monitor.name} : ${result.status}`)
+                
+            }else{
+                console.log(`Soft failure ${failureCounts[monitor.id]} with retries of :${retries}.`)
+                // i Will quickly double-check
+                const fastTimer=setTimeout(()=>{
+                    runMonitorLoop(monitor);
+                },2000)
+                activeWorkers[monitor.id]=fastTimer
+                return;
+
+            }
+        }
     } catch (error) {
         console.log(`Error pinging ${monitor.name}:`,error.message)
     }
     if(!activeWorkers[monitor.id]) return;
 
-
-    const timer=setTimeout(()=>{
+    const NormalTimer=setTimeout(()=>{
         runMonitorLoop(monitor)
     },monitor.interval*1000)
-    activeWorkers[monitor.id]=timer
+    activeWorkers[monitor.id]=NormalTimer
 }
 
 // After every X second it wakes up,knowcks on the door and saves the result

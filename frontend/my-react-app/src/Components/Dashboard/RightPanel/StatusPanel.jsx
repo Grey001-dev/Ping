@@ -3,17 +3,11 @@ import { useEffect, useState } from 'react';
 const getErrorMessage=(errorCode)=>{
     switch(errorCode){
         case 'URL_DOES_NOT_EXIST':
-            return 'Url/domain does not exist';
+            return 'URL / Domain does not exist';
         case 'TIMEOUT':
             return 'Connection Timeout';
         case "UNKNOWN_DOWN":
             return 'Network issues'
-        default:
-            if(errorCode?.startsWith('SERVER_CRASHED')){
-                const code=errorCode.split('_')[2];
-                return `Web Server Crashed /encountered an HTTP${code} internal error.`
-            }
-            return 'An unexpected issue was detected.';
     }
 }
 
@@ -25,20 +19,16 @@ export default function StatusPanel({monitor,onDelete}){
     const emptyPlaceholders=Array(paddingNeeded).fill({status:'empty'});
     const fullTimeline=[...emptyPlaceholders,...monitor.history.slice(-max_bars)]
     const upCount=monitor.history.filter(p=>p.status==='up').length;
-    const downCount=monitor.history.filter(p=>p.status==='dowm').length
+    const downCount=monitor.history.filter(p=>p.status==='down').length
+    
     useEffect(()=>{
         if(isDown && monitor.error){
             setShowError(true);
-
-            const timer=setTimeout(()=>{
-                setShowError(false);
-            },5000);
-            return ()=> clearTimeout(timer);
-
-        }else{
-            setShowError(false);
+            return
         }
-    },[monitor.error,isDown,monitor.status])
+        setShowError(false);
+        
+    },[monitor.error,monitor.status])
 
     const avgLatency=Math.round(
         monitor.history.filter(p=>p.latency>0).reduce((a,p)=>a+p.latency,0)/

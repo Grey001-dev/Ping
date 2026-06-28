@@ -28,7 +28,7 @@ export default function MonitorDashboard(){
 
       setMonitors((prevMonitors)=>
       prevMonitors.map((m)=>{
-        if (m.id !== updatedData.id) return m;
+        if (m.id != updatedData.id) return m;
 
         const newHistory=[...m.history,{
           status:updatedData.status,

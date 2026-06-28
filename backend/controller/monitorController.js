@@ -31,8 +31,9 @@ export const getMonitors= async (req,res)=>{
         // Instead of hitting my db,used this to calculate everything dynamically
         const upCount=historyRows.filter(p=>p.status==='up').length
         const downCount=historyRows.filter(p=>p.status==='down').length
-
+        
         const total=historyRows.length;
+        const retries=monitor.retries;
         // MY uptime percentage
         const uptimePct=total>0 ? Math.round((upCount/total)*100):0
 
@@ -50,11 +51,12 @@ export const getMonitors= async (req,res)=>{
             avgLatency,
             upCount:upCount,
             downCount:downCount,
+            retries:retries,
             history:historyRows
         }
     })
     );
-    res.status(201).json(monitorsHistory);
+    res.status(200).json(monitorsHistory);
     
     }catch(err){
         res.status(500).json({message:'Errors fetching monitors',error:err.message})
@@ -90,7 +92,7 @@ export const createMonitors=async(req,res)=>{
         
         
     }catch(err){
-        res.status(401).json({message:'Error Creating monitor',error:err.message})
+        res.status(500).json({message:'Error Creating monitor',error:err.message})
     }
 
 };
