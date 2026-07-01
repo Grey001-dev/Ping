@@ -10,7 +10,7 @@ export default function App(){
         <BrowserRouter>
             <Routes>
                 <Route path="/" element={<MainLanding/>}/>
-                <Route path="/auth" element={<Auth/>} setToken={setToken}/>
+                <Route path="/auth" element={<Auth setToken={setToken}/>} setToken={setToken}/>
                 <Route element={<ProtectedRoutes/>} token={token}>
                     <Route path="/dashboard" element={<MonitorDashboard/>} token={token}/>
                 </Route>

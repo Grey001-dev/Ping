@@ -151,65 +151,106 @@
   align-items:center ;
   gap:10px;
 }
-.deleteBtn{
-  padding: 4px 14px;
-  border-radius: 100px;
-  font-size: 12px;
+
+.btns{
+  display: flex;
+  gap: 0.5rem;
+}
+.pausebtn,.editbtn,.deletebtn{
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.45rem 0.9rem;
+  border-radius: 8px;
   font-family: 'DM Mono',monospace;
-  background:rgba(227,98,98,0.88);
-  border: 1px solid #e36262;
+  font-size: 12px ;
   cursor: pointer;
-  transition: all 0.15s;
+  background-color: #111118;
+  border: 1px solid #1e1e2e;
+  color: #f1f5f9;
+  transition: background-colot 0.15s ease,border-color 0.15s ease;
 }
 
-.deleteBtn:hover{
-  background: rgba(227,98,98,0.2);
+.pausebtn:hover{
+  background-color: #161622;
+  border-color: rgba(255,255,255,0.12);
 }
+.editbtn:hover{
+  background-color: rgba(99,102,241,0.08);
+  border-color: rgba(99,102,241,0.3);
+  color: #a5b4fc;
+}
+.deletebtn{
+  background-color: rgba(227,98,98,0.06);
+  border-color: rgba(227,98,98,0.25);
+  color: #fca5a5;
+}
+.deletebtn:hover{
+  background-color:rgba(227,98,98,0.15);
+  border-color: rgba(227,98,98,0.45);
+}
+
 
 /* Error styling */
 
 .errorBanner{
-  position: relative;
-  background: rgba(220,38,38,0.15);
-  border: 1px solid rgba(220,38,38,0.4);
-  margin: 15px 0;
-  border-radius: 6px;
+  background: rgba(227,98,98,0.06);
+  border: 1px solid rgba(227,98,98,0.3);
+  border-radius: 10px;
   color: #fca5a5;
-  font-size: 0.9rem;
-  overflow: hidden;
+  font-size: 11px;
+  border-radius: 10px;
+  font-family: 'DM Mono',monospace;
 }
-
 .errorContent{
   display: flex;
   align-items: center;
+  gap: 12px;
   padding: 14px 16px;
-  padding-bottom: 18px;
 }
-
 .errorIcon{
-  margin-left: 10px;
-  font-size: 1.1rem;
+  color: #e36262;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
 }
-
+.errorText{
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
 .errorText strong{
-  color: #ffffff;
+  color: #f1f5f9;
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
 }
 
-.progressBar{
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  height: 4px;
-  width: 100%;
-  background: #dc2626;
-  animation: shrinkLine 5s linear forwards;
+.errorText span{
+  color: rgba(255,255,255,0.4);
+  font-size: 11px;
 }
-
-@keyframes shrinkine{
-  from{
-    width: 100%;
-  }
-  to{
-    width: 0%;
-  }
+.submitbtn:disabled{
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+.spinner{
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-top-color:#fff;
+  border-radius: 50%;
+  display: inline-block;
+  animation: spin 0.7s linear infinite;
+}
+@keyframes spin {
+  to{transform: roatate(360deg);}
+}
+.chatWrapper{
+  background-color: #111118;
+  border: 1px solid #1e1e2e;
+  border-radius: 8px;
+  padding: 12px;
+  margin-top: 10rem;
 }

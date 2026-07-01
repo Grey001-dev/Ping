@@ -34,5 +34,29 @@ export const monitorService={
             }
         });
         return res.ok
+    },
+    async pause(id){
+        const token=localStorage.getItem("token");
+        const res=await fetch(`${API_URL}/${id}/pause`,{
+            method:'PATCH',
+            headers:{
+                'Content-Type':'application/json',
+                'Authorization':`Bearer ${token}`
+            }
+        })
+        return await res.json()
+
+    },
+    async edit(monitorData,id){
+        const token=localStorage.getItem("token");
+        const res=await fetch(`${API_URL}/${id}/update`,{
+            method:'PATCH',
+            headers:{
+                'Content-Type':'application/json',
+                'Authorization':`Bearer ${token}`
+            },
+            body: JSON.stringify(monitorData)
+        });
+        return await res.json()
     }
 }

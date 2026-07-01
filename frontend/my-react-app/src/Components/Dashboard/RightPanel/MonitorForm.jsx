@@ -1,34 +1,40 @@
 import { useState } from 'react'
 import styles from './MonitorForm.module.css'
 
-export default function MonitorForm({onMonitorCreated}){
-    const [monitorType,setMonitorType]=useState('HTTP');
-    const [friendlyName,setFriendlyName]=useState('')
-    const [url,setUrl]=useState('');
-    const [interval,setInterval]=useState(20);
-    const [retries,setRetries]=useState(3);
-    const [httpMethod,setHttpMethod]=useState('GET')
+export default function MonitorForm({onMonitorCreated,onMonitorEdited,existingMonitor}){
+    const isEdit=existingMonitor ? true: false;
+    const [monitorType,setMonitorType]=useState(existingMonitor?.type|| 'HTTP');
+    const [friendlyName,setFriendlyName]=useState(existingMonitor?.name || '')
+    const [url,setUrl]=useState(existingMonitor?.url || '');
+    const [interval,setInterval]=useState(existingMonitor?.interval || 20);
+    const [retries,setRetries]=useState(existingMonitor?.retries || 3);
+    const [httpMethod,setHttpMethod]=useState(existingMonitor?.method || 'GET')
     const [bodyEncoding,setBodyEncoding]=useState('JSON')
     const [requestBody,setRequestBody]=useState('')
 
     const handleSubmit=(e)=>{
+        e.preventDefault();
         if(!friendlyName.trim() || !url.trim()) return
         
         const newMonitor={
             id:Date.now(),
             name:friendlyName,
             url:url,
-            status:'up',
-            currentLatency:0,
-            avgLatency:0,
+            interval:interval,
+            retries:retries,
+            type:monitorType,
             history:[]
         };
-        onMonitorCreated(newMonitor)
+        if(isEdit){
+            onMonitorEdited(newMonitor,existingMonitor.id)
+        }else{
+            onMonitorCreated(newMonitor) 
+        }   
     }
 
     return(
         <div className={styles.formWrapper}>
-            <h1 className={styles.formTitle}>Add new Monitor</h1>
+            <h1 className={styles.formTitle}>{isEdit ? 'Edit Monitor':'Add new Monitor'}</h1>
             <form action="" onSubmit={handleSubmit} className={styles.gridContainer}>
                 
                 {/* 1. LEFT COLUMN */}
@@ -131,7 +137,7 @@ export default function MonitorForm({onMonitorCreated}){
                     </div>
                     <div className={styles.actionRow}>
                         <button type='submit' className={styles.saveBtn} >
-                            Save Monitor
+                            {isEdit ? 'Update Monitor':'Save Monitor'}
                         </button>
                     </div>
                 </div> 

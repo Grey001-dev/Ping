@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import styles from './Auth.module.css'
 import { useNavigate } from 'react-router-dom';
+import { TriangleAlert } from 'lucide-react';
+import {Check} from 'lucide-react'
 export default function Auth({setToken}){
     const [isSignUp,setIsSignUp]=useState(false);
     const [password,setPassword]=useState('');
@@ -9,6 +11,7 @@ export default function Auth({setToken}){
     const [showPassword,setShowPassword]=useState(false);
     const [errMessage,setErrMessage]=useState('');
     const [successMessage,setSuccessMessage]=useState('');
+    const [loading,setLoading]=useState(false)
     const navigate=useNavigate();
 
     const checkStrength = (str) => {
@@ -21,16 +24,18 @@ export default function Auth({setToken}){
     return points;
   };
   useEffect(()=>{
-    let token=localStorage.getItem('token')
-    const timer=setTimeout(()=>{
-        if(token) navigate('/dashboard')
-    },1500)
-    return ()=>clearTimeout(timer)
-},[navigate]);
+        let token=localStorage.getItem('token')
+        const timer=setTimeout(()=>{
+            if(token) navigate('/dashboard')
+        },500)
+        return ()=>clearTimeout(timer)
+    },[navigate]);
   const handleSubmit=async(e)=>{
     e.preventDefault();
     setErrMessage('');
     setSuccessMessage('');
+    setLoading(true);
+    await new Promise(r=>setTimeout(r,2000))
 
     const payload={
         isSignUp:isSignUp,
@@ -46,6 +51,7 @@ export default function Auth({setToken}){
             },
             body:JSON.stringify(payload)
         })
+        
         const data=await response.json();
         if(!response.ok){
             throw new Error(data.message || 'Something went wrong.');
@@ -55,6 +61,11 @@ export default function Auth({setToken}){
         localStorage.getItem('token') && setToken(localStorage.getItem('token'))
         //clearing data after successfully logging in
         console.log('User Data:',data.user)
+        setTimeout(()=>{
+            setSuccessMessage("");
+            navigate("/dashboard")
+        },2000);
+        
         setEmail('');
         setPassword('');
         setName('');
@@ -64,15 +75,35 @@ export default function Auth({setToken}){
         // },1000)
 
     }catch(err){
+        if(err.message==='Failed to fetch'){
+            setErrMessage('Network error-check your connection')
+        }
+        console.log(err.message)
         setErrMessage(err.message)
+        const timer=setTimeout(()=>setErrMessage(""),5000)
+    }finally{
+        setLoading(false)
     }
-    navigate("/dashboard");
   }
   
 
   const currentScore = checkStrength(password);
     return(
         <div className={styles.screenWrapper}>
+            {errMessage && (
+                <div className={styles.toast} key={errMessage}>
+                    <span className={styles.toastIcon}><TriangleAlert size={14}/></span>
+                    <span>{errMessage}</span>
+                    <div className={styles.toastProgress}></div>
+                </div>
+            )}
+            {successMessage &&(
+                <div className={`${styles.toast} ${styles.toastSuccess}`} key={successMessage}>
+                    <span className={styles.toastIcon}><Check size={14}/></span>
+                    <span>{successMessage}</span>
+                    <div className={styles.toastProgress}></div>
+                </div>
+            )}
             <div>
                 <div className={styles.ping}>Ping</div>
                 <div className={styles.btns}>
@@ -126,8 +157,10 @@ export default function Auth({setToken}){
 
                         </button>
                     </div>
-                    <button type='submit' className={styles.submitbtn}>
-                        {isSignUp ? 'Create Account' : 'Sign in'}
+                    <button type='submit' className={styles.submitbtn} disabled={loading}>
+                        {loading ? (
+                            <span className={styles.spinner}></span>
+                        ):isSignUp ? 'Create Account' : 'Sign in'}
                     </button>
                 </form>
                 <p className={styles.switchState}>

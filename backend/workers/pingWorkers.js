@@ -1,6 +1,7 @@
 import db from '../config/db.js';
 import axios from 'axios';
 import {io} from '../index.js';
+import { NullTypes } from '@prisma/client/runtime/client';
 const activeWorkers={};
 const failureCounts={}
 // This performs the network request and returns a promise containing the response time and up/down status
@@ -45,7 +46,7 @@ async function pingUrl(url){
 
 
 // add these ping responses tp out database 
-async function savePingResult(monitorid,status,latency){
+async function savePingResult(monitorid,status,latency,error=null){
     // check if monitor exist
     const monitor=await db.query(
         "SELECT id FROM monitors WHERE id=$1",[monitorid]
@@ -56,8 +57,8 @@ async function savePingResult(monitorid,status,latency){
     }
 
     await db.query(
-        `INSERT INTO ping_history (monitor_id,status,latency,timestamp)
-        VALUES ($1,$2,$3,NOW())`,[monitorid,status,latency]
+        `INSERT INTO ping_history (monitor_id,status,latency,error,timestamp)
+        VALUES ($1,$2,$3,$4,NOW())`,[monitorid,status,latency,error]
     );
 }
 
@@ -73,7 +74,15 @@ async function runMonitorLoop(monitor){
         if(result.status==='up' ){
             failureCounts[monitor.id]=0
             
-            await savePingResult(monitor.id,result.status,result.latency);
+            await savePingResult(monitor.id,result.status,result.latency,result.error);
+            if(monitor.is_down){
+                console.log(`RECOVERY!! ${monitor.name} is back up! Flippping state to healthy`)
+                await db.query("UPDATE monitors SET is_down=false WHERE id=$1",[monitor.id])
+                monitor.is_down=false;
+
+                // sendRecoveryEmail()
+            }
+
             console.log(`[STAGE 3] DB save complete .Emitting socket for ${monitor.url}`)
             io.emit('monitor-updated',{
                 id:monitor.id,
@@ -84,23 +93,23 @@ async function runMonitorLoop(monitor){
             console.log(`Broadcasted update form ${monitor.name}:${result.status}`)
         }
         else{
-            io.emit('monitor-updated',{
+            failureCounts[monitor.id]=(failureCounts[monitor.id] || 0) + 1;
+            if(failureCounts[monitor.id]>=retries){
+                console.log("Website is officially down")
+
+                await savePingResult(monitor.id,result.status,result.latency,result.error);
+                if(!monitor.is_down){
+                    await db.query("UPDATE monitors SET is_down=true WHERE id=$1",[monitor.id]);
+                    monitor.is_down=true;
+
+                    // sendEmail()
+                }
+                io.emit('monitor-updated',{
                     id:monitor.id,
                     status:result.status,
                     latency:result.latency,
                     error:result.error
                 })
-            failureCounts[monitor.id]=(failureCounts[monitor.id] || 0) + 1;
-            if(failureCounts[monitor.id]>=retries){
-                console.log("Website is officially down")
-
-                // sendEmail()
-
-                await savePingResult(monitor.id,result.status,result.latency);
-                if(!monitor.is_down){
-                    await db.query("UPDATE monitors SET is_down=true WHERE id=$1",[monitor.id]);
-                    monitor.is_down=true;
-                }
                 console.log(`Broadcasted update form ${monitor.name} : ${result.status}`)
                 
             }else{

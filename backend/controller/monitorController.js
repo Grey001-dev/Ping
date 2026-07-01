@@ -43,6 +43,7 @@ export const getMonitors= async (req,res)=>{
         const lastPing=historyRows[historyRows.length-1];
         const currentStatus=lastPing ? lastPing.status : "unknown"
         const currentLatency=lastPing ? lastPing.latency:0;
+        const currentError=currentStatus==='down' ? lastPing.error :null
         return{
             ...monitor,
             status:currentStatus,
@@ -52,6 +53,7 @@ export const getMonitors= async (req,res)=>{
             upCount:upCount,
             downCount:downCount,
             retries:retries,
+            error:currentError,
             history:historyRows
         }
     })
@@ -116,4 +118,44 @@ export const deleteMonitor=async (req,res) =>{
     }
 }
 
+export const togglePause=async (req,res)=>{
+    const {id}=req.params;
+    const userId=req.user.id;
+    try {
+        const monitor=await db.query("SELECT * FROM monitors WHERE id=$1 AND user_id=$2 ",[id,userId])
+        if(monitor.rows.length===0) return res.status(404).json({message:' Monitor not found'})
+        const newState=!monitor.rows[0].is_paused;
+        await db.query("UPDATE monitors SET is_paused=$1 WHERE id=$2",[newState,id]);
+        if(newState){
+            stopMonitor(id)
+        }else{
+            startMonitor(monitor.rows[0])
+        }
+        res.status(200).json({is_paused:newState})
+    } catch (error) {
+        res.status(500).json({message:'Error toggling pause',error})
+    }
+}
 
+export const editMonitors=async (req,res)=>{
+    const {id}=req.params;
+    const userId=req.user.id
+    const {name,url,type,interval,retries,method}=req.body;
+    try {
+        const monitorExist=await db.query("SELECT * FROM monitors WHERE id=$1 AND user_id=$2",[id,userId]);
+        if(monitorExist.rows.length===0){
+            return res.status(404).json({message:"Monitor doesn't exist"})
+
+        }
+        const updatedMonitor=await db.query("UPDATE monitors SET name=$1 ,url=$2,type=$3,interval=$4,retries=$5,method=$6 WHERE id=$7 and user_id=$8 RETURNING *",
+            [name,url,type,interval,retries,method,id,userId]
+        )
+        stopMonitor(id)
+        startMonitor(updatedMonitor.rows[0])
+
+        return res.status(200).json( updatedMonitor.rows[0]);
+    } catch (err) {
+        console.log(err.message)
+        return res.status(500).json({message:'Error updating monitors'},err)
+    }
+}

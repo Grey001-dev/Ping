@@ -10,10 +10,12 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "lucide-react": "^1.22.0",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
     "react-router-dom": "^7.17.0",
     "react-router-hash-link": "^2.4.3",
+    "recharts": "^3.9.1",
     "socket.io-client": "^4.8.3"
   },
   "devDependencies": {

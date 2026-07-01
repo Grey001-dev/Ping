@@ -43,14 +43,7 @@
     border-radius: 100px;
     transition: all 0.2 ease;
 }
-.activetoggle{
-    background-color: #6366f1;
-    color: #f1f5f9;
-    border-radius: 100px;
-    padding: 0.35rem 3rem ;
-    /* this on top*/
-    border: none;
-}
+
 .message{
     font-family: 'Syne', sans-serif;
     font-weight: 700;
@@ -72,6 +65,17 @@
     flex-direction: column;
     gap: 0.55rem;
     margin-bottom: 1.25rem;
+}
+.authHeading{
+    font-family: 'Syne',sans-serif;
+    font-weight: 700;
+    font-size: 24px;
+    margin: 0 0 0.25rem 0;
+    color: #f1f5f9;
+}
+.message{
+    text-align: center;
+    margin: 0 0 1.5rem 0;
 }
 
 .oauthBtn{
@@ -153,19 +157,6 @@
     justify-content: flex-end;
 }
 
-
-.submitbtn{
-    width: 100%;
-    background-color: #6366f1;
-    border: none;
-    color: #f1f5f9;
-    font-weight: 700;
-    font-family: 'Syne',sans-serif;
-    padding: 0.7rem;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.2s ease,transform 0.2 ease;
-}
 .submitbtn:hover{
     background-color: #5558e8;
     transform: scale(1.01);
@@ -215,4 +206,163 @@
     margin-bottom: 1.5rem;
     width: 100%;
     box-sizing: border-box;
+}
+.successAlert{
+    position: relative;
+    overflow: hidden;
+    background-color: rgba(22,198,87,0.06);
+    border: 1px solid rgba(22,198,87,0.25);
+    color: #86efac;
+    font-family: 'DM Mono',monospace;
+    font-size: 11px;
+    padding: 0.75rem 0.9rem;
+    border-radius: 8px;
+    margin-bottom: 1.25rem;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+.progressBar{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 2px;
+    width: 100%;
+    background: currentColor;
+    opacity: 0.4;
+    animation: shrink 4s linear forwards;
+}
+
+.errAlert{
+    position: relative;
+    overflow: hidden;
+    background-color: rgba(227,98,98,0.06);
+    border: 1px solid rgba(227,98,98,0.25);
+    color: #fca5a5;
+    font-family: 'DM Mono',monospace;
+    font-size: 11px;
+    padding: 0.75rem 0.9rem;
+    border-radius:8px ;
+    margin-bottom: 1.25rem;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.toast{
+    position: fixed;
+    top: 1.25rem;
+    right: 1.25rem;
+    z-index: 99999999;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    font-family: 'DM Mono',monospace;
+    font-size: 11px;
+    max-width: 280px;
+    margin-left: auto;
+    overflow: hidden;
+    background-color: rgba(227,98,98,0.08);
+    border: 1px solid rgba(227,98,98,0.3);
+    color: #fca5a5;
+    animation: slideIn 0.2s ease forwards;
+}
+.toastSuccess{
+    background-color:rgba(22,198,87,0.08);
+    border: 1px solid rgba(22,198,87,0.3);
+    color: #86efac;
+}
+.toastIcon{
+    flex-shrink: 0;
+    font-size: 12px;
+}
+.toastProgress{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 2px;
+    width: 100%;
+    background: currentColor;
+    opacity: 0.35;
+    animation: shrink 5s linear forwards;
+}
+.spinner{
+    width: 14px;
+    height: 14px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top-color: #fff;
+    border-radius: 50%;
+    display: inline-block;
+    animation: spin 0.7s linear infinite;
+}
+@keyframes spin{
+    to{transform: rotate(360deg);}
+}
+@keyframes slideIn {
+    from{
+        opacity: 0;
+        transform: translateX(12px);
+    }to{
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+@keyframes shrink {
+    from{
+        width: 100%;
+    }to{
+        width: 0%;
+    }
+}
+
+.screenWrapper>div{
+    width: 100%;
+    max-width: 380px;
+    display: flex;
+    flex-direction: column;
+}
+.textInput:focus{
+    outline: none;
+    border-color: rgba(99,102,241,0.5);
+}
+.submitbtn{
+    width: 100%;
+    background-color: #6366f1;
+    border: none;
+    color: #f1f5f9;
+    font-weight: 700;
+    font-family: 'Syne',sans-serif;
+    padding: 0.7rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s ease ,transform 0.2s ease ;
+}
+.oauthBtn:hover{
+    background-color: #161622;
+    border-color: rgba(255, 255, 255, 0.08);
+    transform: none;
+}
+.activetoggle{
+    flex: 1;
+    background-color: #6366f1;
+    color: #f1f5f9;
+    border-radius: 100px;
+    padding: 0.45rem 0;
+    border: none;
+    font-family: 'DM Mono',monospace;
+    font-size: 13px;
+    cursor: pointer;
+}
+@media (max-width:480px) {
+    .toast{
+        left: 1rem;
+        right: 1rem;
+        top: 1rem;
+        max-width: none;
+        margin-left: 0;
+    }
 }

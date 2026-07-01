@@ -1,7 +1,7 @@
 
 
 import styles from './MonitorStats.module.css';
-export default function MonitorStats({monitors,selectedId,onSelect,onAddClick}){
+export default function MonitorStats({monitors,selectedId,onSelect,onAddClick,loading}){
     const upCount=monitors.filter(m=>m.status=='up').length
     const downCount=monitors.filter(m=>m.status=='down').length
     return(
@@ -53,8 +53,22 @@ function MonitorItem({monitor,isActive,onClick}){
                     </div>
                 ))}
             </div>
-
-
+        </div>
+    )
+}
+function SkeletonItem(){
+    return(
+        <div className={styles.skeletonItem}>
+            <div className={styles.skeletonRow}>
+                <div className={styles.skeletonDot}/>
+                <div className={styles.skeletonName}/>
+                <div className={styles.sleletonPct}/>
+            </div>
+            <div className={styles.skeletonBars}>
+                {Array(15).fill(null).map((_,i)=>(
+                    <div key={i} className={styles.skeletonBar}/>
+                ))}
+            </div>
         </div>
     )
 }

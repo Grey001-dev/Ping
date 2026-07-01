@@ -12,11 +12,12 @@ export default function MonitorDashboard(){
   const [view,setView]=useState('empty')
   const [loading,setLoading]=useState(true);
   const selectedMonitor=monitors.find(m=>m.id===selectedId) ?? null;
-
   const token= localStorage.getItem('token');
+  const [edit,setEdit]=useState(false);
   // fetch monitors on load
   useEffect(()=>{
     fetchMonitors();
+    
   },[]);
 
   useEffect(()=>{
@@ -25,7 +26,6 @@ export default function MonitorDashboard(){
   // After listening for the broadcast from my backend
     socket.on('monitor-updated',(updatedData)=>{
       console.log("Real-time update recieved from backend: ",updatedData)
-
       setMonitors((prevMonitors)=>
       prevMonitors.map((m)=>{
         if (m.id != updatedData.id) return m;
@@ -34,12 +34,12 @@ export default function MonitorDashboard(){
           status:updatedData.status,
           latency:updatedData.latency,
           timestamp:new Date().toISOString()
-        }].slice(-25);
+        }].slice(-25); 
         return{
           ...m,
           status:updatedData.status,
           currentLatency:updatedData.latency,
-          error:updatedData.error,
+          error:updatedData.error || (m.status==='down' ? m.error:null),
           history:newHistory
         }
       }
@@ -87,6 +87,10 @@ export default function MonitorDashboard(){
       setView('add')
     }
 
+    function handleEditClick(){
+      setView("edit")
+    }
+
    async function handleMonitorCreated(newmonitor){
       try {
         const data=await monitorService.create(newmonitor)
@@ -111,6 +115,34 @@ export default function MonitorDashboard(){
         console.log("Error deleting monitor:",error)
       }
     }
+
+    async function handleMonitorPaused(id){
+      try {
+        const data=await monitorService.pause(id);
+        setMonitors(prev=>prev.map(m=>
+        m.id===id ? {...m,is_paused:data.is_paused}:m
+        ));
+        console.log(`${data.is_paused}`)
+
+      } catch (err) {
+        console.error("Error toggling pause:",err)
+      }
+    }
+
+    async function handleEdit(newMonitor,id) {
+      try {
+        const data=await monitorService.edit(newMonitor,id);
+        console.log('Edit response:',data)
+        if(data && data.id){
+          setMonitors(prev=>prev.map(m=>m.id===id ? {...data,history:m.history}:m));
+          setSelectedId(id);
+          setView('status');
+        }
+
+      } catch (err) {
+        console.error('Error editing monitor:',err)
+      }
+    }
     return(
     <div className={styles.dashboardRoot}>
         <MonitorStats 
@@ -118,6 +150,7 @@ export default function MonitorDashboard(){
         selectedId={selectedId}
         onSelect={handleSelect}
         onAddClick={handleAddNewClick}
+        loading={loading}
         />
         
 
@@ -129,12 +162,17 @@ export default function MonitorDashboard(){
             if empty we show the user our empty state 
             */}
             {view=='status' && selectedMonitor&& 
-            <StatusPanel monitor={selectedMonitor} onDelete={handleMonitorDeleted}/>
+            <StatusPanel monitor={selectedMonitor} onDelete={handleMonitorDeleted} onPause={handleMonitorPaused} onEdit={handleEditClick}/>
             }
             {
               view=='add' && 
-              <MonitorForm onMonitorCreated={handleMonitorCreated}/>
+              <MonitorForm onMonitorCreated={handleMonitorCreated} />
             }
+            {
+              view==='edit' && selectedMonitor &&
+              <MonitorForm onMonitorCreated={handleMonitorCreated} onMonitorEdited={handleEdit} existingMonitor={selectedMonitor}/>
+            }
+
             {
               view==='empty' &&
               <EmptyState/>

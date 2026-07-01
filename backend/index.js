@@ -16,7 +16,7 @@ const httpServer=createServer(app);
 export const io=new Server(httpServer,{
     cors:{
         origin:'http://localhost:5173',
-        methods:["GET","POST","DELETE"],
+        methods:["GET","POST","DELETE",],
         allowedHeaders:['Content-Type','application/json']
     }
 })
@@ -24,7 +24,7 @@ export const io=new Server(httpServer,{
 app.use(cookieParser())
 app.use(cors({
     origin:'http://localhost:5173',
-    methods:["GET","POST","DELETE"],
+    methods:["GET","POST","DELETE","PATCH"],
     allowedHeaders:["Content-Type","Authorization"]
 }));
 
