@@ -1,7 +1,7 @@
 import db from '../config/db.js';
 import axios from 'axios';
 import {io} from '../index.js';
-import { NullTypes } from '@prisma/client/runtime/client';
+import { sendDownEmail,sendRecoveryEmail } from '../services/emailService.js';
 const activeWorkers={};
 const failureCounts={}
 // This performs the network request and returns a promise containing the response time and up/down status
@@ -79,8 +79,10 @@ async function runMonitorLoop(monitor){
                 console.log(`RECOVERY!! ${monitor.name} is back up! Flippping state to healthy`)
                 await db.query("UPDATE monitors SET is_down=false WHERE id=$1",[monitor.id])
                 monitor.is_down=false;
-
-                // sendRecoveryEmail()
+                const user=await db.query("SELECT email FROM users WHERE id=$1",[monitor.user_id])
+                if(user.rows.length>0){
+                    await sendRecoveryEmail(monitor,user.rows[0].email);
+                }
             }
 
             console.log(`[STAGE 3] DB save complete .Emitting socket for ${monitor.url}`)
@@ -102,7 +104,12 @@ async function runMonitorLoop(monitor){
                     await db.query("UPDATE monitors SET is_down=true WHERE id=$1",[monitor.id]);
                     monitor.is_down=true;
 
-                    // sendEmail()
+                    const user=await db.query("SELECT email FROM users WHERE id=$1",[monitor.user_id])
+                    console.log(user)
+                    if(user.rows.length>0){
+                        console.log("Should send an email")
+                        await sendDownEmail(monitor,user.rows[0].email)
+                    }
                 }
                 io.emit('monitor-updated',{
                     id:monitor.id,

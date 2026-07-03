@@ -1,4 +1,4 @@
-
+import SkeletonItem from "../Common/SkeletonItem.jsx"
 
 import styles from './MonitorStats.module.css';
 export default function MonitorStats({monitors,selectedId,onSelect,onAddClick,loading}){
@@ -15,14 +15,23 @@ export default function MonitorStats({monitors,selectedId,onSelect,onAddClick,lo
                 </div>
             </div>
             <div className={styles.monitorList}>
-            {monitors.map(monitor=>(
+            {loading ?(
+                <>
+                <SkeletonItem/>
+                <SkeletonItem/>
+                <SkeletonItem/>
+                </>
+
+            ):
+            (monitors.map(monitor=>(
                 <MonitorItem
                 key={monitor.id}
                 monitor={monitor}
                 isActive={monitor.id===selectedId}
                 onClick={()=>onSelect(monitor.id)}
                 />
-            ))}
+            ))
+            )}
             </div>
             <div className={styles.footer}>
                 <button className={styles.addBtn}
@@ -56,19 +65,5 @@ function MonitorItem({monitor,isActive,onClick}){
         </div>
     )
 }
-function SkeletonItem(){
-    return(
-        <div className={styles.skeletonItem}>
-            <div className={styles.skeletonRow}>
-                <div className={styles.skeletonDot}/>
-                <div className={styles.skeletonName}/>
-                <div className={styles.sleletonPct}/>
-            </div>
-            <div className={styles.skeletonBars}>
-                {Array(15).fill(null).map((_,i)=>(
-                    <div key={i} className={styles.skeletonBar}/>
-                ))}
-            </div>
-        </div>
-    )
-}
+
+

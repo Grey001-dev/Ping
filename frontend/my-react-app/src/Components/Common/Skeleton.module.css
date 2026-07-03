@@ -1,0 +1,52 @@
+.skeletonItem{
+    padding: 10px 12px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    border: 1px solid #1e1e2e;
+    margin-bottom: 6px;
+}
+
+.skeletonRow{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.skeletonDot{
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #1e1e2e;
+    animation: shimmer 1.2s ease-in-out infinite;
+    flex-shrink: 0;
+}
+.skeletonName{
+    flex: 1;
+    height: 10px;
+    border-radius: 4px;
+    background-color: #1e1e2e;
+    animation: shimmer 1.2s ease-in-out infinite;
+}
+.skeletonPct{
+    width: 28px;
+    height: 10px;
+    border-radius: 4px;
+    background-color: #1e1e2e;
+    animation: shimmer 1.2s ease-in-out infinite;
+}
+.skeletonBars{
+    display: flex;
+    gap: 2px;
+}
+.skeletonBar{
+    width: 6px;
+    height: 20px;
+    border-radius: 3px;
+    background-color: #1e1e2e;
+    animation: shimmer 1.2s ease-in-out infinite;
+}
+@keyframes shimmer {
+    0%,100%{opacity: 0.4;}
+    50% {opacity: 0.8;}
+}

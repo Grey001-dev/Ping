@@ -1,12 +1,9 @@
 import db from "../config/db.js";
 import { startMonitor,stopMonitor } from "../workers/pingWorkers.js";
 
-
-
 // Get request to getMonitors so i can render on my status panel and sidebar
 export const getMonitors= async (req,res)=>{
     const userId=req.user.id;
-
     try{
         // This gets all monitors belonging to this user and sort!
         const monitors=await db.query(

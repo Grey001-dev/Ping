@@ -119,4 +119,21 @@
     font-family: 'DM Mono',monospace;
     color: #a0a5ad;
 }
-
+.bodyTextarea{
+    width: 100%;
+    box-sizing: border-box;
+    background-color: #0b0c0d;
+    border: 1px solid #22262a;
+    border-radius: 8px;
+    padding: 0.7rem 0.9rem;
+    color: #10b981;
+    font-family: 'DM Mono',monospace;
+    font-size: 12px;
+    outline: none;
+    resize: vertical;
+    line-height: 1.8;
+    margin-top: 0.5rem;
+}
+.bostTextarea:focus{
+    border-color: rgba(16,185,129,0.3);
+}

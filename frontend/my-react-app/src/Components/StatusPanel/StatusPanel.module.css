@@ -245,7 +245,7 @@
   animation: spin 0.7s linear infinite;
 }
 @keyframes spin {
-  to{transform: roatate(360deg);}
+  to{transform: rotate(360deg);}
 }
 .chatWrapper{
   background-color: #111118;

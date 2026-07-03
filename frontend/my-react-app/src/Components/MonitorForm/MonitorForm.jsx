@@ -10,7 +10,8 @@ export default function MonitorForm({onMonitorCreated,onMonitorEdited,existingMo
     const [retries,setRetries]=useState(existingMonitor?.retries || 3);
     const [httpMethod,setHttpMethod]=useState(existingMonitor?.method || 'GET')
     const [bodyEncoding,setBodyEncoding]=useState('JSON')
-    const [requestBody,setRequestBody]=useState('')
+    const [headersText,setHeadersText]=useState(`{\n "Authorization" : "Bearer Your_token"\n}`);
+    const [requestBody,setRequestBody]=useState('{\n "key":"value"\n')
 
     const handleSubmit=(e)=>{
         e.preventDefault();
@@ -23,6 +24,7 @@ export default function MonitorForm({onMonitorCreated,onMonitorEdited,existingMo
             interval:interval,
             retries:retries,
             type:monitorType,
+            request_body:httpMethod=="GET" ? requestBody : null,
             history:[]
         };
         if(isEdit){
@@ -115,28 +117,41 @@ export default function MonitorForm({onMonitorCreated,onMonitorEdited,existingMo
                             </div>
                         )}
                     </div>
-                </div> 
-
-                {/* The RIGHT COLUMN  starts here*/}
-                <div className={styles.rightColumn}>
-                    <div className={styles.panel}>
-                        <h2 className={styles.panelHeading}>Notifications</h2>
-                        <p className={styles.statusText}>Not available,please setup</p>
-                        <button type='button' className={styles.utilityBtn}>
-                            Setup Notifications
-                        </button>
-                    </div>
-
                     
                     <div className={styles.panel}>
-                        <h2 className={styles.panelHeading}>Proxy</h2> 
-                        <p className={styles.statusText}>Not available,please setup.</p> 
-                        <button type='button' className={styles.utilityBtn}>
-                            Setup Proxy
-                        </button>
+                        <h2 className={styles.panelHeading}>
+                            Custom Headers
+                        </h2>
+                        <p className={styles.inputHint}>
+                            Replace the values with your actual keys. Delete line you don't need
+                        </p>
+                        <textarea 
+                        className={styles.codeBox} 
+                        value={headersText} 
+                        onChange={(e)=>setHeadersText(e.target.value)}
+                        rows={5}
+                        />
                     </div>
+
+                    {(httpMethod==="POST" || httpMethod==='PUT')&&(
+                        <div className={styles.panel}>
+                            <h2 className={styles.panelHeading}>
+                                Request Body
+                            </h2>
+                            <p className={styles.inputHint}>
+                                JSON body that gets sent with your request
+                            </p>
+                            <textarea 
+                            className={styles.codeBox}
+                            value={requestBody}
+                            onChange={(e)=>setRequestBody(e.target.value)}
+                            row={5}
+                            
+                            />
+                        </div>
+                    )}
                     <div className={styles.actionRow}>
-                        <button type='submit' className={styles.saveBtn} >
+                        <button type='submit' className={styles.saveBtn}>
                             {isEdit ? 'Update Monitor':'Save Monitor'}
                         </button>
                     </div>

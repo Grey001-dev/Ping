@@ -282,3 +282,12 @@ background-color: #2d3139;
   border-color: #16c657;
   color: #16c657;
 }
+.skeletonItem{
+  padding: 10px 12px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border: 1px solid #1e1e2e;
+  margin-bottom: 6px;
+}

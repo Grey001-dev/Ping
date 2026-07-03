@@ -1,8 +1,8 @@
 import { BrowserRouter,Routes,Route } from "react-router-dom";
 import MainLanding from "./Components/Landing/MainLanding/MainLanding.jsx";
-import Auth from "./Components/Auth/Auth.jsx";
-import MonitorDashboard from "./Components/Dashboard/RenderDashBoard.jsx";
-import ProtectedRoutes from "./Components/ProtectedRoutes/ProtectedRoutes.jsx";
+import Auth from "./pages/Auth/Auth.jsx";
+import MonitorDashboard from "./pages/Dashboard/RenderDashBoard.jsx";
+import ProtectedRoutes from "./hooks/ProtectedRoutes/ProtectedRoutes.jsx";
 import { useState } from "react";
 export default function App(){
     const [token,setToken]=useState(localStorage.getItem('token'))

@@ -1,9 +1,9 @@
 import { useState,useEffect } from "react";
-import MonitorStats from "./MonitorStats/MonitorStats.jsx";
-import StatusPanel from "./RightPanel/StatusPanel.jsx";
-import MonitorForm from "./RightPanel/MonitorForm.jsx";
+import MonitorStats from "../../Components/Sidebar/MonitorStats.jsx";
+import StatusPanel from "../../Components/StatusPanel/StatusPanel.jsx";
+import MonitorForm from "../../Components/MonitorForm/MonitorForm.jsx";
 import styles from './RenderDashboard.module.css';
-import { monitorService } from "../API/monitorService.js";
+import { monitorService } from "../../services/monitorService.js";
 import {io} from "socket.io-client"
 
 export default function MonitorDashboard(){
@@ -17,7 +17,6 @@ export default function MonitorDashboard(){
   // fetch monitors on load
   useEffect(()=>{
     fetchMonitors();
-    
   },[]);
 
   useEffect(()=>{
