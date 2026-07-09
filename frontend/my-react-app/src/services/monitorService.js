@@ -58,5 +58,5 @@ export const monitorService={
             body: JSON.stringify(monitorData)
         });
         return await res.json()
-    }
+    },
 }

@@ -1,18 +1,18 @@
 import styles from './DashBoardMock.module.css';
 export default function DashBoardMock(){
+  // Fake status dashboard , just like a representation of what i built
     const generateHistory=(outageIndices= [] )=>{
         return Array.from({length: 32},(_,i)=>!outageIndices.includes(i));
     }
     const monitors=[
-        {name:'grey.ping.sh',interval:'60s check',history:generateHistory([12])},
-        { name: 'auth.ping.sh', interval: '60s check', history: generateHistory([]) },
+        {name:'myWeb.ping.sh',interval:'60s check',history:generateHistory([12])},
+        { name: 'bruh.ping.sh', interval: '60s check', history: generateHistory([]) },
     { name: 'web.ping.sh', interval: '60s check', history: generateHistory([5, 26]) }
     ]
     return(
         <div className={styles.mockupContainer}>
       <div className={styles.window}>
         
-        {/* Fake Window Controls & Link Bar */}
         <div className={styles.windowHeader}>
           <div className={styles.dotWrapper}>
             <div className={styles.windowDot}></div>
@@ -22,7 +22,6 @@ export default function DashBoardMock(){
           <div className={styles.urlBar}>ping.sh/dashboard</div>
         </div>
         
-        {/* Monitor meta details */}
         <div className={styles.windowBody}>
           {monitors.map((monitor, idx) => (
             <div key={idx} className={styles.monitorRow}>
@@ -32,7 +31,6 @@ export default function DashBoardMock(){
                 <span className={styles.monitorInterval}>{monitor.interval}</span>
               </div>
 
-              {/* Uptime bar Visualization */}
               <div className={styles.uptimeGrid}>
                 {monitor.history.map((isOperational, blockIdx) => (
                   <div
@@ -43,8 +41,6 @@ export default function DashBoardMock(){
                   />
                 ))}
               </div>
-
-              {/* Success Badge */}
               <div className={styles.badge}>
                 {monitor.history.includes(false) ? '99.94%' : '100.0%'} operational
               </div>

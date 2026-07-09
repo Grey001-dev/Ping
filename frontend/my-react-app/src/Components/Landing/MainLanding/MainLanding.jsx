@@ -4,10 +4,9 @@ import Properties from "../Properties/Properties.jsx";
 import { useRef } from "react";
 import Footer from "../Footer/Footer.jsx";
 import DashBoardMock from "../DashboardMock/DashBoardMock.jsx";
-
+import styles from './MainLanding.module.css'
 export default function MainLanding(){
     const featuresRef=useRef(null);
-    const pricingRef=useRef(null);
     const scrollToSection = (elementRef) => {
     if (elementRef.current) {
       elementRef.current.scrollIntoView({
@@ -17,18 +16,15 @@ export default function MainLanding(){
     }
   };
      return(
-        <div style={{backgroundColor:'#0a0a0f',minHeight:'100vh',color:'#f3f4f6'}}>
+        <div className={styles.header}>
             <NavBar
             onScrollToFeatures={()=>scrollToSection(featuresRef)}
-            onScrolltoPricing={()=>scrollToSection(priceRef)}
             />
-            <main>
+            <main style={{ width: '100%', maxWidth: '1280px', margin: '0 auto', padding: '0 2rem', boxSizing: 'border-box' }}>
                 <Description/>
                 <DashBoardMock/>
                 <div ref={featuresRef}>
-                    <div ref={pricingRef}>
-                        <Properties />
-                    </div>
+                    <Properties/>
                 </div>
             </main>
             <Footer/>

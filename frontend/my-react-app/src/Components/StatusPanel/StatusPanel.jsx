@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import {Monitor, TriangleAlert} from 'lucide-react';
 import {Trash} from 'lucide-react';
 import {SquarePen} from "lucide-react";
-import {Pause} from "lucide-react";
+import {Pause,Play} from "lucide-react";
 import { LineChart,Line,XAxis,YAxis,CartesianGrid,Tooltip,ResponsiveContainer } from 'recharts';
 const getErrorMessage=(errorCode)=>{
     if(!errorCode) return 'Unknown error';
@@ -23,7 +23,7 @@ const getErrorMessage=(errorCode)=>{
 }
 
 export default function StatusPanel({monitor,onDelete,savedError,onPause,onEdit}){
-    const max_bars=25;
+    const max_bars=30;
     const isDown=monitor.status=='down';
     const [showError,setShowError]=useState(false);
     const paddingNeeded=Math.max(0,max_bars-monitor.history.length);
@@ -62,7 +62,7 @@ export default function StatusPanel({monitor,onDelete,savedError,onPause,onEdit}
                 </span>
             </div>
             <div className={styles.btns}>
-                <button className={styles.pausebtn} onClick={()=>onPause(monitor.id)}><Pause size={14}/>{monitor.is_paused ? 'Resume' :"Pause"}</button>
+                <button className={styles.pausebtn} onClick={()=>onPause(monitor.id)}>{monitor.is_paused? <Play size={14}/> :<Pause size={14}/>}{monitor.is_paused ? 'Resume' :"Pause"}</button>
                 <button className={styles.editbtn} onClick={()=>onEdit(monitor)}><SquarePen size={14}/> Edit</button>
                 <button className={styles.deletebtn} 
                 onClick={()=>onDelete(monitor.id)}
@@ -110,14 +110,14 @@ export default function StatusPanel({monitor,onDelete,savedError,onPause,onEdit}
                 <div className={styles.statusCard}>
                     <p className={styles.statusLabel}>Checks up</p>
                     <p className={`${styles.statusValue} ${monitor.upCount>0 ? styles.valueUp : styles.valueDown}`}>
-                        {monitor.upCount}
+                        {monitor.upCount} <span>(last 30)</span>
                     </p>
                 </div>
 
                 <div className={styles.statusCard}>
                     <p className={styles.statusLabel}>Checks down</p>
                     <p className={`${styles.statusValue } ${monitor.downCount>0 ?styles.valueDown :''}`}>
-                        {monitor.downCount}
+                        {monitor.downCount} <span>(last 30)</span>
                     </p>
                 </div>
             </div>

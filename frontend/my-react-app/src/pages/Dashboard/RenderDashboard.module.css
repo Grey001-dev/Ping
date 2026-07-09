@@ -25,4 +25,136 @@
   color: rgba(255,255,255,0.15);
   font-family: 'DM Mono',monospace;
   font-size: 20px;
+  padding: 40px 24px;
+  text-align: center;
+  gap: 12px;
+  flex-direction:column;
+}
+.emptyTitle{
+  font-size: 14px;
+  color: rgba(255,255,255,0.5);
+  max-width: 320px;
+  margin: 0;
+}
+.emptyBtn{
+  margin-top: 12px;
+  background: #4ade80;
+  color: #0a0a0f;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 20px;
+  font: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.emptyBtn:hover{
+  background-color:rgba(22, 198, 87, 0.08);
+  border-color:  rgba(22, 198, 87, 0.4);
+  color: #1bcb57;
+}
+.emptyActionBtn:hover{
+  opacity: 0.9;
+}
+.emptyState{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  height: 100%;
+  padding: 40px 24px;
+  gap: 10px;
+}
+.emptyIcon{
+  width: 72px;
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(74,222,128,0.08);
+  border: 1px solid rgba(74,222,128,0.2);
+  border-radius: 50%;
+  margin-bottom: 8px;
+}
+.pulseBars{
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+  height: 28px;
+}
+.PulseBar{
+  width: 4px;
+  background: #4ade80;
+  border-radius: 2px;
+  animation: pulseAnim 1.4s ease-in-out infinite;
+}
+.PulseBars:nth-child(2){
+  animation-delay: 0.1s;
+}
+.PulseBar:nth-child(3){
+  animation-delay: 0.2s;
+}
+.PulseBar:nth-child(4){
+  animation-delay: 0.3s;
+}
+.PulseBar:nth-child(5){
+  animation-delay: 0.4s;
+}
+.PulseBar:nth-child(6){
+  animation-delay: 0.4s;
+}
+@keyframes pulseAnim {
+  0%,100% {
+    opacity:0.4;
+    transform: scaleY(0.6);
+  }
+  50%{
+    opacity: 1;
+    transform: scaleY(1);
+  }
+}
+.emptyTitle{
+  font-size: 22px;
+  font-weight: 700;
+  color: #faf5f9;
+  margin: 0;
+}
+.emptyText{
+  font-size: 14px;
+  color: rgba(255,255,255,0.55);
+  max-width: 340px;
+  margin: 0;
+}
+.Cards{
+  display: flex;
+  gap: 12px;
+  margin: 20px 0px;
+}
+.card{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  background: #111118;
+  border: 1px solid #1e1e2e;
+  border-radius: 8px;
+  padding:14px 8px;
+  min-width: 110px;
+}
+.Label{
+  font-size: 13px;
+  font-weight: 600;
+  color: #4ade80;
+}
+.description{
+  font-size: 11px;
+  color: rgba(255,255,255,0.4);
+}
+.emptyHint{
+  margin: 16px;
+  font-size: 13px;
+  color: rgba(255,255,255,0.4);
+}
+.emptyHint strong{
+  color: #4ade80;
 }

@@ -1,5 +1,7 @@
 import styles from './Description.module.css'
+import { useNavigate } from 'react-router-dom'
 function Description(){
+    const navigate=useNavigate()
     return(
         <div className={styles.container}>
             <div className={styles.content}>
@@ -10,7 +12,7 @@ function Description(){
                     Ping monitors your websites, APIs and servers every 60 seconds 
                     and alerts you instantly when something breaks.
                 </p>
-                <button className={styles.btn}>
+                <button className={styles.btn} onClick={()=>navigate("/auth")}>
                     Start Monitoring
                 </button>
             </div>

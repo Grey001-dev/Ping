@@ -9,7 +9,7 @@ import myMonitorRouter from './routes/monitorroutes.js';
 import { startAllMonitors } from './workers/pingWorkers.js';
 import {createServer} from 'http';
 import {Server} from 'socket.io';
-
+import userRouter from './routes/userroutes.js';
 
 const app=express();
 const httpServer=createServer(app);
@@ -34,6 +34,7 @@ app.use(express.urlencoded({ extended:true }));
 //Routes
 app.use('/auth/users',authroutes)
 app.use('/api/monitors',myMonitorRouter)
+app.use('/api/users',userRouter)
 app.get("/",(req,res)=>{
     res.json({
         success:true,

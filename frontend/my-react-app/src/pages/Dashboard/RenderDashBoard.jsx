@@ -5,6 +5,7 @@ import MonitorForm from "../../Components/MonitorForm/MonitorForm.jsx";
 import styles from './RenderDashboard.module.css';
 import { monitorService } from "../../services/monitorService.js";
 import {io} from "socket.io-client"
+import { Plus } from "lucide-react";
 
 export default function MonitorDashboard(){
   const [monitors,setMonitors]=useState([])
@@ -33,13 +34,21 @@ export default function MonitorDashboard(){
           status:updatedData.status,
           latency:updatedData.latency,
           timestamp:new Date().toISOString()
-        }].slice(-25); 
+        }].slice(-30); 
+        const upCount=newHistory.filter((p)=>p.status==="up").length;
+        const downCount=newHistory.filter((p)=>p.status==="down").length;
+        const uptime = newHistory.length > 0 ? Math.round((upCount / newHistory.length) * 100) : 0;
+        console.log(`up:${upCount}, down:${downCount}`);
+        
         return{
           ...m,
           status:updatedData.status,
           currentLatency:updatedData.latency,
           error:updatedData.error || (m.status==='down' ? m.error:null),
-          history:newHistory
+          history:newHistory,
+          upCount,
+          downCount,
+          uptime
         }
       }
       )
@@ -121,7 +130,7 @@ export default function MonitorDashboard(){
         setMonitors(prev=>prev.map(m=>
         m.id===id ? {...m,is_paused:data.is_paused}:m
         ));
-        console.log(`${data.is_paused}`)
+        console.log(`${data.is_paused} `)
 
       } catch (err) {
         console.error("Error toggling pause:",err)
@@ -152,7 +161,6 @@ export default function MonitorDashboard(){
         loading={loading}
         />
         
-
         <main className={styles.mainPanel}>
             {/* Basically those views are used to know what to render and all 
 
@@ -174,7 +182,7 @@ export default function MonitorDashboard(){
 
             {
               view==='empty' &&
-              <EmptyState/>
+              <EmptyState  hasMonitors={monitors.length>0}/>
             }           
         </main>    
     </div>
@@ -182,11 +190,63 @@ export default function MonitorDashboard(){
 }
 
 
-function EmptyState() {
-  return(
-    <div className={styles.emptyState}>
-      <p>Select a monitor to view its status</p>
-    </div>
-  )
-}
+function EmptyState({ hasMonitors }) {
+  if (!hasMonitors) {
+    return (
+      <div className={styles.emptyState}>
+        <div className={styles.emptyIcon}>
+          <div className={styles.pulseBars}>
+            <span className={styles.PulseBar} style={{height:'30%'}}></span>
+            <span className={styles.PulseBar} style={{height:'60%'}}></span>
+            <span className={styles.PulseBar} style={{height:'90%'}}></span>
+            <span className={styles.PulseBar} style={{height:'50%'}}></span>
+            <span className={styles.PulseBar} style={{height:'75%'}}></span>
+            <span className={styles.PulseBar} style={{height:'40%'}}></span>
+          </div>
+        </div>
+        <h2 className={styles.emptyTitle}>
+            No monitors yet
+        </h2>
+        <p className={styles.emptyText}>
+          Start tracking uptime for the things you care about
+        </p>
+        <div className={styles.Cards}>
+          <div className={styles.card}>
+            <span className={styles.Label}>
+              HTTP(S)
+            </span>
+            <span className={styles.description}>
+                Websites & APIs
+            </span>
+          </div>
 
+          <div className={styles.card}>
+            <span className={styles.Label}>
+                TCP Port
+            </span>
+            <span className={styles.description}>
+              Databases & servers
+            </span>
+          </div>
+
+          <div className={styles.card}>
+            <span className={styles.Label}>
+              ICMP Ping
+            </span>
+            <span className={styles.description}>
+                Raw connectivity
+            </span>
+          </div>
+        </div>
+        <p className={styles.emptyHint}>
+          Click <strong> "+New Monitor"</strong> in the sidebar to get started
+        </p>
+      </div>
+  )
+  }
+  return (
+    <div className={styles.emptyState}>
+      <p className={styles.emptyText}>Select a monitor from the sidebar to view its status</p>
+    </div>
+  );
+}

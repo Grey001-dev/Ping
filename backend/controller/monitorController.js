@@ -64,7 +64,7 @@ export const getMonitors= async (req,res)=>{
 // Post request to create monitors
 export const createMonitors=async(req,res)=>{
     const userId=req.user.id;
-    const {name,url,type,interval,retries,method}=req.body;
+    const {name,url,type,interval,retries,method,custom_headers,request_body,port,allowed_status_codes}=req.body;
 
     if(!name || !url){
         return res.status(400).json({message:'Name and URL are required'});
@@ -72,10 +72,12 @@ export const createMonitors=async(req,res)=>{
     
     try{
         const newMonitors=await db.query(
-            `INSERT INTO monitors (name,url,type,interval,retries,method,user_id)
-            VALUES ($1,$2,$3,$4,$5,$6,$7)
+            `INSERT INTO monitors (name,url,type,interval,retries,method,user_id,custom_headers,request_body,port,allowed_status_codes)
+            VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)
             RETURNING *`,
-            [name,url,type || 'HTTP' ,interval || 60,retries || 3,method || 'GET',userId]
+            [name,url,type || 'HTTP' , interval || 60, retries || 3, method || 'GET',userId, custom_headers || null, request_body || null,port ||null,
+                allowed_status_codes || []
+            ]
         );
         const monitor=newMonitors.rows[0];
         // I send back empty history as well so front end can render it immediately
@@ -85,6 +87,8 @@ export const createMonitors=async(req,res)=>{
             uptime:'0%',
             currentLatency:0,
             avgLatency:0,
+            custom_headers:"",
+            request_body:"",
             history:[]
         });
         startMonitor(monitor);
@@ -125,6 +129,7 @@ export const togglePause=async (req,res)=>{
         await db.query("UPDATE monitors SET is_paused=$1 WHERE id=$2",[newState,id]);
         if(newState){
             stopMonitor(id)
+            console.log(`${monitor.rows[0].name} is paused`)
         }else{
             startMonitor(monitor.rows[0])
         }
@@ -137,15 +142,15 @@ export const togglePause=async (req,res)=>{
 export const editMonitors=async (req,res)=>{
     const {id}=req.params;
     const userId=req.user.id
-    const {name,url,type,interval,retries,method}=req.body;
+    const {name,url,type,interval,retries,method,request_body,custom_headers,port,allowed_status_codes}=req.body;
     try {
         const monitorExist=await db.query("SELECT * FROM monitors WHERE id=$1 AND user_id=$2",[id,userId]);
         if(monitorExist.rows.length===0){
             return res.status(404).json({message:"Monitor doesn't exist"})
 
         }
-        const updatedMonitor=await db.query("UPDATE monitors SET name=$1 ,url=$2,type=$3,interval=$4,retries=$5,method=$6 WHERE id=$7 and user_id=$8 RETURNING *",
-            [name,url,type,interval,retries,method,id,userId]
+        const updatedMonitor=await db.query("UPDATE monitors SET name=$1 ,url=$2,type=$3,interval=$4,retries=$5,method=$6,custom_headers=$7,request_body=$8,port=$9,allowed_status_codes=$10 WHERE id=$11 and user_id=$12 RETURNING *",
+            [name,url,type,interval,retries,method,custom_headers,request_body,port,allowed_status_codes,id,userId]
         )
         stopMonitor(id)
         startMonitor(updatedMonitor.rows[0])
@@ -153,6 +158,6 @@ export const editMonitors=async (req,res)=>{
         return res.status(200).json( updatedMonitor.rows[0]);
     } catch (err) {
         console.log(err.message)
-        return res.status(500).json({message:'Error updating monitors'},err)
+        return res.status(500).json({message:'Error updating monitors',error:err.message})
     }
 }

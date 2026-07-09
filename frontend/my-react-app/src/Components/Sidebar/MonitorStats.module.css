@@ -1,132 +1,4 @@
-/* .statsWrapper{
-    flex: 1;
-    width: 100%;
-    min-width: 320px;
-    max-width: 900px;
-    background-color: #0a0a0f;
-    color: #f1f5f9;
-    font-family: 'DM Mono',monospace;
-    box-sizing: border-box;
-}
-
-.statusTitle{
-    font-family: 'Syne',sans-serif;
-    font-size: 20px;
-    font-weight: 700;
-    color: #f1f5f9;
-    text-align: left;
-    margin-bottom: 1.25rem;
-    padding: 1.2rem;
-
-}
-.topHeader{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 1rem;
-    margin-bottom: 1.5rem;
-}
-.badgeGroup{
-    display: flex;
-    background-color: rgba(255,255,255,0.02);
-    border: 1px solid #1e1e2e;
-    padding: 0.2rem;
-    border-radius: 100px;
-    font-size: 13px;
-    gap: 4px;
-}
-.totalBadge{
-    padding: 0.35rem 0.75rem;
-    border-radius: 100px;
-    color: rgba(255,255,255,0.4);
-}
-.upBadge{
-    padding: 0.35rem 0.75rem;
-    border-radius: 100px;
-    color: #16c657;
-}
-.downBadge{
-    padding: 0.35rem 0.75rem;
-    border-radius: 100px;
-    color: #e36262;
-}
-.miniSearch{
-    background-color: #111118;
-    border: 1px solid #1e1e2e;
-    color: #f1f5f9;
-    padding: 0.55rem 1rem;
-    border-radius: 100px;
-    font-family: 'DM Mono',monospace;
-    font-size: 13px;
-    outline: none;
-    min-width: 180px;
-    margin-right: 2rem;
-}
-.panel{
-    display: flex;
-    flex-direction: column;
-    border-top: 2px solid #1e1e2e;
-    gap: 16px;
-}
-.eachStatus{
-    padding: 16px; 
-}
-.eachLayout{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 16px;
-}
-.monitorName h1{
-    font-size: 1.1rem;
-    font-weight: 500;
-    margin: 0;
-    font-family: 'Syne',sans-serif;
-}
-.smallerPanel{
-    display: flex;
-    gap: 2px;
-    align-items: center;
- 
-    padding: 12px;
-    border-radius: 8px;
-}
-.statusBar_time{
-    display: flex;
-    align-items: center;
-}
-.statusBar{
-    width: 6px;
-    height: 24px;
-    border-radius: 3px;
-    transition: background-color 0.3s ease;
-}
-.barEmpty{
-background-color: #2d3139;
-}
-.barUp{
-    background-color: #2ecc71;
-    box-shadow: 0 0 8px rgba(46,204,113,0.4);
-}
-.barDown{
-    background-color: #e74c3c;
-    box-shadow: 0 0 8px rgba(231,76,60,0.4);
-}
-
-
-@media (max-width:600px) {
-    .smallerPanel{
-        gap: 2px;
-        padding: 8px;
-    }
-    .statusBar{
-        width: 4px;
-        height: 18px;
-        border-radius: 1px;
-    }
-} */
- .sidebar {
+.sidebar {
   width: 280px;
   min-width: 280px;
   background-color: #0a0a0f;
@@ -268,19 +140,20 @@ background-color: #2d3139;
 .addBtn {
   width: 100%;
   padding: 0.6rem;
-  background: transparent;
-  border: 1px solid #1e1e2e;
-  border-radius: 8px;
-  color: rgba(255,255,255,0.4);
+  background: #4ade80;
+  border: none;
+  border-radius: 6px;
+  color: #0a0a0f;
   font-family: 'DM Mono', monospace;
-  font-size: 13px;
+  font-weight: 700;
+  font-size: 15px;
   cursor: pointer;
   transition: all 0.15s;
 }
-
 .addBtn:hover {
-  border-color: #16c657;
-  color: #16c657;
+  background-color:rgba(22, 198, 87, 0.08);
+  border-color:  rgba(22, 198, 87, 0.4);
+  color: #1bcb57;
 }
 .skeletonItem{
   padding: 10px 12px;

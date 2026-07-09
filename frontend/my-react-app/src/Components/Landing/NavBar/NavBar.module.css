@@ -1,14 +1,23 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    min-height: 100vh;
+    background-color: #0a0a0f; 
+    color: #f3f4f6;
+    box-sizing: border-box;
+}
+*, *::before, *::after {
+    box-sizing: border-box;
+}
 .Container{
     background-color: #0a0a0f;
     border-bottom: 1px solid #1f1f33;
-    padding-left: 1.5rem ;
     position: sticky;
     width: 100%;
     font-family: 'DM Mono', monospace;
     top: 0;
     z-index: 100;
-    max-width: 1280px;
-    
 }
 .navInner{
     display: flex;
@@ -16,9 +25,12 @@
     align-items: center;
     padding: 1.25rem 2rem;
     max-width: 1280px;
+    margin: 0 auto;
+    width: 100%;
 }
 .ping>h1{
     color:#f3f4f6 ;
+    margin: 0;
 }
 .log-sign{
     display: flex;

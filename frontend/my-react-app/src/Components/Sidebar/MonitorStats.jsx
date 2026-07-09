@@ -1,5 +1,5 @@
 import SkeletonItem from "../Common/SkeletonItem.jsx"
-
+import { Plus } from "lucide-react";
 import styles from './MonitorStats.module.css';
 export default function MonitorStats({monitors,selectedId,onSelect,onAddClick,loading}){
     const upCount=monitors.filter(m=>m.status=='up').length
@@ -8,11 +8,13 @@ export default function MonitorStats({monitors,selectedId,onSelect,onAddClick,lo
         <div className={styles.sidebar}>
             <div className={styles.topPanel}>
                 <h1 className={styles.panelTitle}>Monitors</h1>
-                <div className={styles.badges}>
-                    <span className={styles.totalBadge}>Total : {monitors.length}</span>
-                    <span className={styles.upBadge}>Up :{upCount}</span>
-                    <span className={styles.downBadge}>Down :{downCount}</span>
-                </div>
+                {monitors.length>0 && (
+                    <div className={styles.badges}>
+                        <span className={styles.totalBadge}>Total : {monitors.length}</span>
+                        <span className={styles.upBadge}>Up :{upCount}</span>
+                        <span className={styles.downBadge}>Down :{downCount}</span>
+                    </div>
+                )}
             </div>
             <div className={styles.monitorList}>
             {loading ?(
@@ -36,7 +38,7 @@ export default function MonitorStats({monitors,selectedId,onSelect,onAddClick,lo
             <div className={styles.footer}>
                 <button className={styles.addBtn}
                 onClick={onAddClick}
-                >+New Monitor</button>
+                ><Plus size={14} className={styles.icon}/> New Monitor</button>
             </div>
 
         </div>

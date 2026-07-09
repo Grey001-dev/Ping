@@ -1,17 +1,31 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    min-height: 100vh;
+    background-color: #0a0a0f; 
+    color: #f3f4f6;
+    box-sizing: border-box;
+}
+*, *::before, *::after {
+    box-sizing: border-box;
+}
 .footerContainer{
     background-color: #0a0a0f;
     border-top: 1px solid #1f1f33;
     padding: 4rem 2rem;
     margin-top: 4rem;
+    justify-content: center;
 }
 
 .footerInner{
-    max-width: 1280px;
+    max-width: 1200px;
     width: 100%;
     margin: 0 auto;
+    padding: 0rem 1rem;
     display: flex;
-    justify-content: center;
-    align-content: center;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .brand{
@@ -47,6 +61,8 @@
     cursor: pointer;
     transition: color 0.2s ease;
     padding: 0;
+    white-space: nowrap;
+    line-height: 1;
 }
 
 .footerLink:hover {

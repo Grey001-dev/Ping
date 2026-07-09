@@ -1,9 +1,20 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    min-height: 100vh;
+    background-color: #0a0a0f; 
+    color: #f3f4f6;
+    box-sizing: border-box;
+}
+*, *::before, *::after {
+    box-sizing: border-box;
+}
 .mockupContainer {
   max-width: 1000px;
   width: 100%;
   margin: 0 auto 6rem auto;
   padding: 0 2rem;
-  box-sizing: border-box;
 }
 .window {
   background-color: #12121e;
@@ -37,14 +48,17 @@
   border-radius: 6px;
   margin-left: 2rem;
   border: 1px solid #1f1f33;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }
 .windowBody {
   padding: 1.5rem;
 }
 .monitorRow {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
+  gap: 1rem;
   padding: 1.25rem 0;
   border-bottom: 1px solid #1f1f33;
 }
@@ -70,19 +84,22 @@
 }
 .uptimeGrid {
   display: flex;
-  gap: 4px;
   align-items: center;
+  justify-content: space-between;
+  gap: 4px;
+  width: 100%;
 }
 .statusBar {
-  width: 4px;
+  flex: 1;
+  min-width: 2px;
   height: 24px;
   border-radius: 2px;
 }
 .operational {
-  background-color: #10b981; /* Emerald Green */
+  background-color: #10b981;
 }
 .outage {
-  background-color: #ef4444; /* Red */
+  background-color: #ef4444;
 }
 .badge {
   font-family: 'DM Mono', monospace;
@@ -92,6 +109,29 @@
   padding: 0.25rem 0.75rem;
   border-radius: 4px;
   border: 1px solid rgba(16, 185, 129, 0.2);
-  text-align: right;
-  min-width: 100px;
+  align-self: flex-start;
+}
+@media (min-width:768px){
+  .monitorRow{
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2rem;
+  }
+  .monitorMeta{
+    min-width: 180px;
+  }
+  .uptimeGrid{
+    justify-content: center;
+    width: auto;
+  }
+  .statusBar{
+    flex: none;
+    width: 4px;
+  }
+  .badge{
+    align-self: center;
+    text-align: right;
+    min-width: 110px;
+  }
 }

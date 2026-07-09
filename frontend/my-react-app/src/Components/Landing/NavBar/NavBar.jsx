@@ -12,9 +12,6 @@ function NavBar({ onScrollToFeatures, onScrollToPricing }){
                     <div className={styles.features}>
                         <button onClick={onScrollToFeatures}>Features</button>
                     </div>
-                    <div className={styles.pricing}>
-                        <button onClick={onScrollToPricing}>Pricing</button>
-                    </div>
                 </div>
                 <div className={styles['log-sign']}>
                     <div className={styles.log}>

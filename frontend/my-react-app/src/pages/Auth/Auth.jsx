@@ -23,13 +23,7 @@ export default function Auth({setToken}){
     if (/[^A-Za-z0-9]/.test(str)) points++;
     return points;
   };
-  useEffect(()=>{
-        let token=localStorage.getItem('token')
-        const timer=setTimeout(()=>{
-            if(token) navigate('/dashboard')
-        },500)
-        return ()=>clearTimeout(timer)
-    },[navigate]);
+ 
   const handleSubmit=async(e)=>{
     e.preventDefault();
     setErrMessage('');
