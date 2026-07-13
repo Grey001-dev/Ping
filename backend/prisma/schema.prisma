@@ -1,21 +1,69 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Get a free hosted Postgres database in seconds: `npx create-db`
-
 generator client {
   provider = "prisma-client-js"
+  previewFeatures=["driverAdapters]
 }
 
 datasource db {
   provider = "postgresql"
+  url=env("DATABASE_URL")
 }
-model User{
-  id    Int     @id @default(autoincrement())
-  name  String?
-  email String  @unique
-  password  String
-  createdAt DateTime  @default(now())
+
+model incidents {
+  id               Int       @id @default(autoincrement())
+  monitor_id       Int
+  started_at       DateTime  @default(now()) @db.Timestamp(6)
+  resolved_at      DateTime? @db.Timestamp(6)
+  error            String?
+  duration_seconds Int?
+  monitors         monitors  @relation(fields: [monitor_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([monitor_id, started_at(sort: Desc)], map: "idx_incidents_monitor_id")
 }
-                                                           
-  
+
+model monitors {
+  id                   Int            @id @default(autoincrement())
+  name                 String         @db.VarChar(255)
+  url                  String         @db.VarChar(255)
+  type                 String?        @default("HTTP") @db.VarChar(50)
+  interval             Int?           @default(60)
+  retries              Int?           @default(3)
+  method               String?        @default("GET") @db.VarChar(10)
+  created_at           DateTime?      @default(now()) @db.Timestamp(6)
+  user_id              Int?
+  is_down              Boolean?       @default(false)
+  is_paused            Boolean?       @default(false)
+  custom_headers       Json?
+  request_body         Json?
+  keyword              String?
+  port                 Int?
+  allowed_status_codes Int[]          @default([])
+  is_public            Boolean?       @default(false)
+  incidents            incidents[]
+  users                users?         @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  ping_history         ping_history[]
+}
+
+model ping_history {
+  id         Int       @id @default(autoincrement())
+  monitor_id Int?
+  status     String    @db.VarChar(10)
+  latency    Int?      @default(0)
+  timestamp  DateTime? @default(now()) @db.Timestamp(6)
+  error      String?
+  monitors   monitors? @relation(fields: [monitor_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([monitor_id, timestamp(sort: Desc)], map: "idx_ping_history_monitor_timestamp")
+  @@index([monitor_id], map: "idx_ping_monitor_id")
+  @@index([monitor_id, timestamp(sort: Desc)], map: "idx_ping_monitor_time")
+  @@index([timestamp], map: "idx_ping_timestamp")
+}
+
+model users {
+  id                 Int        @id @default(autoincrement())
+  name               String?    @db.VarChar(255)
+  email              String     @unique @db.VarChar(255)
+  password           String     @db.VarChar(255)
+  created_at         DateTime?  @default(now()) @db.Timestamp(6)
+  notification_email String?    @db.VarChar(255)
+  monitors           monitors[]
+}

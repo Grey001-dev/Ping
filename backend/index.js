@@ -10,7 +10,8 @@ import { startAllMonitors } from './workers/pingWorkers.js';
 import {createServer} from 'http';
 import {Server} from 'socket.io';
 import userRouter from './routes/userroutes.js';
-
+import { incidentRouter } from './routes/incidentroutes.js';
+import { publicStatusRouter } from './routes/publicstatusroutes.js';
 const app=express();
 const httpServer=createServer(app);
 export const io=new Server(httpServer,{
@@ -35,12 +36,9 @@ app.use(express.urlencoded({ extended:true }));
 app.use('/auth/users',authroutes)
 app.use('/api/monitors',myMonitorRouter)
 app.use('/api/users',userRouter)
-app.get("/",(req,res)=>{
-    res.json({
-        success:true,
-        message:"Api is running"
-    })
-})
+app.use('/api/incidents',incidentRouter)
+app.use("/api/status",publicStatusRouter);
+
 
 io.on('connection',(socket)=>{
     console.log(`Frontend client connected to socket:${socket.id}`)

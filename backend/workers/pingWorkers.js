@@ -230,6 +230,15 @@ async function runMonitorLoop(monitor){
                 console.log(`RECOVERY!! ${freshMonitor.name} is back up! Flippping state to healthy`)
                 await db.query("UPDATE monitors SET is_down=false WHERE id=$1",[monitor.id])
                 freshMonitor.is_down=false;
+                // My incident resolved,dont want to get lost
+
+
+                await db.query(
+                    `UPDATE incidents SET resolved_at=NOW(),duration_seconds=EXTRACT(EPOCH FROM(NOW()-started_at))
+                    WHERE monitor_id=$1 AND resolved_at IS NULL
+                    `,[freshMonitor.id]
+                );
+
                 const user=await db.query("SELECT  COALESCE(notification_email,email)AS email FROM users WHERE id=$1",[monitor.user_id])
                 if(user.rows.length>0){
                     await sendRecoveryEmail(freshMonitor,user.rows[0].email);
@@ -254,6 +263,10 @@ async function runMonitorLoop(monitor){
                 if(!freshMonitor.is_down){
                     await db.query("UPDATE monitors SET is_down=true WHERE id=$1",[freshMonitor.id]);
                     freshMonitor.is_down=true;
+                    // New Incident opened sha
+                    await db.query(
+                        "INSERT INTO incidents(monitor_id,started_at,error) VALUES ($1,NOW(),$2)",[freshMonitor.id,result.error]
+                    )
 
                     const user=await db.query("SELECT COALESCE(notification_email,email) AS email FROM users WHERE id=$1",[freshMonitor.user_id])
                     console.log(user)
