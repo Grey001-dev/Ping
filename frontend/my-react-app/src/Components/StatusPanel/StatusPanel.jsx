@@ -5,6 +5,7 @@ import {Trash} from 'lucide-react';
 import { monitorService } from '../../services/monitorService';
 import {SquarePen} from "lucide-react";
 import {Pause,Play} from "lucide-react";
+import { io } from 'socket.io-client';
 import { LineChart,Line,XAxis,YAxis,CartesianGrid,Tooltip,ResponsiveContainer } from 'recharts';
 const getErrorMessage=(errorCode)=>{
     if(!errorCode) return 'Unknown error';
@@ -81,6 +82,20 @@ export default function StatusPanel({monitor,onDelete,savedError,onPause,onEdit,
         }
         load24h()
     },[monitor.id])
+
+    useEffect(()=>{
+        const socket=io('https://ping-7u78.onrender.com');
+
+        socket.on('monitor-updated',(updatedData)=>{
+            if(updatedData.id===monitor.id){
+                const reload24h=async()=>{
+                    const res=await monitorService.fetch24h(monitor.id);
+                    setDayHistory(res);
+                };
+                reload24h()
+            }
+        })
+    })
 
     const chartData=monitor.history.map(p=>({
         time:p.timestamp.slice(11,16),
