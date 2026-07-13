@@ -1,5 +1,5 @@
 import express from 'express'
-import { getIncidents,getIncidentsyMonitor } from '../controller/getIncidents.js'
+import { getIncidents,getIncidentsyMonitor } from '../controller/getincidents.js'
 import { verifyToken } from '../middleware/auth.js'
 
 
