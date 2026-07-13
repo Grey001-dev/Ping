@@ -258,11 +258,6 @@ async function runMonitorLoop(monitor){
                     })
                 }
 
-                const openIncident=await prisma.incidents.findFirst({
-                    where:{monitor_id:freshMonitor.id,resolved_at:{not:null},duration_seconds:null},
-                    orderBy:{started_at:'desc'}
-                })
-
                 const user=await prisma.users.findUnique({
                     where:{id:monitor.user_id},
                     select:{email:true,notification_email:true}
