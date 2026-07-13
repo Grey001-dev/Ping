@@ -39,7 +39,7 @@ export const getIncidentsyMonitor=async(req,res)=>{
         const result =await prisma.incidents.findMany({
             where:{monitor_id:parseInt(monitorId),
                 monitors:{user_id:userId}
-            },orderBy:{started_at:desc}
+            },orderBy:{started_at:'desc'}
         })
         res.status(200).json(result)
     } catch (error) {

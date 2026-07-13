@@ -70,6 +70,7 @@ export const monitorService={
                 'Authorization':`Bearer ${token}`
             }
         });
+        console.log(await res.json())
         return await res.json();
     },
     async fetch24h(id){
