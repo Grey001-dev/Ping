@@ -85,6 +85,15 @@ export default function MonitorDashboard(){
     }
   }
 
+  async function fetchIncidents(id){
+    try {
+      const data=await monitorService.incidents(id)
+      return data
+    } catch (error) {
+      console.log('Error caught fetching incidents')
+    }
+  }
+
     function handleSelect(id){
     setSelectedId(id);
     setView('status');
@@ -169,7 +178,7 @@ export default function MonitorDashboard(){
             if empty we show the user our empty state 
             */}
             {view=='status' && selectedMonitor&& 
-            <StatusPanel monitor={selectedMonitor} onDelete={handleMonitorDeleted} onPause={handleMonitorPaused} onEdit={handleEditClick}/>
+            <StatusPanel monitor={selectedMonitor} onDelete={handleMonitorDeleted} onPause={handleMonitorPaused} onEdit={handleEditClick} fetchIncidents={fetchIncidents}/>
             }
             {
               view=='add' && 

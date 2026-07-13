@@ -7,6 +7,7 @@ import { Socket } from 'socket.io';
 import net from 'net';
 import ping from 'ping';
 import { readdirSync } from 'fs';
+import prisma from '../config/prisma.js';
 
 
 // using reliable public resolvers
@@ -183,18 +184,21 @@ async function pingUrl(monitor){
 
 async function savePingResult(monitorid,status,latency,error=null){
     // check if monitor exist
-    const monitor=await db.query(
-        "SELECT id FROM monitors WHERE id=$1",[monitorid]
-    )
-    if(monitor.rows.length==0){
+    const monitor=await prisma.monitors.findUnique({
+        where:{id:monitorid}
+    })
+    if(!monitor){
         stopMonitor(monitorid);
         return;
     }
-
-    await db.query(
-        `INSERT INTO ping_history (monitor_id,status,latency,error,timestamp)
-        VALUES ($1,$2,$3,$4,NOW())`,[monitorid,status,latency,error]
-    );
+    await prisma.ping_history.create({
+        data:{
+            monitor_id:monitorid,
+            status,
+            latency,
+            error
+        }
+    })
 }
 
 
@@ -204,12 +208,14 @@ async function runMonitorLoop(monitor){
     // if monitor is edited on my frontend and prevent my backend from using stale data
     let freshMonitor=monitor;
     try {
-        const result=await db.query("SELECT * FROM monitors WHERE id=$1",[monitor.id])
-        if(result.rows.length===0){
+        const result=await prisma.monitors.findUnique({
+            where:{id:monitor.id}
+        })
+        if(!result){
             stopMonitor(monitor.id);
             return
         }
-        freshMonitor=result.rows[0];
+        freshMonitor=result;
         if(freshMonitor.is_paused){
             stopMonitor(monitor.id);
             return;
@@ -228,20 +234,42 @@ async function runMonitorLoop(monitor){
             await savePingResult(freshMonitor.id,result.status,result.latency,result.error);
             if(freshMonitor.is_down){
                 console.log(`RECOVERY!! ${freshMonitor.name} is back up! Flippping state to healthy`)
-                await db.query("UPDATE monitors SET is_down=false WHERE id=$1",[monitor.id])
+                await prisma.monitors.update({
+                    where:{id:freshMonitor.id},
+                    data:{is_down:false}
+                })
                 freshMonitor.is_down=false;
                 // My incident resolved,dont want to get lost
+                await prisma.incidents.updateMany({
+                    where:{monitor_id:freshMonitor.id,resolved_at:null},
+                    data:{
+                        resolved_at:new Date()
+                    }
+                });
+                const openIncident=await prisma.incidents.findFirst({
+                    where:{monitor_id:freshMonitor.id,resolved_at:{not:null},duration_seconds:null},
+                    orderBy:{started_at:'desc'}
+                })
+                if(openIncident){
+                    const durationSeconds=Math.floor((new Date(openIncident.resolved_at)-new Date(openIncident.started_at))/1000);
+                    await prisma.incidents.update({
+                        where:{id:openIncident.id},
+                        data:{duration_seconds:durationSeconds}
+                    })
+                }
 
+                const openIncident=await prisma.incidents.findFirst({
+                    where:{monitor_id:freshMonitor.id,resolved_at:{not:null},duration_seconds:null},
+                    orderBy:{started_at:'desc'}
+                })
 
-                await db.query(
-                    `UPDATE incidents SET resolved_at=NOW(),duration_seconds=EXTRACT(EPOCH FROM(NOW()-started_at))
-                    WHERE monitor_id=$1 AND resolved_at IS NULL
-                    `,[freshMonitor.id]
-                );
-
-                const user=await db.query("SELECT  COALESCE(notification_email,email)AS email FROM users WHERE id=$1",[monitor.user_id])
-                if(user.rows.length>0){
-                    await sendRecoveryEmail(freshMonitor,user.rows[0].email);
+                const user=await prisma.users.findUnique({
+                    where:{id:monitor.user_id},
+                    select:{email:true,notification_email:true}
+                })
+                if(user){
+                    const targetEmail=user.notification_email || user.email
+                    await sendRecoveryEmail(freshMonitor,targetEmail)
                 }
             }
 
@@ -261,18 +289,28 @@ async function runMonitorLoop(monitor){
 
                 await savePingResult(freshMonitor.id,result.status,result.latency,result.error);
                 if(!freshMonitor.is_down){
-                    await db.query("UPDATE monitors SET is_down=true WHERE id=$1",[freshMonitor.id]);
+                    await prisma.monitors.update({
+                        where:{id:freshMonitor.id},
+                        data:{is_down:true}
+                    })
                     freshMonitor.is_down=true;
                     // New Incident opened sha
-                    await db.query(
-                        "INSERT INTO incidents(monitor_id,started_at,error) VALUES ($1,NOW(),$2)",[freshMonitor.id,result.error]
-                    )
+                    await prisma.incidents.create({
+                        data:{
+                            monitor_id:freshMonitor.id,
+                            error:result.error
+                        }
+                    })
 
-                    const user=await db.query("SELECT COALESCE(notification_email,email) AS email FROM users WHERE id=$1",[freshMonitor.user_id])
+                    const user=await prisma.user.findUnique({
+                        where:{id:freshMonitor.user_id},
+                        select:{email:true,notification_email:true}
+                    })
                     console.log(user)
-                    if(user.rows.length>0){
+                    if(user){
                         console.log("Should send an email")
-                        await sendDownEmail(freshMonitor,user.rows[0].email)
+                        const targetEmail=user.notification_email || user.email
+                        await sendDownEmail(freshMonitor,targetEmail)
                     }
                 }
                 io.emit('monitor-updated',{
@@ -285,7 +323,7 @@ async function runMonitorLoop(monitor){
                 
             }else{
                 console.log(`Soft failure ${failureCounts[freshMonitor.id]} with retries of :${retries}.`)
-                // i Will quickly double-check
+                // i Will quickly double-check after failures inorder to prevent false alarms
                 const fastTimer=setTimeout(()=>{
                     runMonitorLoop(freshMonitor);
                 },2000)
@@ -332,9 +370,7 @@ export function stopMonitor(monitorId){
 
 export async function startAllMonitors(){
     try {
-        const myDb=await db.query("SELECT * FROM monitors");
-        const monitors=myDb.rows;
-
+        const monitors=await prisma.monitors.findMany();
         if(monitors.length===0){
             console.log('No monitors yet,waiting for users to add some monitors ')
             return;

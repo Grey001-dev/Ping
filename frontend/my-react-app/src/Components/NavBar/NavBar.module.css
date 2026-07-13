@@ -1,0 +1,86 @@
+.navbar{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 24px;
+    background: #0b0c0d;
+    border-bottom: 1px solid #22262a;
+}
+.brand{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+}
+.logo{
+    display: flex;
+    align-items: flex-end;
+    gap: 2px;
+    height: 18px;
+    width: 20px;
+}
+
+.logoBar {
+    width: 3px;
+    height: 18px;
+    background: #4ade80;
+    border-radius: 1px;
+    animation: logoPulse 1.2s ease-in-out infinite;
+    transform-origin: bottom;
+}
+.bar1{
+    height: 8px;
+}
+.bar2{
+    height: 12px;
+}
+.bar3{
+    height: 15px;
+}
+.bar4{
+    height: 18px;
+}
+@keyframes logoPulse {
+    0%, 100% { transform: scaleY(0.35); opacity: 0.5; }
+    50% { transform: scaleY(1); opacity: 1; }
+}
+.brandsha{
+    font-family: 'Syne',sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: #ffffff;
+}
+.links{
+    display: flex;
+    gap: 24px;
+}
+.navLink{
+    font-family: 'DM Mono',monospace;
+    color: rgba(255,255,255,0.5);
+    text-decoration: none;
+    font-size: 13px;
+    padding: 6px 0;
+    border-bottom: 2px solid transparent;
+    transition: color 0.15s ease,border-color 0.15s ease;
+}
+.navLink:hover{
+    color: rgba(255,255,255,0.85);
+}
+.active{
+    color: #4ade80;
+    border-bottom: 2px solid #4ade80;
+}
+.logoutBtn{
+    background: transparent;
+    border: 1px solid #e36262;
+    color: #e36262;
+    padding: 6px 14px;
+    border-radius: 6px;
+    font-family: 'DM Mono',monospace;
+    font-size: 13px;
+    cursor: pointer;
+    transition: background 0.15s ease;
+}
+.logoutBtn:hover{
+    background: rgba(227,98,98,0.1);
+}

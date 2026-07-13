@@ -1,4 +1,7 @@
+import axios from 'axios'
+
 const API_URL='http://localhost:5000/api/monitors';
+const INCIDENTS_URL='http://localhost:5000/api/incidents'
 
 export const monitorService={
     async getAll(){
@@ -59,4 +62,24 @@ export const monitorService={
         });
         return await res.json()
     },
+    async incidents(id){
+        const token=localStorage.getItem("token")
+        const res=await fetch(`${INCIDENTS_URL}/${id}`,{
+            headers:{
+                'Content-Type':'application/json',
+                'Authorization':`Bearer ${token}`
+            }
+        });
+        return await res.json();
+    },
+    async fetch24h(id){
+        const token=localStorage.getItem('token');
+        const res=await fetch(`${API_URL}/${id}/history/24h`,{
+            headers:{
+                'Content-Type':'application/json',
+                'Authorization':`Bearer ${token}`
+            }
+        })
+        return await res.json();
+    }
 }

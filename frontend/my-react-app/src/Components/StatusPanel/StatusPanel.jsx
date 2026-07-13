@@ -2,6 +2,7 @@ import styles from './StatusPanel.module.css'
 import { useEffect, useState } from 'react';
 import {Monitor, TriangleAlert} from 'lucide-react';
 import {Trash} from 'lucide-react';
+import { monitorService } from '../../services/monitorService';
 import {SquarePen} from "lucide-react";
 import {Pause,Play} from "lucide-react";
 import { LineChart,Line,XAxis,YAxis,CartesianGrid,Tooltip,ResponsiveContainer } from 'recharts';
@@ -22,15 +23,17 @@ const getErrorMessage=(errorCode)=>{
     }
 }
 
-export default function StatusPanel({monitor,onDelete,savedError,onPause,onEdit}){
+export default function StatusPanel({monitor,onDelete,savedError,onPause,onEdit,fetchIncidents}){
     const max_bars=30;
     const isDown=monitor.status=='down';
     const [showError,setShowError]=useState(false);
+    const [incidents,setIncidents]=useState([])
     const paddingNeeded=Math.max(0,max_bars-monitor.history.length);
     const emptyPlaceholders=Array(paddingNeeded).fill({status:'empty'});
     const fullTimeline=[...emptyPlaceholders,...monitor.history.slice(-max_bars)]
     const upCount=monitor.history.filter(p=>p.status==='up').length;
     const downCount=monitor.history.filter(p=>p.status==='down').length
+    const [dayHistory,setDayHistory]=useState(null)
     
     
     useEffect(()=>{
@@ -40,6 +43,44 @@ export default function StatusPanel({monitor,onDelete,savedError,onPause,onEdit}
         setShowError(false);
         }
     },[monitor.error,monitor.status]);
+
+    const Duration=(seconds)=>{
+        if(seconds==null){
+            return null
+        }
+        if(seconds<60) {
+            return `${seconds}s`
+        }
+        if(seconds<3600){
+            return `${Math.round(seconds/60)}m`
+        }
+        return `${Math.round(seconds/3600)}h ${Math.round((seconds % 3600)/60)}m`
+    }
+
+    useEffect(()=>{
+        const loadIncidents=async()=>{
+            const data=await fetchIncidents(monitor.id)
+            if(Array.isArray(data)){
+                setIncidents(data)
+                console.log("current incident state:",incidents);
+            }else{
+                setIncidents([]);
+            }
+        }
+        loadIncidents()
+    },[monitor.id])
+
+    useEffect(()=>{
+        const load24h=async()=>{
+            try {
+                const res=await monitorService.fetch24h(monitor.id)
+                setDayHistory(res);
+            } catch (err) {
+                console.error(`Error fetching 24h stats:`,err)
+            }
+        }
+        load24h()
+    },[monitor.id])
 
     const chartData=monitor.history.map(p=>({
         time:p.timestamp.slice(11,16),
@@ -99,27 +140,25 @@ export default function StatusPanel({monitor,onDelete,savedError,onPause,onEdit}
                 </div>
 
                 <div className={styles.statusCard}>
-                    <p className={styles.statusLabel}>
-                        Uptime
-                    </p>
-                    <p className={`${styles.statusValue} ${isDown ? styles.valueDown : styles.valueUp}`}>
-                        {monitor.uptime}%
-                    </p>
-                </div>
+                <p className={styles.statusLabel}>Uptime(24h)</p>
+                <p className={`${styles.statusValue} ${isDown ? styles.valueDown : styles.valueUp}`}>
+                    { dayHistory?.uptime24h != null ? `${dayHistory.uptime24h}%` : '--'}
+                </p>
+            </div>
 
-                <div className={styles.statusCard}>
-                    <p className={styles.statusLabel}>Checks up</p>
-                    <p className={`${styles.statusValue} ${monitor.upCount>0 ? styles.valueUp : styles.valueDown}`}>
-                        {monitor.upCount} <span>(last 30)</span>
-                    </p>
-                </div>
+            <div className={styles.statusCard}>
+                <p className={styles.statusLabel}>Checks up(24h)</p>
+                <p className={`${styles.statusValue} ${dayHistory?.upCount24h > 0 ? styles.valueUp : styles.valueDown}`}>
+                    {dayHistory?.upCount24h ?? '--'}
+                </p>
+            </div>
 
-                <div className={styles.statusCard}>
-                    <p className={styles.statusLabel}>Checks down</p>
-                    <p className={`${styles.statusValue } ${monitor.downCount>0 ?styles.valueDown :''}`}>
-                        {monitor.downCount} <span>(last 30)</span>
-                    </p>
-                </div>
+            <div className={styles.statusCard}>
+                <p className={styles.statusLabel}>Checks down(24h)</p>
+                <p className={`${styles.statusValue} ${dayHistory?.downCount24h > 0 ? styles.valueDown : ''}`}>
+                    {dayHistory?.downCount24h ?? '--'}
+                </p>
+            </div>
             </div>
 
             <div className={styles.statusBarsSection}>
@@ -131,12 +170,22 @@ export default function StatusPanel({monitor,onDelete,savedError,onPause,onEdit}
                         <div key={index} className={styles.statusBarLines}>
                             <div className={`${styles.statusBar} ${ping.status=='up' ? 
                                 styles.barUp: ping.status=="down" ? 
-                                styles.barDown :styles.barEmpty  }`}/>
+                                styles.barDown :styles.barEmpty  }`}>
+                                {ping.status !=='empty' && ping.timestamp && (
+                                    <span className={styles.toolTip}>
+                                        {new Date(ping.timestamp).toLocaleString(undefined,{
+                                            month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'
+                                        })}
+                                        {'-'}
+                                        {ping.status==='up'?"Up":"Down"}
+                                    </span>
+                                )}
+                            </div>
                         </div>
                     ))}
                 </div>
                 <div className={styles.timeLineLabels}>
-                    <span>60 mins ago</span>
+                    <span>Last 30 checks</span>
                     <span>Just now</span>
                 </div>
                 <div className={styles.sectionLabel}>
@@ -156,9 +205,47 @@ export default function StatusPanel({monitor,onDelete,savedError,onPause,onEdit}
                         </ResponsiveContainer>
                     </div>
                 </div>
-            </div>
-        
 
+                <div className={styles.incidentSection}>
+                    <p className={styles.sectionLabel}>
+                        INCIDENT HISTORY
+                    </p>
+                    {incidents.length===0 ?(
+                        <p className={styles.noincidents}>No incidents recorder for this monitor</p>
+                    ):(
+                        <div className={styles.incidentList}>
+                            {incidents.map(incident=>(
+                                <div key={incident.id} className={styles.incidentRow}>
+                                    <div className={styles.incidentTop}>
+                                        <span className={incident.resolved_at ? styles.resolve: styles.ongoing}>
+                                            {incident.resolved_at ? 'Resolved' :'Ongoing'}
+                                        </span>
+                                        <span className={styles.incidentError}>{getErrorMessage(incident.error)}</span>
+                                    </div>
+                                    <div className={styles.incidentDetails}>
+                                        <span className={styles.detailItem}>
+                                            <strong>Started:</strong>{new Date(incident.started_at).toLocaleString()}
+                                        </span>
+                                        {incident.resolved_at ? (
+                                            <span className={styles.detailItem}>
+                                                <strong>Resolved:</strong>{new Date(incident.resolved_at).toLocaleString()}
+                                            </span>
+                                        ):(
+                                            <span className={styles.detailItemongoing}>Still ongoing</span>
+                                        )}
+                                        {incident.duration_seconds !=null &&(
+                                            <span className={styles.detailItem}>
+                                                <strong>Duration:</strong>{Duration(incident.duration_seconds)}
+                                            </span>
+                                        )}
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+
+                </div>
+            </div>
         </div>
     )
 }
