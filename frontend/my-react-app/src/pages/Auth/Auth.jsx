@@ -38,7 +38,7 @@ export default function Auth({setToken}){
         name:name
     }
     try{
-        const response=await fetch('http://localhost:5000/auth/users',{
+        const response=await fetch('https://ping-7u78.onrender.com/auth/users',{
             method: 'POST',
             headers:{
                 'Content-Type':'application/json',

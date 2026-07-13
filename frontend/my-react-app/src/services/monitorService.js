@@ -1,7 +1,7 @@
 import axios from 'axios'
-
-const API_URL='http://localhost:5000/api/monitors';
-const INCIDENTS_URL='http://localhost:5000/api/incidents'
+const BASE_URL=import.meta.env.VITE_API_BASE_URL || 'https://ping-7u78.onrender.com'
+const API_URL=`${BASE_URL}/api/monitors`;
+const INCIDENTS_URL=`${BASE_URL}/api/incidents`
 
 export const monitorService={
     async getAll(){
