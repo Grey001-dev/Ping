@@ -20,7 +20,7 @@ export const getPublicStatus = async (req, res) => {
                     
                 );
                 const upCount = history.filter(p => p.status === 'up').length;
-                const uptimePercent = history.length > 0 ? Math.round((upCount / history.rows.length) * 100) : null;
+                const uptimePercent = history.length > 0 ? Math.round((upCount / history.length) * 100) : null;
 
                 return {
                     id: monitor.id,

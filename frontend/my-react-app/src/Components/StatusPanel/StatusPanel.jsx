@@ -84,7 +84,9 @@ export default function StatusPanel({monitor,onDelete,savedError,onPause,onEdit,
     },[monitor.id])
 
     useEffect(()=>{
-        const socket=io('https://ping-7u78.onrender.com');
+        const socket=io('https://ping-7u78.onrender.com',{
+            transports:["polling","websockets"]
+        });
 
         socket.on('monitor-updated',(updatedData)=>{
             if(updatedData.id===monitor.id){
@@ -95,7 +97,8 @@ export default function StatusPanel({monitor,onDelete,savedError,onPause,onEdit,
                 reload24h()
             }
         })
-    })
+        return ()=>socket.disconnect()
+    },[monitor.id])
 
     const chartData=monitor.history.map(p=>({
         time:p.timestamp.slice(11,16),

@@ -91,7 +91,8 @@ export default function MonitorDashboard(){
       const data=await monitorService.incidents(id)
       return data
     } catch (error) {
-      console.log('Error caught fetching incidents')
+      console.log('Error caught fetching incidents');
+      return []
     }
   }
 

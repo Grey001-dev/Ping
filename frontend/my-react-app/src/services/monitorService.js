@@ -20,7 +20,7 @@ export const monitorService={
             method:"POST",
             headers:{
                 'Content-Type':"application/json",
-                'Authorization':`'Bearer ${token}`
+                'Authorization':`Bearer ${token}`
             },
             body:JSON.stringify(monitorData)
         });
@@ -70,8 +70,9 @@ export const monitorService={
                 'Authorization':`Bearer ${token}`
             }
         });
-        console.log(await res.json())
-        return await res.json();
+        const data=await res.json()
+        console.log(data)
+        return data;
     },
     async fetch24h(id){
         const token=localStorage.getItem('token');
