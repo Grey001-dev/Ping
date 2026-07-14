@@ -1,4 +1,4 @@
-import db from '../config/db.js';
+
 import axios from 'axios';
 import {io} from '../index.js';
 import { sendDownEmail,sendRecoveryEmail } from '../services/emailService.js';
@@ -297,7 +297,7 @@ async function runMonitorLoop(monitor){
                         }
                     })
 
-                    const user=await prisma.user.findUnique({
+                    const user=await prisma.users.findUnique({
                         where:{id:freshMonitor.user_id},
                         select:{email:true,notification_email:true}
                     })

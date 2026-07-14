@@ -1,7 +1,8 @@
 import {useState,useEffect} from 'react'
 import {getUser,updateUser} from '../../services/settingsService';
-import { Bell,Shield ,TriangleAlert,CheckCircle2,Settings2Icon} from 'lucide-react';
+import { Bell,Shield ,TriangleAlert,CheckCircle2,Settings2Icon,UserKey} from 'lucide-react';
 import styles from './Settings.module.css'
+
 
 export default function Settings(){
     const [email,setEmail]=useState('');
@@ -9,7 +10,7 @@ export default function Settings(){
     const [loading,setLoading]=useState(true);
     const [saving,setSaving]=useState(false);
     const [message,setMessage]=useState(null);
-
+    const [userId,setUserId]=useState(null);
     const token=localStorage.getItem("token")
 
     useEffect(()=>{
@@ -17,6 +18,7 @@ export default function Settings(){
         try {
             const datas= await getUser();
             setEmail(datas.data.email);
+            setUserId(datas.data.id)
             setNotificationEmail(datas.data.notification_email ||'');
         } catch (error) {
             setMessage({type:'error',text:'Could not load account info'});
@@ -63,6 +65,19 @@ export default function Settings(){
                     <div className={styles.inputs}>
                         <label className={styles.label}>Login Email</label>
                         <input type="email" value={email} readOnly className={styles.inputField} />
+                    </div>
+                </div>
+                <div className={styles.panel}>
+                    <h2 className={styles.panelHeading}>
+                        <UserKey size={14} className={styles.icon}/>
+                        Public Status Page
+                    </h2>
+                    <p className={styles.inputHint}>Share this link so others can see you public monitors:</p>
+                    <div className={styles.statusLinkRow}>
+                        <code>{`${window.location.origin}/status/${userId}`}</code>
+                        <button onClick={()=>navigator.clipboard.writeText(`${window.location.origin}/status/${userId}`)}>
+                            Copy Link
+                        </button>
                     </div>
                 </div>
                 <div className={styles.panel}>
