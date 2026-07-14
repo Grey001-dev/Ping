@@ -1,6 +1,8 @@
 import dotenv from 'dotenv'
 import nodemailer from 'nodemailer'
+import dns from 'dns'
 dotenv.config()
+dns.setDefaultResultOrder('ipv4first')
 
 const transporter=nodemailer.createTransport({
     host:'smtp.gmail.com',
@@ -9,8 +11,7 @@ const transporter=nodemailer.createTransport({
     auth:{
         user:process.env.GMAIL_USER,
         pass:process.env.GMAIL_APP_PASSWORD
-    },
-    family:4
+    }
 });
 
 transporter.verify((error,success)=>{
