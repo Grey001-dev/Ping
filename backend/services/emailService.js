@@ -1,8 +1,8 @@
 import dotenv from 'dotenv'
-import nodemailer from 'nodemailer'
-import dns from 'dns'
+// import nodemailer from 'nodemailer'
+// import dns from 'dns'
 dotenv.config()
-import * as Brevo from '@getbrevo/brevo'
+import Brevo from '@getbrevo/brevo'
 
 // const transporter=nodemailer.createTransport({
 //     host:'smtp.gmail.com',
@@ -22,17 +22,17 @@ import * as Brevo from '@getbrevo/brevo'
 //     }
 // });
 
-const apiInstance=new Brevo.TransactionalEmailsApi();
+const apiInstance = new Brevo.TransactionalEmailsApi();
 apiInstance.setApiKey(Brevo.TransactionalEmailsApiApiKeys.apiKey, process.env.BREVO_API_KEY)
+
 try {
-    if(!process.env.BREVO_API_KEY || !process.env.SENDER_EMAIL){
+    if (!process.env.BREVO_API_KEY || !process.env.SENDER_EMAIL) {
         console.log(`Email Configuration FAILED: missing environment variables`)
-    }else{
+    } else {
         console.log('Email client is ready to transmit API requests')
     }
 } catch (error) {
-    console.log('Email client initialization failed',error.message)
-    
+    console.log('Email client initialization failed', error.message)
 }
 
 // export async function sendDownEmail(monitor, userEmail) {
@@ -84,10 +84,9 @@ try {
 //         console.error('Error sending recovery email:', err.message);
 //     }
 // }
-
 export async function sendDownEmail(monitor, userEmail) {
     try {
-        const sendSmtpEmail = new Brevo.SendSmtpEmail(); // Brevo names this object "SendSmtpEmail", but it sends over standard HTTP REST API
+        const sendSmtpEmail = new Brevo.SendSmtpEmail(); 
         
         sendSmtpEmail.subject = `🔴 ${monitor.name} is down`;
         sendSmtpEmail.sender = { name: "Ping Alerts", email: process.env.SENDER_EMAIL };
