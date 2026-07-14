@@ -1,70 +1,271 @@
-.wrapper {
-    max-width: 700px;
+
+.wrapper{
+    max-width: 640px;
     margin: 0 auto;
-    padding: 40px 24px;
-    font-family: 'DM Mono', monospace;
+    padding: 60px 20px;
+    font-family: 'DM Mono',monospace;
     color: #f1f5f9;
+    background-color: #0a0a0f;
+    min-height: 100vh;
+    box-sizing: border-box;
 }
-
-.bannerUp {
-    background: rgba(74, 222, 128, 0.1);
-    border: 1px solid rgba(74, 222, 128, 0.3);
-    color: #4ade80;
-    text-align: center;
-    padding: 16px;
-    border-radius: 8px;
-    font-weight: 700;
-    margin-bottom: 24px;
-}
-
-.bannerDown {
-    background: rgba(227, 98, 98, 0.1);
-    border: 1px solid rgba(227, 98, 98, 0.3);
-    color: #e36262;
-    text-align: center;
-    padding: 16px;
-    border-radius: 8px;
-    font-weight: 700;
-    margin-bottom: 24px;
-}
-
-.monitorList {
+.loadingWrapper,.errorWrapper{
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    margin-bottom: 32px;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #0a0a0f;
+    color: #94a3b8;
+    font-family: 'DM Mono',monospace;
+    gap: 16px;
 }
-
-.monitorRow {
+.spinner{
+    width: 24px;
+    height: 24px;
+    border: 2px solid rgba(255,255,255,0.1);
+    border-top-color: #10b981;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+@keyframes spin{
+    to{
+        transform: rotate(360deg);
+    }
+}
+.errorIcon{
+    color: #ef4444;
+}
+.errorTitle{
+    font-family: "DM Mono",monospace;
+    font-size: 18px;
+    font-weight: 700;
+    color: #f1f5f9;
+    margin: 0;
+}
+.errorSubtitle{
+    font-size: 13px;
+    color: rgba(255,255,255,0.4);
+    margin: 0;
+}
+.header{
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: #131517;
-    border: 1px solid #22262a;
+    margin-bottom: 32px;
+}
+.brand{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.brandIcon{
+    color: #10b981;
+}
+.brand h1{
+    font-family: 'DM Mono',monospace;
+    font-size: 18px;
+    font-weight: 700;
+    margin: 0;
+    color: #ffffff;
+}
+.realTime{
+    font-size: 11px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    padding: 3px 8px;
+    border-radius: 100px;
+    color: rgba(255,255,255,0.6);
+}
+.Up,.Down{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 16px;
     border-radius: 8px;
-    padding: 14px 18px;
+    font-family: 'Syne',sans-serif;
     font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 32px;
 }
-
-.up { color: #4ade80; font-weight: 600; }
-.down { color: #e36262; font-weight: 600; }
-.uptime { color: rgba(255,255,255,0.4); font-size: 12px; }
-.empty { color: rgba(255,255,255,0.4); text-align: center; }
-
-.incidentSection h2 {
-    font-family: 'Syne', sans-serif;
-    font-size: 16px;
-    margin-bottom: 12px;
+.Up{
+    background: rgba(16,185,129,0.06);
+    border: 1px solid rgba(16,185,129,0.15);
+    color: #10b981;
 }
-
-.incidentRow {
-    background: #131517;
-    border: 1px solid #22262a;
-    border-radius: 6px;
-    padding: 10px 14px;
-    font-size: 12px;
-    margin-bottom: 8px;
+.Down{
+    background: rgba(239,68,68,0.06);
+    border: 1px solid rgba(239,68,68,0.15);
+    color: #ef4444;
+}
+.pulse{
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+}
+.Up .pulse{
+    background-color: #10b981;
+    box-shadow: 0 0 0 0 rgba(16,185,129,0.4);
+    animation: pulseGreen 2s infinite;
+}
+.Down .pulse{
+    background-color: #ef4444;
+    box-shadow: 0 0 0 0 rgba(239,68,68,0.4);
+    animation: pulseRed 2s infinite;
+}
+ @keyframes pulseGreen {
+    70%{
+        box-shadow: 0 0 0 6px rgba(16,185,129,0);
+    }
+    100%{
+        box-shadow: 0 0 0 0 rgba(16,185,129,0);
+    }
+ }
+ @keyframes pulseRed {
+  70% { 
+    box-shadow: 0 0 0 6px rgba(239, 68, 68, 0); 
+    }
+  100% { 
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); 
+    }
+}
+.monitorList{
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 8px;
+    margin-bottom: 40px;
+}
+.monitorRow{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #111118;
+    border: 1px solid #1e1e2e;
+    border-radius: 8px;
+    padding: 16px 20px;
+}
+.monitorNameGroup{
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.monitorIndicator{
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+}
+.indicatorUp{
+    background-color: #10b981;
+}
+.indicatorDown{
+    background-color: #ef4444;
+}
+.monitorName {
+  font-weight: 500;
+  font-size: 14px;
+}
+.monitorMetaGroup {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.up {
+  color: #10b981;
+  font-weight: 600;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.down {
+  color: #ef4444;
+  font-weight: 600;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.uptime{
+    color: rgba(255,255,255,0.45);
+    font-size: 12px;
+}
+.emptyCard{
+    background: #111118;
+    border: 1px dashed #1e1e2e;
+    border-radius: 8px;
+    padding: 32px 16px;
+    text-align: center;
+}
+.empty{
+    color: rgba(255,255,255,0.35);
+    font-size: 13px;
+    margin: 0;
+}
+.incidentSection{
+    margin-top: 48px;
+}
+.incidentSectionHeader{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.incidentSectionHeader h2{
+    font-family:"DM Mono",monospace;
+    font-size: 15px;
+    font-weight: 700;
+    color: #ffffff;
+    margin: 0;
+}
+.incidentList{
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+.incidentRow{
+    background: #111118;
+    border: 1px solid #1e1e2e;
+    border-radius: 8px;
+    padding: 16px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.incidentHeader{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.incidentMonitorName{
+    font-weight: 600;
+    font-size: 14px;
+}
+.onResolved, .onGoing{
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius:4px;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+.onResolved{
+    background: rgba(16,185,129,0.15);
+    color: #10b981;
+}
+.onGoing{
+    background: rgba(239, 68, 68, 0.15);
+    color: #ef4444;
+}
+.timelineArrow{
+    color: rgba(255,255,255,0.4);
+}
+.incidentTimeResolved{
+    color: #10b981;
+}
+.incidentTimeline { 
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.4);
 }

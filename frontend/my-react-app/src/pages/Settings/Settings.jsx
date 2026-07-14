@@ -1,6 +1,6 @@
 import {useState,useEffect} from 'react'
 import {getUser,updateUser} from '../../services/settingsService';
-import { Bell,Shield ,TriangleAlert,CheckCircle2,Settings2Icon,UserKey} from 'lucide-react';
+import { Bell,Shield ,TriangleAlert,CheckCircle2,Settings2Icon,UserKey,Copy} from 'lucide-react';
 import styles from './Settings.module.css'
 
 
@@ -11,6 +11,7 @@ export default function Settings(){
     const [saving,setSaving]=useState(false);
     const [message,setMessage]=useState(null);
     const [userId,setUserId]=useState(null);
+    const [copied,setCopied]=useState(false)
     const token=localStorage.getItem("token")
 
     useEffect(()=>{
@@ -28,6 +29,13 @@ export default function Settings(){
     }
     loadUser();
 },[])
+    
+    const handleCopy=async ()=>{
+        const link =`${window.location.origin}/status/${userId}`;
+        await navigator.clipboard.writeText(link);
+        setCopied(true);
+        setTimeout(()=>setCopied(false),2000)
+    }
 
     const handleSave=async (e)=>{
         e.preventDefault();
@@ -43,14 +51,23 @@ export default function Settings(){
             setSaving(false)
         }   
     }
-
+    if(loading){
+        return(
+            <div className={styles.wrapper}>
+                <div className={styles.spinnerContainer}>
+                    <div className={styles.spinner}></div>
+                    <p className={styles.spinnerText}>Loading settings...</p>
+                </div>
+            </div>
+        )
+    }
 
 
     return(
         <div className={styles.wrapper}>
             <div className={styles.container}>
-                <div className={styles.panelHeader}>
-                    <Settings2Icon size={16} className={styles.icon}/>
+                <div className={styles.pageHeader}>
+                    <Settings2Icon size={20} className={styles.mainIcon}/>
                     <h1 className={styles.title}>
                     Settings
                     </h1>
@@ -67,19 +84,31 @@ export default function Settings(){
                         <input type="email" value={email} readOnly className={styles.inputField} />
                     </div>
                 </div>
+
+
+
                 <div className={styles.panel}>
-                    <h2 className={styles.panelHeading}>
+                    <div className={styles.panelHeader}>
                         <UserKey size={14} className={styles.icon}/>
-                        Public Status Page
-                    </h2>
-                    <p className={styles.inputHint}>Share this link so others can see you public monitors:</p>
+                        <h2 className={styles.panelHeading}>Public Status Page</h2>
+                    </div>
+                    <p className={styles.inputHint}>
+                        Share this link so others can see your public monitors:
+                    </p>
                     <div className={styles.statusLinkRow}>
-                        <code>{`${window.location.origin}/status/${userId}`}</code>
-                        <button onClick={()=>navigator.clipboard.writeText(`${window.location.origin}/status/${userId}`)}>
-                            Copy Link
+                        <code className={styles.codeBlock}>
+                            {userId ? `${window.location.origin}/status/${userId}`: 'Generating link...'}
+                        </code>
+                        <button onClick={handleCopy} disabled={!userId} className={copied ? styles.copyBtnCopied : styles.copyBtn}>
+                            <Copy size={12}/>
+                            {copied ? 'Copied!':'Copy'}
                         </button>
+
                     </div>
                 </div>
+
+
+
                 <div className={styles.panel}>
                     <div className={styles.panelHeader}>
                         <Bell size={14} className={styles.icon}/>

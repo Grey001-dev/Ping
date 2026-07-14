@@ -2,7 +2,7 @@ import {useState,useEffect} from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import styles from './PublicStatusPage.module.css';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight,Activity,Clock } from 'lucide-react';
 
 export default function PublicStatusPage(){
     const [data,setData]=useState(null);
@@ -22,17 +22,18 @@ export default function PublicStatusPage(){
         };
         fetchStatus()
     },[userId]);
-    if(loading){
-        return(
-            <div className={styles.wrapper}>
-                <p>Loading...</p>
-            </div>
-        )
-    }
+    if (loading) {
+    return (
+        <div className={styles.loadingWrapper}>
+            <div className={styles.spinner}></div>
+            <p className={styles.loadingText}>Loading...</p>
+        </div>
+    );
+}
 
     if(error || !data){
         return(
-            <div className={styles.wrapper}>
+            <div className={styles.errorWrapper}>
                 <p>Status page not found.</p>
             </div>
         )
@@ -40,33 +41,86 @@ export default function PublicStatusPage(){
     const allUp=data.monitors.every(m=>m.status==='up');
     return(
         <div className={styles.wrapper}>
+
+            <header className={styles.header}>
+                <div className={styles.brand}>
+                    <Activity className={styles.brandIcon} size={18}/>
+                    <h1>System Status</h1>
+                </div>
+                <span className={styles.realTime}>Real-time</span>
+            </header>
+
+
             <div className={allUp? styles.Up:styles.Down}>
+                <span className={styles.pulse}></span>
                 {allUp? 'All Systems Are Active' :'Some Systems are experiencing Issues'}
             </div>
 
             <div className={styles.monitorList}>
                 {data.monitors.length===0 ?(
-                    <p className={styles.empty}>No public monitors to display</p>
+                    <div>
+                        <p className={styles.empty}>No active monitors linked to this page.</p>
+                    </div>
                 ):(
                     data.monitors.map(monitor=>(
                         <div key={monitor.id} className={styles.monitorRow}>
-                            <span>{monitor.name} &nbsp;</span>
-                            <span className={monitor.status==='up' ? styles.up :styles.down}>{monitor.status==='up' ?'Operational' :'Down'}</span>
-                            {monitor.uptime !==null && <span className={styles.uptime}>{monitor.uptime}% uptime</span> }
+                            <div className={styles.monitorNameGroup}>
+                                <span className={`${styles.monitorIndicator} ${monitor.status ==='up' ? styles.indicateUp: styles.indicateDown}`}></span>
+                                <span className={styles.monitorName}>{monitor.name}</span>
+                            </div>
+                            <div className={styles.monitorMetaGroup}>
+                                {monitor.uptime !==null &&(
+                                    <span className={styles.uptime}>
+                                        {`${Number(monitor.uptime).toFixed(2)}% uptime`}
+                                    </span>
+                                )}
+                                <span className={monitor.status==='up' ? styles.up :styles.down}>
+                                    {monitor.status==='up' ? "Operational" :"Down"}
+                                </span>
+                            </div>
                         </div>
                     ))
                 )}
             </div>
             {data.incidents.length>0 &&(
                 <div className={styles.incidentSection}>
-                    <h2>Recent Incidents</h2>
-                    {data.incidents.map(incident=>(
+                    <div className={styles.incidentSectionHeader}>
+                        <Clock size={16}/>
+                        <h2>Recent incidents</h2>
+                    </div>
+                    <div className={styles.incidentList}>
+                        {data.incidents.map(incident=>(
                         <div key={incident.id} className={styles.incidentRow}>
-                            <strong>{incident.monitor_name}</strong>
-                            <span>{new Date(incident.started_at).toLocaleString()}</span>
-                            {incident.resolved_at && <span><ArrowRight size={14}/>Resolved{new Date(incident.resolved_at).toLocaleString()} </span>}
+                            <div className={styles.incidentHeader}>
+                                <span className={styles.incidentMonitorName}>{incident.monitor_name}</span>
+                                <span className={
+                                    incident.resolved_at ? styles.onResolved :styles.onGoing
+                                }>
+                                    {incident.resolved_at ? "Resolved":"Ongoing"}
+                                </span>
+                            </div>
+                            <div className={styles.incidentTimeline}>
+                                <span className={styles.incidentTime}>
+                                    {new Date(incident.started_at).toLocaleString(undefined,{
+                                        month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'
+                                    })}
+                                </span>
+                                {incident.resolved_at && (
+                                    <>
+                                    <ArrowRight size={12} className={styles.timelineArrow}/>
+                                    <span className={styles.incidentTimeResolved}>
+                                        {new Date(incident.resolved_at).toLocaleString(undefined,{
+                                            month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'
+                                        })}
+                                    </span>
+                                    </>
+                                )}
+                            </div>
                         </div>
                     ))}
+
+                    </div>
+
                 </div>
             )}
 

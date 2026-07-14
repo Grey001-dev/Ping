@@ -192,7 +192,7 @@ export default function StatusPanel({monitor,onDelete,savedError,onPause,onEdit,
                                 {ping.status !=='empty' && ping.timestamp && (
                                     <span className={styles.toolTip}>
                                         {new Date(ping.timestamp).toLocaleString(undefined,{
-                                            month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'
+                                            month:'short',day:'numeric',hour:'2-digit',minute:'2-digit',timeZone:'UTC'
                                         })}
                                         {'-'}
                                         {ping.status==='up'?"Up":"Down"}
@@ -229,7 +229,7 @@ export default function StatusPanel({monitor,onDelete,savedError,onPause,onEdit,
                         INCIDENT HISTORY
                     </p>
                     {incidents.length===0 ?(
-                        <p className={styles.noincidents}>No incidents recorder for this monitor</p>
+                        <p className={styles.noincidents}>No incidents recorded for this monitor</p>
                     ):(
                         <div className={styles.incidentList}>
                             {incidents.map(incident=>(

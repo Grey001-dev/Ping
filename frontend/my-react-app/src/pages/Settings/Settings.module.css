@@ -14,6 +14,15 @@
     flex-direction: column;
     gap: 1.5rem;
 }
+.pageHeader{
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 8px;
+}
+.mainIcon{
+    color: #10b981;
+}
 .title{
     font-size: 24px;
     font-weight: 700;
@@ -25,7 +34,7 @@
     background: #111118;
     border: 1px solid #1e1e2e;
     border-radius: 8px;
-    padding: 20px;
+    padding: 24px;
 }
 .panelHeader{
     display: flex;
@@ -36,7 +45,7 @@
     padding-bottom: 10px;
 }
 .panelHeading{
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 600;
     font-family: 'Syne',sans-serif;
     color: #faf5f9;
@@ -45,7 +54,7 @@
 .inputs{
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 8px;
     margin-bottom: 16px;
 }
 .label{
@@ -53,14 +62,15 @@
     font-size: 11px;
     color: rgba(255,255,255,0.6);
     letter-spacing: 0.05em;
+    text-transform: uppercase;
 }
 .inputField{
     background: #0a0a0f;
     border: 1px solid #1e1e2e;
-    border-radius: 8px;
-    padding: 8px 12px;
+    border-radius: 6px;
+    padding: 10px 12px;
     color: #faf5f9;
-    font-size: 14px;
+    font-size: 13px;
     font-family: 'DM Mono',monospace;
     transition: border-color 0.15s ease,box-shadow 0.15s ease;
     width: 100%;
@@ -71,16 +81,41 @@
     border-color: rgba(70, 70, 107, 0.4);
     box-shadow: 0 0 8px rgba(99,102,241,0.15);
 }
+.inputField::placeholder{
+    color: rgba(255,255,255,0.2);
+}
 .inputField[readOnly]{
     color: rgba(255,255,255,0.4);
     cursor: not-allowed;
 }
 .inputHint{
     font-size: 12px;
+    line-height: 1.5;
     color: rgba(255,255,255,0.4);
     margin: 0 0 16px 0;
     font-family: 'DM Mono',monospace;
 }
+.statusLinkRow{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #0a0a0f;
+    border: 1px solid #1e1e2e;
+    border-radius: 6px;
+    padding: 6px 6px 6px 12px;
+}
+.codeBlock{
+    font-family: 'DM Mono',monospace;
+    font-size: 12px;
+    color: #10b981;
+    overflow-x: auto;
+    white-space: nowrap;
+    flex: 1;
+}
+.codeBlock::-webkit-scrollbar{
+    display: none;
+}
+
 .saveBtn{
     background: #4ade80;
     color: #0a0a0f;
@@ -102,16 +137,40 @@
     opacity: 0.6;
     cursor: not-allowed;
 }
-
 .icon{
     color: rgba(255,255,255,0.4);
+}
+.copyBtn,.copyBtnCopied{
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    border: none;
+    border-radius: 4px;
+    padding:6px 12px;
+    font-size: 11px;
+    font-weight: 600;
+    font-family: 'DM Mono',monospace;
+    cursor: pointer;
+    transition: background 0.15s ease,color 0.15s;
+}
+.copyBtn{
+    background: #1e1e2e;
+    color: rgba(255,255,255,0.8);
+}
+.copyBtn:hover{
+    background: #2b2b3f;
+    color: #fff;
+}
+.copyBtnCopied{
+    background: rgba(16,185,129,0.15);
+    color: #10b981;
 }
 .error{
   display: flex;
   align-items: center;
   gap: 10px;
   background: rgba(227, 98, 98, 0.06);
-  border: 1px solid rgba(227, 98, 98, 0.25);
+  border: 1px solid rgba(227, 98, 98, 0.2);
   border-radius: 8px;
   color: #fca5a5;
   font-family: 'DM Mono', monospace;
@@ -134,3 +193,31 @@
   margin-bottom: 14px;
 }
 
+.spinnerContainer{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    height: 60vh;
+    width: 100%;
+}
+.spinner{
+    width: 32px;
+    height: 32px;
+    border: 3px solid rgba(255,255,255,0.5);
+    border-top-color: #10b981;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+.spinnerText{
+    font-family: 'DM Mono',monospace;
+    font-size: 13px;
+    color: rgba(255,255,255,0.4);
+    margin: 0;
+}
+@keyframes spin{
+    to{
+        transform: rotate(360deg);
+    }
+}

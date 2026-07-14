@@ -25,9 +25,6 @@ export default function NavBar(){
                 <NavLink to="/dashboard" className={({isActive})=>isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}>
                 Dashboard
                 </NavLink>
-                <NavLink to="/status" className={({isActive})=>isActive ? `${styles.navLink} ${styles.active}`: styles.navLink}>
-                    Status Page
-                </NavLink>
                 <NavLink to="/settings" className={({isActive})=>isActive?`${styles.navLink} ${styles.active}`:styles.navLink}>
                     Settings
                 </NavLink>
