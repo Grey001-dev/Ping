@@ -107,7 +107,7 @@ export const createMonitors = async (req, res) => {
                 user_id:userId,
                 custom_headers:custom_headers || null,
                 request_body:request_body|| null,
-                port:port || null,
+                port:port ?parseInt(port): null,
                 allowed_status_codes:allowed_status_codes || [],
                 is_public:is_public || false
             }
