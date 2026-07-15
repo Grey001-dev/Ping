@@ -269,3 +269,9 @@
     font-size: 11px;
     color: rgba(255, 255, 255, 0.4);
 }
+.indicatorUp{
+    background-color: #10b981;
+}
+.indicateDown{
+    background-color: #ef4444;
+}

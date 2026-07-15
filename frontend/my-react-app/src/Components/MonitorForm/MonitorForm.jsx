@@ -98,7 +98,7 @@ export default function MonitorForm({onMonitorCreated, onMonitorEdited, existing
                             checked={isPublic}
                             onChange={(e)=>setIsPublic(e.target.checked)}
                             />
-                            Show on publc status page
+                            Show on public status page
                         </label>
                     </div>
 
@@ -160,7 +160,7 @@ export default function MonitorForm({onMonitorCreated, onMonitorEdited, existing
                             </div>
 
                             <div className={styles.inputs}>
-                                <label className={styles.label}>Custom Headers</label>
+                                <label className={styles.label}>Custom Headers (if necessary)</label>
                                 <textarea
                                     className={styles.codeBox}
                                     value={headersText}

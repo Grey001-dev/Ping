@@ -38,7 +38,9 @@ export default function PublicStatusPage(){
             </div>
         )
     }
-    const allUp=data.monitors.every(m=>m.status==='up');
+    const hasMonitors=data.monitors.length>0
+
+    const allUp=hasMonitors && data.monitors.every(m=>m.status==='up');
     return(
         <div className={styles.wrapper}>
 
@@ -50,15 +52,15 @@ export default function PublicStatusPage(){
                 <span className={styles.realTime}>Real-time</span>
             </header>
 
-
-            <div className={allUp? styles.Up:styles.Down}>
+            {hasMonitors &&(
+                <div className={allUp? styles.Up:styles.Down}>
                 <span className={styles.pulse}></span>
                 {allUp? 'All Systems Are Active' :'Some Systems are experiencing Issues'}
             </div>
-
+            )}
             <div className={styles.monitorList}>
                 {data.monitors.length===0 ?(
-                    <div>
+                    <div className={styles.emptyCard}>
                         <p className={styles.empty}>No active monitors linked to this page.</p>
                     </div>
                 ):(
