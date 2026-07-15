@@ -52,13 +52,19 @@
   background-color: rgba(227,98,98,0.06);
   border: 1px solid rgba(227,98,98,0.2);
 }
-
+.nameAndType{
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
 .monitorList {
   flex: 1;
   overflow-y: auto;
 }
 
-/* hide scrollbar but keep scroll */
+
 .monitorList::-webkit-scrollbar { display: none; }
 .monitorList { -ms-overflow-style: none; scrollbar-width: none; }
 
@@ -101,11 +107,23 @@
 .dotDown { background-color: #e36262; }
 
 .monitorName{
-  font-size: 13px;
-  font-weight: 500;
-  color: #f1f5f9;
-  flex: 1;
   font-family: 'Syne',sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: #f1f5f9;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.monitorType{
+  font-family: 'DM Mono',monospace;
+  font-size: 9px;
+  font-weight: 500;
+  color: rgba(255,255,255,0.3);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  align-self: flex-start;
 }
 
 .itemPct {
