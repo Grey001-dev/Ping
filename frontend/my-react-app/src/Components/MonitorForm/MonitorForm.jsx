@@ -85,7 +85,7 @@ export default function MonitorForm({onMonitorCreated, onMonitorEdited, existing
 
                     <div className={styles.inputs}>
                         <label className={styles.label}>Friendly Name</label>
-                        <input type="text" placeholder='myMainAPI' className={styles.inputField} value={friendlyName} onChange={(e) => setFriendlyName(e.target.value)}/>
+                        <input type="text" placeholder='myMainAPI' className={styles.inputField} value={friendlyName} onChange={(e) => setFriendlyName(e.target.value)} required/>
                     </div>
 
                     <div className={styles.inputs}>
