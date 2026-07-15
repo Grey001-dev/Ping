@@ -28,8 +28,25 @@ export default function Auth({setToken}){
     e.preventDefault();
     setErrMessage('');
     setSuccessMessage('');
-    setLoading(true);
     await new Promise(r=>setTimeout(r,2000))
+
+
+    const emailRegex=/^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if(!emailRegex.test(email)){
+        setErrMessage("Please enter a valid email address")
+        return;
+    }
+
+    if(password.length<8){
+        setErrMessage("Password must be at least 8 characters long")
+        return
+    }
+    if(isSignUp && !name.trim()){
+        setErrMessage("Username is required")
+        return;
+    }
+    setLoading(false)
+
 
     const payload={
         isSignUp:isSignUp,
