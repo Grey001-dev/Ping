@@ -16,9 +16,8 @@
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
-/* This handles the empty state when theres nothing on the dashboard yet */
+/* This handles the empty state when theres nothing on the dashboard yet .....sha*/
 .emptyState{
-  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
