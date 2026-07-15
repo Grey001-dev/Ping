@@ -16,8 +16,12 @@ const app=express();
 const httpServer=createServer(app);
 export const io=new Server(httpServer,{
     cors:{
-        origin:'http://localhost:5173',
-        methods:["GET","POST","DELETE",],
+        origin:process.env.NODE_ENV==='production'
+        ? 'https://ping001.netlify.app'
+        : 'http://localhost:5173'
+        ,
+        credentials:true,
+        methods:["GET","POST","PUT","PATCH","DELETE","OPTIONS"],
         allowedHeaders:['Content-Type','application/json']
     }
 })
