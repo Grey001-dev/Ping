@@ -63,7 +63,6 @@ export default function StatusPanel({monitor,onDelete,savedError,onPause,onEdit,
             const data=await fetchIncidents(monitor.id)
             if(Array.isArray(data)){
                 setIncidents(data)
-                console.log("current incident state:",incidents);
             }else{
                 setIncidents([]);
             }
@@ -85,7 +84,7 @@ export default function StatusPanel({monitor,onDelete,savedError,onPause,onEdit,
 
     useEffect(()=>{
         const socket=io('https://ping-7u78.onrender.com',{
-            transports:["polling","websockets"]
+            transports:["polling","websocket"]
         });
 
         socket.on('monitor-updated',(updatedData)=>{
@@ -94,7 +93,14 @@ export default function StatusPanel({monitor,onDelete,savedError,onPause,onEdit,
                     const res=await monitorService.fetch24h(monitor.id);
                     setDayHistory(res);
                 };
+                const reloadIncidents=async()=>{
+                    const data=await fetchIncidents(monitor.id);
+                    if(Array.isArray(data)){
+                        setIncidents(data);
+                    }
+                }
                 reload24h()
+                reloadIncidents()
             }
         })
         return ()=>socket.disconnect()

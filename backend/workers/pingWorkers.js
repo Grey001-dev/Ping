@@ -1,9 +1,7 @@
-
 import axios from 'axios';
 import {io} from '../index.js';
 import { sendDownEmail,sendRecoveryEmail } from '../services/emailService.js';
-import dns, { resolve } from 'dns';
-import { Socket } from 'socket.io';
+import dns from 'dns';
 import net from 'net';
 import ping from 'ping';
 import { readdirSync } from 'fs';
@@ -81,7 +79,7 @@ async function checkPort(host,port,timeout=10000) {
             if(done) return;
             done=true;
             socket.destroy()
-            resolve({status:'down',latency:0,error:'CNNECTION_TIMEOUT'})
+            resolve({status:'down',latency:0,error:'CONNECTION_TIMEOUT'})
         })
 
         socket.on('error',(err)=>{

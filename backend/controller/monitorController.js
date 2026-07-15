@@ -170,7 +170,7 @@ export const togglePause=async (req,res)=>{
         }
         res.status(200).json({is_paused:newState})
     } catch (error) {
-        res.status(500).json({message:'Error toggling pause',error})
+        res.status(500).json({message:'Error toggling pause',error:error.message})
     }
 }
 export const editMonitors = async (req, res) => {
@@ -196,7 +196,7 @@ export const editMonitors = async (req, res) => {
                 method,
                 custom_headers,
                 request_body,
-                port: port || null,
+                port: port ? parseInt(port) || null,
                 allowed_status_codes: allowed_status_codes || [],
                 is_public: is_public || false
             }
