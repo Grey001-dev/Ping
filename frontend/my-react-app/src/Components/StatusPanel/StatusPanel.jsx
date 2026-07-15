@@ -110,7 +110,7 @@ export default function StatusPanel({monitor,onDelete,savedError,onPause,onEdit,
     const chartData=monitor.history.map(p=>{
         const localDate=new Date(p.timestamp);
 
-        const localTimeFormatted=localDate.toLocaleDateString([],{
+        const localTimeFormatted=localDate.toLocaleTimeString([],{
             hour:'2-digit',
             minute:'2-digit',
             hour12:false
