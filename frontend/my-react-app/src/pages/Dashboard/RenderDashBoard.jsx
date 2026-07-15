@@ -180,9 +180,7 @@ export default function MonitorDashboard(){
 
             if empty we show the user our empty state which would be like me redirecting them to add a monitor 
             */}
-            {view==="empty" && (
-              <QuickStats monitors={monitors}/>
-            )}
+            
             {view=='status' && selectedMonitor&& 
             <StatusPanel monitor={selectedMonitor} onDelete={handleMonitorDeleted} onPause={handleMonitorPaused} onEdit={handleEditClick} fetchIncidents={fetchIncidents}/>
             }
@@ -260,11 +258,6 @@ function EmptyState({ hasMonitors }) {
   )
   }
   return (
-    <div className={styles.emptyState}>
-      <p className={styles.emptyText}>
-        Select a monior from the side bar to view its status
-      </p>
-
-    </div>
+    <QuickStats monitors={monitors}/>
   );
 }
