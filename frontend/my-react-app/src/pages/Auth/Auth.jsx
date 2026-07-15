@@ -106,18 +106,14 @@ export default function Auth({setToken}){
                 </div>
                 <div className={styles.message}>
                     <h1 className={styles.authHeading}>{isSignUp? 'Create Account': 'Welcome back'}</h1>
-                    <p className={styles.subtext}>Continue with your Github or Google Account</p>
+                    <p className={styles.subtext}>
+                        {isSignUp ?
+                        'Start tracking system uptime,raw connectivity, and real-time database enpoints in seconds' 
+                    : 'Enter your credentials to access your latency metrics and real-time dashboard monitoring panels'}
+                    </p>
                 </div>
                 {errMessage && <div className={styles.errAlert}> {errMessage}</div>}
-                {successMessage && <div className={styles.successAlert}>{successMessage}</div>}
-                <div className={styles.authcontainer}>
-                  <button className={styles.oauthBtn }>Continue with GitHub</button>
-                  <button className={styles.oauthBtn}>Continue with Google</button>
-                </div>
-                
-                <div className={styles.divider}>
-                    <span>or</span>
-                </div>
+                {successMessage && <div className={styles.successAlert}>{successMessage}</div>}            
                 <form onSubmit={handleSubmit} className={styles.formContainer}>
                     {isSignUp && (<input type='text' 
                     required 

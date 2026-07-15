@@ -105,12 +105,21 @@ export default function StatusPanel({monitor,onDelete,savedError,onPause,onEdit,
         })
         return ()=>socket.disconnect()
     },[monitor.id])
+    const chartData=monitor.history.map(p=>{
+        const localDate=new Date(p.timestamp);
 
-    const chartData=monitor.history.map(p=>({
-        time:p.timestamp.slice(11,16),
-        latency:p.latency,
-        status:p.status
-    }))
+        const localTimeFormatted=localDate.toLocaleDateString([],{
+            hour:'2-digit',
+            minute:'2-digit',
+            hour12:false
+        });
+        return{
+            time:localTimeFormatted,
+            latecny:p.latency,
+            status:p.status
+        }
+    })
+
     const avgLatency=Math.round(
         monitor.history.filter(p=>p.latency>0).reduce((a,p)=>a+p.latency,0)/
         (monitor.history.filter(p => p.latency > 0).length || 1)
