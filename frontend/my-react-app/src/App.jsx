@@ -7,6 +7,7 @@ import { useState } from "react";
 import Settings from "./pages/Settings/Settings.jsx";
 import NavBar from "./Components/NavBar/NavBar.jsx";
 import PublicStatusPage from "./pages/PublicStatusPage/PublicStatusPage.jsx";
+import "./App.css"
 export default function App(){
     const [token,setToken]=useState(localStorage.getItem('token'))
     return(

@@ -142,6 +142,7 @@ export default function Auth({setToken}){
                         onChange={(e)=>setPassword(e.target.value)}
                         value={password}
                         className={styles.textInput}
+                        min="8"
                         />
                         <button type='button'
                         className={styles.eyeToggle}
