@@ -2,6 +2,7 @@ import { useState,useEffect } from "react";
 import MonitorStats from "../../Components/Sidebar/MonitorStats.jsx";
 import StatusPanel from "../../Components/StatusPanel/StatusPanel.jsx";
 import MonitorForm from "../../Components/MonitorForm/MonitorForm.jsx";
+import QuickStats from "../../Components/QuickStats/QuickStats.jsx";
 import styles from './RenderDashboard.module.css';
 import { monitorService } from "../../services/monitorService.js";
 import {io} from "socket.io-client"
@@ -177,8 +178,10 @@ export default function MonitorDashboard(){
 
             If status then we display our status panel else if add we display our add,
 
-            if empty we show the user our empty state 
+            if empty we show the user our empty state which would be like me redirecting them to add a monitor 
             */}
+            {monitors.length>0 && <QuickStats monitors={monitors}/>}
+            
             {view=='status' && selectedMonitor&& 
             <StatusPanel monitor={selectedMonitor} onDelete={handleMonitorDeleted} onPause={handleMonitorPaused} onEdit={handleEditClick} fetchIncidents={fetchIncidents}/>
             }

@@ -51,7 +51,7 @@ function MonitorItem({monitor,isActive,onClick}){
         }onClick={onClick}>
             <div className={styles.Rows}>
                 <span className={`${styles.dot} ${isDown ? styles.dotDown : styles.dotUp}`}/>
-                <span className={styles.monitorName}>{monitor.name}</span>
+                <span className={styles.monitorName}>{monitor.name}-{monitor.type}</span>
                 <span className={`${styles.itemPct} ${isDown ? styles.pctDown : styles.pctUp}`}>{monitor.uptime}</span>
             </div>
             <div className={styles.miniBars}>

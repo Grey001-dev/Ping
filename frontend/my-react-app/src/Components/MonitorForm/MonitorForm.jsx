@@ -195,6 +195,8 @@ export default function MonitorForm({onMonitorCreated, onMonitorEdited, existing
                                 onChange={(e) => setPort(e.target.value)}
                                 placeholder='443'
                                 min='1'
+                                max="65535"
+                                required
                             />
                             <span className={styles.inputHint}>
                                 Common ports: 443 (HTTPS), 22 (SSH), 3306 (MySQL), 5432 (PostgreSQL).
