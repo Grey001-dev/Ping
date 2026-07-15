@@ -59,7 +59,7 @@ export default function MonitorDashboard(){
     return()=>{
       socket.disconnect()
     };
-  },[])
+  },[]);
 
   useEffect(()=>{
     const interval=setInterval(()=>{
@@ -180,6 +180,9 @@ export default function MonitorDashboard(){
 
             if empty we show the user our empty state which would be like me redirecting them to add a monitor 
             */}
+            {view="empty" && (
+              <QuickStats monitors={monitors}/>
+            )}
             {view=='status' && selectedMonitor&& 
             <StatusPanel monitor={selectedMonitor} onDelete={handleMonitorDeleted} onPause={handleMonitorPaused} onEdit={handleEditClick} fetchIncidents={fetchIncidents}/>
             }
