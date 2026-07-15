@@ -123,7 +123,7 @@ export default function Auth({setToken}){
                     className={styles.textInput}
                     
                     />)}
-                    <input type="text" 
+                    <input type="email" 
                     required
                     placeholder='Grey@example.gmail.com'
                     onChange={(e)=>setEmail(e.target.value)}
@@ -138,7 +138,7 @@ export default function Auth({setToken}){
                         onChange={(e)=>setPassword(e.target.value)}
                         value={password}
                         className={styles.textInput}
-                        min="8"
+                        minLength={8}
                         />
                         <button type='button'
                         className={styles.eyeToggle}
