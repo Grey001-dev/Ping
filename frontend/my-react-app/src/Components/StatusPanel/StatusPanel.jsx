@@ -105,6 +105,8 @@ export default function StatusPanel({monitor,onDelete,savedError,onPause,onEdit,
         })
         return ()=>socket.disconnect()
     },[monitor.id])
+
+    
     const chartData=monitor.history.map(p=>{
         const localDate=new Date(p.timestamp);
 
@@ -115,7 +117,7 @@ export default function StatusPanel({monitor,onDelete,savedError,onPause,onEdit,
         });
         return{
             time:localTimeFormatted,
-            latecny:p.latency,
+            latency:p.latency,
             status:p.status
         }
     })
@@ -207,7 +209,10 @@ export default function StatusPanel({monitor,onDelete,savedError,onPause,onEdit,
                                 {ping.status !=='empty' && ping.timestamp && (
                                     <span className={styles.toolTip}>
                                         {new Date(ping.timestamp).toLocaleString(undefined,{
-                                            month:'short',day:'numeric',hour:'2-digit',minute:'2-digit',timeZone:'UTC'
+                                            month:'short',
+                                            day:'numeric',
+                                            hour:'2-digit',
+                                            minute:'2-digit',
                                         })}
                                         {'-'}
                                         {ping.status==='up'?"Up":"Down"}
