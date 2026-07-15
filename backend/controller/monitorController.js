@@ -196,7 +196,7 @@ export const editMonitors = async (req, res) => {
                 method,
                 custom_headers,
                 request_body,
-                port: port ? parseInt(port) || null,
+                port: port ? parseInt(port) : null,
                 allowed_status_codes: allowed_status_codes || [],
                 is_public: is_public || false
             }
