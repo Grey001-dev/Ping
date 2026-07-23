@@ -1,5 +1,5 @@
 # Ping
-Ping isa ligntweight uptime monitoring tool that tracks website and service availability and send alert when somehing goes down
+Ping is a ligntweight uptime monitoring tool that tracks website and service availability and send alert when somehing goes down
 
 ## Features
 
@@ -18,3 +18,19 @@ Ping isa ligntweight uptime monitoring tool that tracks website and service avai
 -Frontend:React,CSS Modules
 -Backend: Node.js,Express,PostgreSQL
 -Real-time:Socket.IO
+
+## Check out the Live Demo
+**ping001.netlify.app**
+
+## Follow these steps to get Ping running locally on your machine.
+If you want to clone the repo and run it on your machine:
+
+### Prerequisites
+* **Node.js** (v18+)
+* **PostgreSQL** (v17 was used in development)
+
+### Steps
+
+1. **Clone the repository**
+   ```bash
+   git clone [https://github.com/Grey001-dev/Ping.git]
