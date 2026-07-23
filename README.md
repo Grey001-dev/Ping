@@ -33,4 +33,4 @@ If you want to clone the repo and run it on your machine:
 
 1. **Clone the repository**
    ```bash
-   git clone [https://github.com/Grey001-dev/Ping.git]
+   git clone https://github.com/Grey001-dev/Ping.git
