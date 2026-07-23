@@ -15,9 +15,9 @@ Ping is a ligntweight uptime monitoring tool that tracks website and service ava
 -Checks currently run from a single server location,so a network issue on that server's end might look like a target outage.
 
 ## Stack
--Frontend:React,CSS Modules
--Backend: Node.js,Express,PostgreSQL
--Real-time:Socket.IO
+- Frontend:React,CSS Modules
+- Backend: Node.js,Express,PostgreSQL
+- Real-time:Socket.IO
 
 ## Check out the Live Demo
 **ping001.netlify.app**
