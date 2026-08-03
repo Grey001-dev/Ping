@@ -36,3 +36,11 @@ If you want to clone the repo and run it on your machine:
 1. **Clone the repository**
    ```bash
    git clone https://github.com/Grey001-dev/Ping.git
+   cd Ping
+
+2. **Install dependencies**
+   cd backend
+   npm install
+
+   cd ../frontend/my-react-app
+   npm install
