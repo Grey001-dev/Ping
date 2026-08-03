@@ -39,8 +39,8 @@ If you want to clone the repo and run it on your machine:
    cd Ping
 
 2. **Install dependencies**
-   cd backend
-   npm install
+cd backend
+npm install
 
-   cd ../frontend/my-react-app
-   npm install
+cd ../frontend/my-react-app
+npm install
