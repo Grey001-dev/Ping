@@ -17,18 +17,6 @@
   scrollbar-width: none;
 }
 /* This handles the empty state when theres nothing on the dashboard yet .....sha*/
-.emptyState{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: rgba(255,255,255,0.15);
-  font-family: 'DM Mono',monospace;
-  font-size: 20px;
-  padding: 40px 24px;
-  text-align: center;
-  gap: 12px;
-  flex-direction:column;
-}
 .emptyTitle{
   font-size: 14px;
   color: rgba(255,255,255,0.5);
@@ -156,4 +144,24 @@
 }
 .emptyHint strong{
   color: #4ade80;
+}
+
+@media (max-width: 768px){
+  .dashboardRoot{
+    flex-direction: column;
+    height: auto;
+    min-height: 100vh;
+    overflow: visible;
+  }
+  .mainPanel{
+    padding: 1.25rem;
+    overflow-y: visible;
+  }
+  .Cards{
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .emptyTitle{
+    font-size: 18px;
+  }
 }

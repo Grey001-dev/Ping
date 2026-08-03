@@ -86,3 +86,34 @@
     border-color: rgba(227,98,98,0.3);
     color: #e36262;
 }
+
+@media (max-width: 640px){
+    .navbar{
+        padding: 12px 16px;
+    }
+    .brandsha{
+        font-size: 16px;
+    }
+    .links{
+        gap: 14px;
+    }
+    .navLink{
+        font-size: 12px;
+    }
+    .logoutBtn{
+        padding: 6px 10px;
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 420px){
+    .navbar{
+        padding: 10px 12px;
+    }
+    .brandsha{
+        display: none;
+    }
+    .links{
+        gap: 10px;
+    }
+}

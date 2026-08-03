@@ -8,6 +8,7 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+  gap: 12px;
 }
 .friendlyName{
   font-family: 'Syne',sans-serif;
@@ -21,6 +22,7 @@
   color: rgba(255,255,255,0.25);
   margin: 4px 0 0;
   font-family: 'Dm Mono',monospace;
+  word-break: break-all;
 }
 .pillUp{
   padding: 4px 14px;
@@ -30,6 +32,7 @@
   background: rgba(22,198,87,0.08);
   border: 1px solid #16c657;
   color: #1bcb57;
+  white-space: nowrap;
 }
 .pillDown{
   padding: 4px 14px ;
@@ -39,6 +42,7 @@
   background: rgba(227,98,98,0.08);
   border:1px solid #e36262;
   color: #e36262;
+  white-space: nowrap;
 }
 .statusWhole{
   display: grid;
@@ -98,13 +102,14 @@
   border-radius: 8px;
   width: 100%;
   box-sizing: border-box;
-
+  overflow-x: auto;
 }
 
 .statusBarLines{
   display: flex;
   flex: 1;
   align-items: center;
+  min-width: 4px;
 }
 
 .statusBar{
@@ -174,17 +179,6 @@
   font-family: 'DM Mono',monospace;
   padding: 0 4px;
 }
-@media (max-width:600px){
-  .statusWhole{
-    grid-template-columns: repeat(2,1fr);
-  }
-  .statusPanel{
-    gap: 1.25rem;
-  }
-  .friendlyName{
-    font-size: 18px;
-  }
-}
 .headerRight{
   display: flex;
   align-items:center ;
@@ -194,6 +188,7 @@
 .btns{
   display: flex;
   gap: 0.5rem;
+  flex-wrap: wrap;
 }
 .pausebtn,.editbtn,.deletebtn{
   display: flex;
@@ -337,6 +332,7 @@
   display: flex;
   align-items: center;
   gap: 12px;
+  flex-wrap: wrap;
 }
 
 .resolve, .ongoing {
@@ -394,4 +390,26 @@
 @keyframes pulse {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.6; }
+}
+
+@media (max-width:600px){
+  .statusWhole{
+    grid-template-columns: repeat(2,1fr);
+  }
+  .statusPanel{
+    gap: 1.25rem;
+  }
+  .friendlyName{
+    font-size: 18px;
+  }
+  .statusPanelHeader{
+    flex-wrap: wrap;
+  }
+  .statusBar{
+    height: 22px;
+  }
+  .pausebtn,.editbtn,.deletebtn{
+    padding: 0.4rem 0.7rem;
+    font-size: 11px;
+  }
 }

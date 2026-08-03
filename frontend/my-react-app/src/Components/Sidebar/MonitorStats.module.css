@@ -167,11 +167,18 @@
   font-size: 15px;
   cursor: pointer;
   transition: all 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
 }
 .addBtn:hover {
   background-color:rgba(22, 198, 87, 0.08);
   border-color:  rgba(22, 198, 87, 0.4);
   color: #1bcb57;
+}
+.icon{
+  flex-shrink: 0;
 }
 .skeletonItem{
   padding: 10px 12px;
@@ -181,4 +188,19 @@
   gap: 8px;
   border: 1px solid #1e1e2e;
   margin-bottom: 6px;
+}
+
+@media (max-width: 768px){
+  .sidebar {
+    width: 100%;
+    min-width: 0;
+    border-right: none;
+    border-bottom: 1px solid #1e1e2e;
+  }
+  .topPanel{
+    padding: 1rem;
+  }
+  .badges{
+    flex-wrap: wrap;
+  }
 }

@@ -31,6 +31,7 @@ html, body {
 .ping>h1{
     color:#f3f4f6 ;
     margin: 0;
+    font-size: 1.5rem;
 }
 .log-sign{
     display: flex;
@@ -49,6 +50,7 @@ html, body {
     cursor: pointer;
     font-family: 'DM Mono', monospace;
     font-size: 14px;
+    white-space: nowrap;
 }
 .sign>button:hover{
     background-color: #4f46e5;
@@ -63,6 +65,7 @@ html, body {
     cursor: pointer;
     transition: all 0.25s ease-in-out;
     border-radius: 20px;
+    white-space: nowrap;
 }
 .log>button:hover{
     color: #ffffff; 
@@ -84,4 +87,24 @@ html, body {
 }
 .properties div button:hover {
   color: #ffffff;
+}
+@media(max-width:640px){
+    .navInner{
+        padding: 1rem;
+    }
+    .ping>h1{
+        font-size: 1.25rem;
+    }
+    .log-sign{
+        gap: 0.5rem;
+    }
+    .log>button,.sign>button{
+        padding: 0.4rem 0.75rem;
+        font-size: 13px;
+    }
+}
+@media (max-width: 420px){
+    .properties{
+        display: none;
+    }
 }

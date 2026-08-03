@@ -166,3 +166,18 @@
 .checkboxItem span{
     color: inherit;
 }
+@media (max-width:768px){
+    .gridContainer{
+        grid-template-columns: 1fr;
+    }
+    .formWrapper{
+        padding: 24px 16px;
+    }
+    .panel{
+        padding: 1.1rem;
+    }
+    .formTitle{
+        font-size: 20px;
+    }
+    
+}
