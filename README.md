@@ -22,7 +22,7 @@ This application features a real-time data monitoring dashboard and is optimized
 - Real-time:Socket.IO
 
 ## Check out the Live Demo
-**ping001.netlify.app**
+**(https://ping-two-orpin.vercel.app/)**
 
 ## Follow these steps to get Ping running locally on your machine.
 If you want to clone the repo and run it on your machine:
