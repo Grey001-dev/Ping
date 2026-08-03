@@ -29,7 +29,7 @@ export const io=new Server(httpServer,{
 app.use(cookieParser())
 app.use(cors({
     origin:process.env.NODE_ENV==='production'
-    ? 'https://ping001.netlify.app'
+    ? 'https://ping-two-orpin.vercel.app'
     : 'http://localhost:5173'
     ,
     credentials:true,
