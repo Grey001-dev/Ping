@@ -39,8 +39,15 @@ If you want to clone the repo and run it on your machine:
    cd Ping
 
 2. **Install dependencies**
+```bash
 cd backend
 npm install
 
 cd ../frontend/my-react-app
 npm install
+```
+
+3. **Run the program**
+   ```bash
+   npm run dev
+   ```
