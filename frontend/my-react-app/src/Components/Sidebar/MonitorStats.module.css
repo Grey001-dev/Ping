@@ -193,23 +193,19 @@
 
 @media (max-width: 768px){
   .sidebar {
-    width: 100%;
-    min-width: 0;
-    border-right: none;
-    max-height: 380px;
-    height: auto;
-    border-bottom: 2px solid #1e1e2e;
-  }
-  .monitorList {
-    max-height: 200px; 
-    overflow-y: auto;
+    width: 220px;
+    min-width: 220px;
+    height: 100%;
+    border-right: 1px solid #1e1e2e;
+    border-bottom: none;
   }
 
   .topPanel {
-    padding: 1rem;
+    padding: 0.8rem;
   }
 
   .badges {
     flex-wrap: wrap;
+    gap: 4px;
   }
 }
