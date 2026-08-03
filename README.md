@@ -1,5 +1,7 @@
 # Ping
-Ping is a ligntweight uptime monitoring tool that tracks website and service availability and send alert when somehing goes down
+Ping is a ligntweight uptime monitoring tool that tracks website and service availability and send alert when something goes down.
+
+This application features a real-time data monitoring dashboard and is optimized primarily for desktop /PC viewports for the best experience and layour interaction.....please view the live app on a desktop browser or larger screen
 
 ## Features
 
