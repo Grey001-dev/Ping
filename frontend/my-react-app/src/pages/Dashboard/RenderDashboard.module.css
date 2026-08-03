@@ -150,11 +150,11 @@
   .dashboardRoot{
     flex-direction: column;
     height: auto;
-    min-height: 100vh;
+    min-height: calc(100vh - 60px);
     overflow: visible;
   }
   .mainPanel{
-    padding: 1.25rem;
+    padding: 1rem;
     overflow-y: visible;
   }
   .Cards{
