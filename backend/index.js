@@ -14,12 +14,13 @@ import { incidentRouter } from './routes/incidentroutes.js';
 import { publicStatusRouter } from './routes/publicstatusroutes.js';
 const app=express();
 const httpServer=createServer(app);
+const allowedOrigins = [
+  'http://localhost:5173',
+  'https://ping-two-orpin.vercel.app',
+];
 export const io=new Server(httpServer,{
     cors:{
-        origin:process.env.NODE_ENV==='production'
-        ? 'https://ping-two-orpin.vercel.app'
-        : 'http://localhost:5173'
-        ,
+        origin:allowedOrigins,
         credentials:true,
         methods:["GET","POST","PUT","PATCH","DELETE","OPTIONS"],
         allowedHeaders:['Content-Type','application/json']
@@ -28,10 +29,7 @@ export const io=new Server(httpServer,{
 
 app.use(cookieParser())
 app.use(cors({
-    origin:process.env.NODE_ENV==='production'
-    ? 'https://ping-two-orpin.vercel.app'
-    : 'http://localhost:5173'
-    ,
+    origin:allowedOrigins,
     credentials:true,
     methods:["GET","POST","DELETE","PATCH","PUT","OPTIONS"],
     allowedHeaders:["Content-Type","Authorization"]
