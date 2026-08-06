@@ -412,4 +412,11 @@
     padding: 0.4rem 0.7rem;
     font-size: 11px;
   }
+  .smallerBar{
+    gap: 2px;
+    padding: 10px;
+  }
+  .chatWrapper{
+    height: 140px;
+  }
 }
