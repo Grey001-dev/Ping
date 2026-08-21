@@ -55,14 +55,12 @@
   border-radius: 10px;
   padding: 14px;
 }
-
 .statusLabel{
   font-size: 11px;
   color: rgba(255,255,255,0.35);
   margin: 0 0 6px;
   font-family: 'DM Mono',monospace;
 }
-
 .statusValue{
   font-size: 20px;
   font-weight: 500;
@@ -70,15 +68,12 @@
   margin: 0;
   font-family: 'DM Mono',monospace;
 }
-
 .valueUp{
   color: #16c657;
 }
-
 .valueDown{
   color: #e36262;
 }
-
 .statusBarsSection{
   margin-top: 24px;
 }
@@ -91,7 +86,6 @@
   letter-spacing: 0.05em;
   text-transform: uppercase;
 }
-
 .smallerPanel{
   display: flex;
   gap: 3px;
@@ -104,14 +98,12 @@
   box-sizing: border-box;
   overflow-x: auto;
 }
-
 .statusBarLines{
   display: flex;
   flex: 1;
   align-items: center;
   min-width: 4px;
 }
-
 .statusBar{
   width: 100%;
   height: 28px;
@@ -129,11 +121,12 @@
 }
 .barUp{
   background-color: #2ecc71;
-  /* Added this for the glowing effect */
+  /* Added this for the glowing effect of my statusBarUp */
   box-shadow: 0 0 8px rgba(46,204,113,0.4);
 }
 .barDown{
   background-color: #e74c3c;
+  /* Added this for the glowing effect of my statusBarDown */
   box-shadow: 0 0 8px rgba(231,76,60,0.4);
 }
 .toolTip{
@@ -184,7 +177,6 @@
   align-items:center ;
   gap:10px;
 }
-
 .btns{
   display: flex;
   gap: 0.5rem;
@@ -204,7 +196,6 @@
   color: #f1f5f9;
   transition: background-colot 0.15s ease,border-color 0.15s ease;
 }
-
 .pausebtn:hover{
   background-color: #161622;
   border-color: rgba(255,255,255,0.12);
@@ -223,10 +214,6 @@
   background-color:rgba(227,98,98,0.15);
   border-color: rgba(227,98,98,0.45);
 }
-
-
-/* Error styling */
-
 .errorBanner{
   background: rgba(227,98,98,0.06);
   border: 1px solid rgba(227,98,98,0.3);
@@ -291,7 +278,6 @@
 .incidentSection {
   margin-top: 24px;
 }
-
 .noincidents {
   font-family: 'DM Mono', monospace;
   font-size: 13px;
@@ -303,7 +289,6 @@
   border-radius: 6px;
   text-align: center;
 }
-
 .incidentList {
   display: flex;
   flex-direction: column;
@@ -311,7 +296,6 @@
   margin-top: 12px;
   font-family: 'DM Mono',monospace;
 }
-
 .incidentRow {
   display: flex;
   flex-direction: column;
@@ -323,18 +307,15 @@
   font-size: 13px;
   transition: border-color 0.2s ease;
 }
-
 .incidentRow:hover {
   border-color: rgba(255, 255, 255, 0.15);
 }
-
 .incidentTop {
   display: flex;
   align-items: center;
   gap: 12px;
   flex-wrap: wrap;
 }
-
 .resolve, .ongoing {
   font-size: 11px;
   font-weight: 600;
@@ -343,27 +324,21 @@
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
-
-
 .resolve {
   background: rgba(16, 185, 129, 0.1);
   color: #10b981;
   border: 1px solid rgba(16, 185, 129, 0.2);
 }
-
 .ongoing {
   background: rgba(245, 158, 11, 0.1);
   color: #f59e0b;
   border: 1px solid rgba(245, 158, 11, 0.2);
 }
-
 .incidentError {
   color: #f43f5e; 
   font-family: 'DM Mono', monospace;
   font-weight: 500;
 }
-
-
 .incidentDetails {
   display: flex;
   gap: 16px;
@@ -374,24 +349,20 @@
   padding-top: 8px;
   margin-top: 2px;
 }
-
 .detailItem strong {
   color: rgba(255, 255, 255, 0.7);
   font-weight: 500;
   margin-right: 4px;
 }
-
 .detailItemongoing {
   color: #ef4444;
   font-weight: 500;
   animation: pulse 2s infinite;
 }
-
 @keyframes pulse {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.6; }
 }
-
 @media (max-width:600px){
   .statusWhole{
     grid-template-columns: repeat(2,1fr);

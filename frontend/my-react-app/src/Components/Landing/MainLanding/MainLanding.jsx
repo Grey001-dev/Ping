@@ -15,6 +15,7 @@ export default function MainLanding(){
       });
     }
   };
+  // This combines all necessary landing age components 
      return(
         <div className={styles.header}>
             <NavBar

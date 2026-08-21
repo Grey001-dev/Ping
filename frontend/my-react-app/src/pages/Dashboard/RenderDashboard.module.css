@@ -16,7 +16,7 @@
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
-/* This handles the empty state when theres nothing on the dashboard yet .....sha*/
+/* This handles the empty state when there's nothing on the dashboard yet , sha*/
 .emptyTitle{
   font-size: 14px;
   color: rgba(255,255,255,0.5);

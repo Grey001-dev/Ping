@@ -48,7 +48,6 @@ export const monitorService={
             }
         })
         return await res.json()
-
     },
     async edit(monitorData,id){
         const token=localStorage.getItem("token");

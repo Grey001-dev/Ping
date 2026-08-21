@@ -63,7 +63,6 @@ function MonitorItem({monitor,isActive,onClick}){
                         `${styles.miniBar} 
                         ${ping.status=="up" ? styles.miniBarUp : ping.status=='down' ? styles.miniBarDown : styles.miniBarEmpty}`
                     }>
-
                     </div>
                 ))}
             </div>

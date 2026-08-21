@@ -1,14 +1,14 @@
 # Ping
-Ping is a ligntweight uptime monitoring tool that tracks website and service availability and send alert when something goes down.
+Ping is a lightweight uptime monitoring tool that tracks website and service availability and send alert when something goes down.
 
-This application features a real-time data monitoring dashboard and is optimized primarily for desktop /PC viewports for the best experience and layour interaction.....please view the live app on a desktop browser or larger screen
+This application features a real-time data monitoring dashboard and is optimized primarily for desktop / PC viewports for the best experience and layour interaction.....please view the live app on a desktop browser or larger screen
 
 ## Features
 
 - Three check types: HTTP(S),TCP port, and ICMP ping
-- GET,POST,PUT support wiith custom headers and request bodies
-- Email Alerts on downtime and recovery(had to setup 2-step verification and all very exhausting)
-- Retry threshold before a monitor is marked down,to avoid false alarm from short blips;
+- GET,POST,PUT support with custom headers and request bodies
+- Email Alerts on downtime and recovery (had to setup 2-step verification for nodemailer before i finally made use of brevo and all very exhausting)
+- Retry threshold before a monitor is marked down,to avoid false alarm from short blips
 - Real-time dashboard updates via Socket.IO (stressed my life btw)
 - Ping history with uptime percentage and average latency
 - Pause/resume monitors without deleting them
@@ -54,7 +54,7 @@ npm install
 ## Environment Variables
 Create a `.env` file in `/backend` with the following:
 
-|Variable | Description |Example |
+| Variable | Description | Example |
 
 |`DATABASE_URL`| Postgres connection String |`postgresql://postgres:password@localhost:5432/uptime_monitor` |
 | `JWT_SECRRET`| Secret for signing my auth tokens | `your-secret` |

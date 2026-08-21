@@ -45,7 +45,7 @@ export default function Auth({setToken}){
         setErrMessage("Username is required")
         return;
     }
-    setLoading(false)
+    setLoading(true)
 
 
     const payload={
@@ -70,8 +70,7 @@ export default function Auth({setToken}){
         setSuccessMessage(data.message);
         localStorage.setItem('token',data.token);
         localStorage.getItem('token') && setToken(localStorage.getItem('token'))
-        //clearing data after successfully logging in
-        console.log('User Data:',data.user)
+        // clearing data after successfully logging in
         setTimeout(()=>{
             setSuccessMessage("");
             navigate("/dashboard")
@@ -80,10 +79,6 @@ export default function Auth({setToken}){
         setEmail('');
         setPassword('');
         setName('');
-
-        // setTimeout(()=>{
-        //     ///we use this to navigate smoothly to our dashboard
-        // },1000)
 
     }catch(err){
         if(err.message==='Failed to fetch'){

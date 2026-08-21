@@ -1,15 +1,15 @@
-.statsContainer {
+.statsContainer{
     width: 100%;
     margin-bottom: 20px;
 }
-.statsBar {
+.statsBar{
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     gap: 20px;
     width: 100%;
     box-sizing: border-box;
 }
-.statItem {
+.statItem{
     background: #131517;
     border: 1px solid #22262a;
     border-radius: 8px;
@@ -21,32 +21,32 @@
     min-height: 160px;
     transition: transform 0.2s ease, border-color 0.2s ease;
 }
-.upCard:hover {
+.upCard:hover{
     border-color: rgba(74, 222, 128, 0.4);
 }
-.downCard:hover {
+.downCard:hover{
     border-color: rgba(227, 98, 98, 0.4);
 }
-.statLabel {
+.statLabel{
     font-size: 13px;
     color: rgba(255, 255, 255, 0.5);
     font-family: 'DM Mono', monospace;
     text-transform: uppercase;
     letter-spacing: 0.05em;
 }
-.statValue {
+.statValue{
     font-size: 28px;
     font-weight: 700;
     font-family: 'Syne', sans-serif;
     color: #faf5f9;
 }
-.up { 
+.up{ 
     color: #4ade80; 
 }
-.down { 
+.down{ 
     color: #e36262; 
 }
-.monitorList {
+.monitorList{
     width: 100%;
     margin-top: 10px;
     border-top: 1px solid #22262a;
@@ -57,14 +57,14 @@
     max-height: 110px;
     overflow-y: auto;
 }
-.monitorList::-webkit-scrollbar {
+.monitorList::-webkit-scrollbar{
     width: 4px;
 }
-.monitorList::-webkit-scrollbar-thumb {
+.monitorList::-webkit-scrollbar-thumb{
     background: #22262a;
     border-radius: 2px;
 }
-.emptyText {
+.emptyText{
     font-size: 11px;
     color: rgba(255, 255, 255, 0.3);
     font-family: 'DM Mono', monospace;
@@ -72,7 +72,7 @@
     display: block;
     margin-top: 4px;
 }
-.monitorBadge, .monitorBadgeDown, .monitorBadgePaused {
+.monitorBadge, .monitorBadgeDown, .monitorBadgePaused{
     font-size: 12px;
     font-family: 'DM Mono', monospace;
     padding: 6px 10px;
@@ -82,11 +82,11 @@
     gap: 8px;
     overflow: hidden;
 }
-.monitorBadge {
+.monitorBadge{
     background: rgba(74, 222, 128, 0.04);
     border: 1px solid rgba(74, 222, 128, 0.1);
 }
-.monitorBadgeDown {
+.monitorBadgeDown{
     background: rgba(227, 98, 98, 0.04);
     border: 1px solid rgba(227, 98, 98, 0.1);
 }
@@ -94,31 +94,31 @@
     background: rgba(255, 255, 255, 0.02);
     border: 1px solid rgba(255, 255, 255, 0.05);
 }
-.indicator {
+.indicator{
     width: 6px;
     height: 6px;
     border-radius: 50%;
     flex-shrink: 0;
 }
-.indicatorUp {
+.indicatorUp{
     background: #4ade80;
     box-shadow: 0 0 6px rgba(74, 222, 128, 0.6);
 }
-.indicatorDown {
+.indicatorDown{
     background: #e36262;
     box-shadow: 0 0 6px rgba(227, 98, 98, 0.6);
 }
-.indicatorPaused {
+.indicatorPaused{
     background: rgba(255, 255, 255, 0.4);
 }
-.monitorName {
+.monitorName{
     color: #faf5f9;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     flex-grow: 1;
 }
-.portLabel {
+.portLabel{
     color: rgba(255, 255, 255, 0.4);
     font-size: 11px;
 }

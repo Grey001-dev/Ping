@@ -37,10 +37,11 @@ export default function MonitorDashboard(){
           latency:updatedData.latency,
           timestamp:new Date().toISOString()
         }].slice(-30); 
+
         const upCount=newHistory.filter((p)=>p.status==="up").length;
         const downCount=newHistory.filter((p)=>p.status==="down").length;
+        // Getting my uptime percentage by dividing the amount of status : "up" with the total status
         const uptime = newHistory.length > 0 ? Math.round((upCount / newHistory.length) * 100) : 0;
-        console.log(`up:${upCount}, down:${downCount}`);
         
         return{
           ...m,
@@ -77,9 +78,7 @@ export default function MonitorDashboard(){
         setMonitors(data);
       }else{
         setMonitors([]);
-        console.log("Backend did not return an array:",data.message)
       }
-
     } catch (error) {
       console.log(`Error caught while fetching monitors:`,error)
     } finally {
@@ -142,8 +141,6 @@ export default function MonitorDashboard(){
         setMonitors(prev=>prev.map(m=>
         m.id===id ? {...m,is_paused:data.is_paused}:m
         ));
-        console.log(`${data.is_paused} `)
-
       } catch (err) {
         console.error("Error toggling pause:",err)
       }
@@ -152,7 +149,6 @@ export default function MonitorDashboard(){
     async function handleEdit(newMonitor,id) {
       try {
         const data=await monitorService.edit(newMonitor,id);
-        console.log('Edit response:',data)
         if(data && data.id){
           setMonitors(prev=>prev.map(m=>m.id===id ? {...data,history:m.history}:m));
           setSelectedId(id);
@@ -209,6 +205,7 @@ function EmptyState({ hasMonitors }) {
     return (
       <div className={styles.emptyState}>
         <div className={styles.emptyIcon}>
+          {/* This css gives me that ping bar with different heights*/}
           <div className={styles.pulseBars}>
             <span className={styles.PulseBar} style={{height:'30%'}}></span>
             <span className={styles.PulseBar} style={{height:'60%'}}></span>

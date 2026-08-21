@@ -2,9 +2,7 @@ import React from 'react';
 import styles from './QuickStats.module.css';
 
 export default function QuickStats({ monitors }) {
-  
     const pausedMonitors = monitors.filter(m => m.is_paused);
-    
     const downMonitors = monitors.filter(m => !m.is_paused && m.is_down);
     const upMonitors = monitors.filter(m => !m.is_paused && !m.is_down);
 

@@ -8,7 +8,7 @@ export default function PublicStatusPage(){
     const [data,setData]=useState(null);
     const [loading,setLoading]=useState(true);
     const [error,setError]=useState(false);
-    const {userId}=useParams()
+    const {userId}=useParams();
     useEffect(()=>{
         const fetchStatus=async()=>{
             try {
@@ -22,6 +22,8 @@ export default function PublicStatusPage(){
         };
         fetchStatus()
     },[userId]);
+
+    
     if (loading) {
     return (
         <div className={styles.loadingWrapper}>
@@ -30,7 +32,6 @@ export default function PublicStatusPage(){
         </div>
     );
 }
-
     if(error || !data){
         return(
             <div className={styles.errorWrapper}>
@@ -39,11 +40,9 @@ export default function PublicStatusPage(){
         )
     }
     const hasMonitors=data.monitors.length>0
-
     const allUp=hasMonitors && data.monitors.every(m=>m.status==='up');
     return(
         <div className={styles.wrapper}>
-
             <header className={styles.header}>
                 <div className={styles.brand}>
                     <Activity className={styles.brandIcon} size={18}/>
@@ -120,12 +119,9 @@ export default function PublicStatusPage(){
                             </div>
                         </div>
                     ))}
-
                     </div>
-
                 </div>
             )}
-
         </div>
     )
 }

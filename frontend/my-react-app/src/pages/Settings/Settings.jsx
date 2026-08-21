@@ -3,7 +3,6 @@ import {getUser,updateUser} from '../../services/settingsService';
 import { Bell,Shield ,TriangleAlert,CheckCircle2,Settings2Icon,UserKey,Copy} from 'lucide-react';
 import styles from './Settings.module.css'
 
-
 export default function Settings(){
     const [email,setEmail]=useState('');
     const [notificationEmail,setNotificationEmail]=useState('')
@@ -29,7 +28,7 @@ export default function Settings(){
     }
     loadUser();
 },[])
-    
+    // This helps copy the url generated for each user public page
     const handleCopy=async ()=>{
         const link =`${window.location.origin}/status/${userId}`;
         await navigator.clipboard.writeText(link);
@@ -62,7 +61,6 @@ export default function Settings(){
         )
     }
 
-
     return(
         <div className={styles.wrapper}>
             <div className={styles.container}>
@@ -85,8 +83,6 @@ export default function Settings(){
                     </div>
                 </div>
 
-
-
                 <div className={styles.panel}>
                     <div className={styles.panelHeader}>
                         <UserKey size={14} className={styles.icon}/>
@@ -106,8 +102,6 @@ export default function Settings(){
 
                     </div>
                 </div>
-
-
 
                 <div className={styles.panel}>
                     <div className={styles.panelHeader}>
