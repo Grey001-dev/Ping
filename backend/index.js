@@ -18,6 +18,22 @@ const allowedOrigins = [
   'http://localhost:5173',
   'https://ping-two-orpin.vercel.app',
 ];
+
+app.use(cors({
+    origin: function (origin, callback) {
+        //this allow requests with no origin (like mobile apps, curl, or postman)....this was what helped my railway app sha
+        if (!origin) return callback(null, true);
+        if (allowedOrigins.indexOf(origin) !== -1) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
+    credentials:true,
+    methods:["GET","POST","DELETE","PATCH","PUT","OPTIONS"],
+    allowedHeaders:["Content-Type","Authorization"]
+}));
+
 export const io=new Server(httpServer,{
     cors:{
         origin:allowedOrigins,
@@ -28,13 +44,6 @@ export const io=new Server(httpServer,{
 })
 
 app.use(cookieParser())
-app.use(cors({
-    origin:allowedOrigins,
-    credentials:true,
-    methods:["GET","POST","DELETE","PATCH","PUT","OPTIONS"],
-    allowedHeaders:["Content-Type","Authorization"]
-}));
-
 app.use(express.json());
 app.use(express.urlencoded({ extended:true }));
 
