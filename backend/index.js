@@ -40,7 +40,8 @@ export const io=new Server(httpServer,{
         credentials:true,
         methods:["GET","POST","PUT","PATCH","DELETE","OPTIONS"],
         allowedHeaders:['Content-Type','application/json']
-    }
+    },
+    transports: ['websocket', 'polling']
 })
 
 app.use(cookieParser())
@@ -68,7 +69,7 @@ try{
 }
 
 
-httpServer.listen(process.env.PORT || 5000,()=>{
+httpServer.listen(process.env.PORT || 5000,'0.0.0.0',()=>{
     console.log("Server running no fear")
 
     startAllMonitors();
