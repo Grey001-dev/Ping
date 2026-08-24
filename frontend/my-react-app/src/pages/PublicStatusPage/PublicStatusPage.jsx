@@ -12,7 +12,7 @@ export default function PublicStatusPage(){
     useEffect(()=>{
         const fetchStatus=async()=>{
             try {
-                const res=await axios.get(`https://ping-7u78.onrender.com/api/status/${userId}`)
+                const res=await axios.get(`https://ping-monitor-001.up.railway.app/api/status/${userId}`)
                 setData(res.data);
             } catch (err) {
                 setError(true);

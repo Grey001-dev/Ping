@@ -1,5 +1,5 @@
 import axios from 'axios'
-const BASE_URL=import.meta.env.VITE_API_BASE_URL || 'https://ping-7u78.onrender.com'
+const BASE_URL=import.meta.env.VITE_API_BASE_URL || 'https://ping-monitor-001.up.railway.app'
 const API_URL=`${BASE_URL}/api/monitors`;
 const INCIDENTS_URL=`${BASE_URL}/api/incidents`
 

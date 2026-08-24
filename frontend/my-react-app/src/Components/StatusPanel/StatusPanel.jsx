@@ -83,7 +83,7 @@ export default function StatusPanel({monitor,onDelete,savedError,onPause,onEdit,
     },[monitor.id])
 
     useEffect(()=>{
-        const socket=io('https://ping-7u78.onrender.com',{
+        const socket=io('https://ping-monitor-001.up.railway.app',{
             transports:["polling","websocket"]
         });
 
