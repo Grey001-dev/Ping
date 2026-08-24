@@ -22,7 +22,7 @@ export default function MonitorDashboard(){
   },[]);
 
   useEffect(()=>{
-    const BASE_URL=import.meta.env.VITE_API_BASE_URL || 'https://ping-monitor-001.up.railway.app';
+    const BASE_URL=import.meta.env.VITE_API_BASE_URL || 'https://ping-7u78.onrender.com';
     const socket=io(BASE_URL);
 
   // After listening for the broadcast from my backend

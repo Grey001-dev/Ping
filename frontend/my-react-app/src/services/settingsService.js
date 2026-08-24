@@ -1,6 +1,6 @@
 import axios from 'axios'
-// const API_URL='https://ping-7u78.onrender.com/api/users'
-const API_URL='https://ping-monitor-001.up.railway.app/api/users'
+const API_URL='https://ping-7u78.onrender.com/api/users'
+// const API_URL='https://ping-monitor-001.up.railway.app/api/users'
 export async function getUser(){
     const token=localStorage.getItem("token")
     const res=await axios.get(`${API_URL}/me`,{ 
