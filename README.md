@@ -55,9 +55,9 @@ npm install
 Create a `.env` file in `/backend` with the following:
 
 | Variable | Description | Example |
-
-|`DATABASE_URL`| Postgres connection String |`postgresql://postgres:password@localhost:5432/uptime_monitor` |
-| `JWT_SECRRET`| Secret for signing my auth tokens | `your-secret` |
+|----------|--------------|---------|
+|`DATABASE_URL`| Postgres connection String|`postgresql://postgres:password@localhost:5432/uptime_monitor` |
+| `JWT_SECRET`| Secret for signing my auth tokens | `your-secret` |
 | `PORT` | My backend server port used | `5000`|
 | `BREVO_API_KEY` | API key from your (https://www.brevo.com) account, I used this for sending down and recovery alert emails | `xkeysib-....` |
 | `SENDER_EMAIL` | A verified sender email address in Brevo | `pingmonitors007@gmail.com` |
