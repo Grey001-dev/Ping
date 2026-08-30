@@ -10,9 +10,7 @@ export default function Footer(){
                 </div>
 
                 <div className={styles.linkside}>
-                    <button className={styles.footerLink}>Privacy Policy</button>
-                    <button className={styles.footerLink}>Terms of Service</button>
-                    <button className={styles.footerLink}>Contact Support</button>
+
                 </div>
             </div>
 
